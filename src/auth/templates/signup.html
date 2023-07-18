@@ -1,5 +1,5 @@
 {% extends "loginSignupBase.html" %}
-{% block title %} signup {% endblock %}
+{% block title %} Signup {% endblock %}
 
 {% block img %}
 <img src="{{url_for('auth.static', filename='signupsm.jpg')}}" alt="login" class="login-card-img">
@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block links %}
-<p class="login-card-footer-text">Already a member? <a href="{{url_for('auth.login')}}" class="text-reset">Log in here</a>
+<p class="login-card-footer-text">Already a member? <a href="{{url_for('auth.login')}}" id="link-to-login" class="text-reset">Log in here</a>
 </p>
 <nav class="login-card-footer-nav">
     <a href="#!">Terms of use.</a>
