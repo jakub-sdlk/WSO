@@ -8,30 +8,30 @@
 {% block sentence1 %} Join us today! {% endblock %}
 
 {% block forms %}
-<form action="#!">
+<form method="post">
     <div class="row">
         <div class="col-6">
             <div class="form-group">
-                <label for="firstName" class="sr-only">First Name</label>
-                <input type="text" name="firstName" id="firstName" class="form-control" placeholder="James" required>
+                <label for="signup_firstName" class="sr-only">First Name</label>
+                <input type="text" name="signup_firstName" id="signup_firstName" class="form-control" placeholder="James" required>
             </div>
         </div>
         <div class="col-6">
             <div class="form-group mb-2">
-                <label for="lastName" class="sr-only">Last Name</label>
-                <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Dean" required>
+                <label for="signup_lastName" class="sr-only">Last Name</label>
+                <input type="text" name="signup_lastName" id="signup_lastName" class="form-control" placeholder="Dean" required>
             </div>
         </div>
     </div>
     <div class="form-group mb=2">
-        <label for="email" class="sr-only">Email</label>
-        <input type="email" name="email" id="email" class="form-control" placeholder="Email address" required>
+        <label for="signup_email" class="sr-only">Email</label>
+        <input type="email" name="signup_email" id="signup_email" class="form-control" placeholder="Email address" required>
     </div>
     <div class="form-group mb-2">
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" name="password" id="password" class="form-control" placeholder="***********" required>
+        <label for="signup_password" class="sr-only">Password</label>
+        <input type="password" name="signup_password" id="signup_password" class="form-control" placeholder="***********" required>
     </div>
-    <input name="login" id="login" class="btn btn-block login-btn mb-2" type="button" value="Sign up">
+    <input name="signup" id="signup" class="btn btn-block login-btn mb-2" type="submit" value="Sign up">
 </form>
 {% endblock %}
 
