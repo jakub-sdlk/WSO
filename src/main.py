@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from flask import Flask, redirect, url_for
 from os import path
 
@@ -16,6 +17,8 @@ def create_app():
 
     from auth.auth import auth
     from stats.stats import stats
+
+    from models import User
 
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(stats, url_prefix="/stats")
