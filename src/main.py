@@ -2,8 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, redirect, url_for
 from os import path
 
-from auth.auth import auth
-from stats.stats import stats
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -15,6 +13,9 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+
+    from auth.auth import auth
+    from stats.stats import stats
 
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(stats, url_prefix="/stats")
