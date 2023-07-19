@@ -3,3 +3,5 @@ Selenium
 Behave
 Pytest
 flask_sqlalchemy
+flask_login
+SQLAlchemy
