@@ -41,9 +41,10 @@ def create_app():
 
 
 def create_database(app):
-    if not path.exists(f"scr/{DB_NAME}"):
-        db.create_all(app=app)
-        print("Created database")
+    if not path.exists("instance/" + DB_NAME):
+        with app.app_context():
+            db.create_all()
+            print("Created database")
 
 
 if __name__ == "__main__":
