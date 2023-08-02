@@ -28,6 +28,9 @@ def signup():
         ### Change this later for regex, or check the email_validator package
         elif len(email) < 5:
             flash("Email is invalid.", category='error')
+        ### Change this later for regex
+        elif len(password) < 4:
+            flash("Invalid password.", category='error')
         else:
             new_user = Users(email=email, first_name=first_name, last_name=last_name, password=password)
             db.session.add(new_user)
