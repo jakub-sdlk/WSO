@@ -22,7 +22,12 @@ def signup():
         password = request.form.get("signup_password")
 
         email_exist = User.query.filter_by(email=email).first()
+
         if email_exist:
-            flash('')
+            flash("This email is already refistered.", category='error')
+        ### Change this later for regex, or check the email_validator package
+        elif len(email) < 5:
+            flash("Email is invalid.", category=KeyError)
+        
 
     return render_template("signup.html")
