@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, url_for, render_template, request, session, flash
-from main import db
-from models import User
+from db import db
+from models import Users
 
 auth = Blueprint("auth", __name__, static_folder="static", template_folder="templates")
 
@@ -21,13 +21,19 @@ def signup():
         email = request.form.get("signup_email")
         password = request.form.get("signup_password")
 
-        email_exist = User.query.filter_by(email=email).first()
+        email_exist = Users.query.filter_by(email=email).first()
 
         if email_exist:
             flash("This email is already refistered.", category='error')
         ### Change this later for regex, or check the email_validator package
         elif len(email) < 5:
-            flash("Email is invalid.", category=KeyError)
+            flash("Email is invalid.", category='error')
+        else:
+            new_user = Users(email=email, first_name=first_name, last_name=last_name, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('User created')
+            return redirect(url_for('stats.overview'))
         
 
     return render_template("signup.html")

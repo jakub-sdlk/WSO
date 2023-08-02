@@ -1,11 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask import Flask, redirect, url_for
 from os import path
 
-
-db = SQLAlchemy()
-DB_NAME = "database.db"
+from db import db, DB_NAME
 
 
 def create_app():
@@ -18,12 +15,12 @@ def create_app():
     from auth.auth import auth
     from stats.stats import stats
 
-    from models import User
+    from models import Users
 
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(stats, url_prefix="/stats")
 
-    create_database(app)
+    create_database(app=app)
 
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
@@ -31,7 +28,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return Users.query.get(int(id))
 
     @app.route("/")
     def index():
