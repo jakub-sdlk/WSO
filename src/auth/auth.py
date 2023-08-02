@@ -2,6 +2,8 @@ from flask import Blueprint, redirect, url_for, render_template, request, sessio
 from db import db
 from models import Users
 from flask_login import login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 auth = Blueprint("auth", __name__, static_folder="static", template_folder="templates")
 
@@ -33,7 +35,11 @@ def signup():
         elif len(password) < 4:
             flash("Invalid password.", category='error')
         else:
-            new_user = Users(email=email, first_name=first_name, last_name=last_name, password=password)
+            new_user = Users(
+                email=email, 
+                first_name=first_name, 
+                last_name=last_name, 
+                password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             flash('User created')
