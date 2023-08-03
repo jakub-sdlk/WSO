@@ -59,3 +59,9 @@ def signup():
             return redirect(url_for('stats.overview'))
 
     return render_template("signup.html")
+
+
+@auth.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))
