@@ -10,8 +10,20 @@ auth = Blueprint("auth", __name__, static_folder="static", template_folder="temp
 
 @auth.route("/login", methods=["POST", "GET"])
 def login():
-    e_mail = request.form.get("login_email")
-    password = request.form.get("login_password")
+    if request.method == 'POST':
+        email = request.form.get("login_email")
+        password = request.form.get("login_password")
+
+        user = Users.query.filter_by(email=email).first()
+        if user:
+            if check_password_hash(user.password, password):
+                flash("Logged in!", category='success')
+                login_user(user, remember=True)
+                return redirect(url_for('stats.overview'))
+            else:
+                flash("Incorrect password", category='error')
+        else:
+            flash("Email does not exist", category='error')
 
     return render_template("login.html")
 
@@ -42,6 +54,7 @@ def signup():
                 password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
+            login_user(new_user, remember=True)
             flash('User created')
             return redirect(url_for('stats.overview'))
 
