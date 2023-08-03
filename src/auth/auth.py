@@ -27,11 +27,11 @@ def signup():
         email_exist = Users.query.filter_by(email=email).first()
 
         if email_exist:
-            flash("This email is already refistered.", category='error')
-        ### Change this later for regex, or check the email_validator package
+            flash("This email is already registered.", category='error')
+        # Change this later for regex, or check the email_validator package
         elif len(email) < 5:
             flash("Email is invalid.", category='error')
-        ### Change this later for regex
+        # Change this later for regex
         elif len(password) < 4:
             flash("Invalid password.", category='error')
         else:
@@ -44,6 +44,5 @@ def signup():
             db.session.commit()
             flash('User created')
             return redirect(url_for('stats.overview'))
-        
 
     return render_template("signup.html")
