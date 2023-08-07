@@ -6,4 +6,4 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @stats.route("/")
 @login_required
 def overview():
-    return render_template("overview.html")
+    return render_template("overview.html", user=current_user)
