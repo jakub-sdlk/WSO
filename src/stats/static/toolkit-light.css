@@ -264,7 +264,7 @@ html {
 
 body {
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 300;
   line-height: 1.5;
   color: #000;
@@ -2797,7 +2797,7 @@ tbody.collapse.show {
 
 .nav-link {
   display: block;
-  padding: 7px 15px; }
+  padding: 3px 15px; }
   .nav-link:focus, .nav-link:hover {
     text-decoration: none; }
   .nav-link.disabled {
@@ -2869,9 +2869,9 @@ tbody.collapse.show {
 .navbar-brand {
   display: inline-block;
   padding-top: .25rem;
-  padding-bottom: .25rem;
+  padding-bottom: .6rem;
   margin-right: 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: inherit;
   white-space: nowrap; }
   .navbar-brand:focus, .navbar-brand:hover {
