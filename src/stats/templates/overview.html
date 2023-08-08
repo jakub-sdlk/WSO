@@ -81,9 +81,8 @@
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="standard">
                     <form method="post">
-
                       <div class="form-group row mt-2">
-                        <label for="calendar" class="col-sm col-form-label">Please enter scheduled workout date:</label>
+                        <label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
                         <div class="col-sm">
                           <div class="btn-toolbar-item input-with-icon">
                             <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control" value="1991/07/24" data-provide="datepicker">
@@ -93,12 +92,20 @@
                       </div>
 
                       <div class="form-group row mt-2">
-                        <label for="yesOrNoOptions" class="col-sm col-form-label">Have you done that workout?</label>
+                        <label for="minutes" class="col-sm col-form-label">Total minutes:</label>
                         <div class="col-sm">
-                          <select class="form-control" id="yesOrNoOptions" name="yesOrNoOptions" aria-label="Default select example">
-                            <option selected value="1">Yes, I have</option>
-                            <option value="0">No, I have not</option>
-                          </select>
+                          <div class="btn-toolbar-item">
+                            <input type="number" class="form-control" id="minutes" min="1" max="200" step="1" name="minutes">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row mt-2">
+                        <label for="seconds" class="col-sm col-form-label">Total seconds:</label>
+                        <div class="col-sm">
+                          <div class="btn-toolbar-item">
+                            <input type="number" class="form-control" id="seconds" min="1" max="59" step="1" name="seconds">
+                          </div>
                         </div>
                       </div>
 
