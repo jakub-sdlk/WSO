@@ -8,15 +8,15 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
   <meta name="author" content="">
-
+  
   <title>{% block title %}{% endblock %}</title>
-
+  
   <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
-
+  
   <link href="{{url_for('stats.static', filename='toolkit-light.css')}}" rel="stylesheet">
-
+  
   <link href="{{url_for('stats.static', filename='application.css')}}" rel="stylesheet">
-
+  
   <style>
     /* note: this is a hack for ios iframe for bootstrap themes shopify page */
     /* this chunk of css is not part of the toolkit :) */
@@ -25,85 +25,99 @@
       min-width: 100%;
       *width: 100%;
     }
+  
   </style>
 </head>
 
 
 <body class="with-top-navbar">
 
-  <nav class="navbar navbar-toggleable-sm fixed-top navbar-inverse bg-inverse app-navbar">
-    <button class="navbar-toggler navbar-toggler-right hidden-md-up" type="button" data-toggle="collapse"
-      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <a class="navbar-brand" href="{{url_for('stats.overview')}}">
-      <span class="icon icon-network navbar-brand-icon"></span>
-      WSO
-    </a>
-
-    <div class="collapse navbar-collapse mr-auto" id="navbarResponsive">
-      <ul class="nav navbar-nav">
-        <li class="{% block nav_overview %}{% endblock %}>">
-          <!-- nav-item active -->
-          <a class="nav-link" href="{{url_for('stats.overview')}}">Overview</a>
-        </li>
-        <li class="{% block nav_manage %}{% endblock %}>">
-          <a class="nav-link" href="../fluid/index.html">Manage workouts</a>
-        </li>
-        <li class="{% block nav_profile %}{% endblock %}>">
-          <a class="nav-link" href="../icon-nav/index.html">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url_for('auth.logout')}}">Log out</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <div class="container-fluid container-fluid-spacious">
-    <div class="dashhead mt-4">
-      <div class="dashhead-titles">
-        <h6 class="dashhead-subtitle">Welcome, {{ current_user.first_name }}</h6>
-        <h2 class="dashhead-title">{% block h2_title %}{% endblock %}</h2>
-      </div>
-    </div>
-
-    <div class="hr-divider my-4">
-      <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a href="#lane-goodwin-full" class="nav-link active" role="tab" data-toggle="tab"
-            aria-controls="lane-goodwin-full">Lane Goodwin Full</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a href="#jakub-chin-up" class="nav-link" role="tab" data-toggle="tab" aria-controls="jakub-chin-up">Jakub
-            Chin Up</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a href="#jakub-bass" class="nav-link" role="tab" data-toggle="tab" aria-controls="jakub-bass">Jakub Bass</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a href="#lane-goodwin-best-of" class="nav-link" role="tab" data-toggle="tab"
-            aria-controls="lane-goodwin-best-of">Lane Goodwin Best Of</a>
-        </li>
-      </ul>
-    </div>
-
-    {% block content %}{% endblock %}
-
+<nav class="navbar navbar-toggleable-sm fixed-top navbar-inverse bg-inverse app-navbar">
+  <button class="navbar-toggler navbar-toggler-right hidden-md-up" type="button" data-toggle="collapse"
+          data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <a class="navbar-brand" href="{{url_for('stats.overview')}}">
+    <span class="icon icon-network navbar-brand-icon"></span>
+    WSO
+  </a>
+  
+  <div class="collapse navbar-collapse mr-auto" id="navbarResponsive">
+    <ul class="nav navbar-nav">
+      <li class="{% block nav_overview %}{% endblock %}>">
+        <!-- nav-item active -->
+        <a class="nav-link" href="{{url_for('stats.overview')}}">Overview</a>
+      </li>
+      <li class="{% block nav_manage %}{% endblock %}>">
+        <a class="nav-link" href="../fluid/index.html">Manage workouts</a>
+      </li>
+      <li class="{% block nav_profile %}{% endblock %}>">
+        <a class="nav-link" href="../icon-nav/index.html">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('auth.logout')}}">Log out</a>
+      </li>
+    </ul>
   </div>
+</nav>
 
-  <script src="{{url_for('stats.static', filename='jquery.min.js')}}"></script>
-  <script src="{{url_for('stats.static', filename='tether.min.js')}}"></script>
-  <script src="{{url_for('stats.static', filename='chart.js')}}"></script>
-  <script src="{{url_for('stats.static', filename='tablesorter.min.js')}}"></script>
-  <script src="{{url_for('stats.static', filename='toolkit.js')}}"></script>
-  <script src="{{url_for('stats.static', filename='application.js')}}"></script>
-  <script>
+<div class="container-fluid container-fluid-spacious">
+  <div class="dashhead mt-4">
+    <div class="dashhead-titles">
+      <h6 class="dashhead-subtitle">Welcome, {{ current_user.first_name }}</h6>
+      <h2 class="dashhead-title">{% block h2_title %}{% endblock %}</h2>
+    </div>
+  </div>
+  
+  <div class="hr-divider my-4">
+    <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a href="#lane-goodwin-full" class="nav-link active" role="tab" data-toggle="tab"
+           aria-controls="lane-goodwin-full">Lane Goodwin Full</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a href="#jakub-chin-up" class="nav-link" role="tab" data-toggle="tab" aria-controls="jakub-chin-up">Jakub
+          Chin Up</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a href="#jakub-bass" class="nav-link" role="tab" data-toggle="tab" aria-controls="jakub-bass">Jakub Bass</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a href="#lane-goodwin-best-of" class="nav-link" role="tab" data-toggle="tab"
+           aria-controls="lane-goodwin-best-of">Lane Goodwin Best Of</a>
+      </li>
+    </ul>
+  </div>
+  
+  {% block content %}{% endblock %}
+
+</div>
+
+<script src="{{url_for('stats.static', filename='jquery.min.js')}}"></script>
+<script src="{{url_for('stats.static', filename='tether.min.js')}}"></script>
+<script src="{{url_for('stats.static', filename='chart.js')}}"></script>
+<script src="{{url_for('stats.static', filename='tablesorter.min.js')}}"></script>
+<script src="{{url_for('stats.static', filename='toolkit.js')}}"></script>
+<script src="{{url_for('stats.static', filename='application.js')}}"></script>
+<script>
     // execute/clear BS loaders for docs
     $(function () { while (window.BS && window.BS.loader && window.BS.loader.length) { (window.BS.loader.pop())() } })
-  </script>
+  
+</script>
+<script type="text/javascript">
+      $('#calendar').datepicker({
+        autoclose: 'true',
+        todayHighlight: 'true',
+        disableTouchKeyboard: 'true',
+        endDate: '0d',
+        startDate: '-90d',
+        todayBtn: 'linked'
+
+      });
+    
+</script>
 </body>
 
 </html>
