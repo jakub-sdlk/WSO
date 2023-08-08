@@ -62,10 +62,57 @@
     </div>
     <div class="hr-divider mt-5 mb-4">
       <h3 class="hr-divider-content hr-divider-heading">
-        <a href="#" class="btn btn-outline-primary px-3">New session</a>
+        <a href="#docsModal" class="btn btn-outline-primary px-3" data-toggle="modal" >Add Workout Record</a>
       </h3>
     </div>
   </div>
+
+  <!-- MODAL STARTS HERE -->
+  <div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Workout Record</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+
+              <div class="modal-body">
+
+                <div class="container">
+                  <form method="post" method>
+
+                    <div class="form-group row mt-2">
+                      <label for="calendar" class="col-sm col-form-label">Please enter sheduled workout date:</label>
+                      <div class="col-sm">
+                        <div class="btn-toolbar-item input-with-icon">
+                          <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control" value="0" data-provide="datepicker">
+                          <span class="icon icon-calendar"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                      <label for="yesOrNoOptions" class="col-sm col-form-label">Have you done that workout?</label>
+                      <div class="col-sm">
+                        <select class="form-control" id="yesOrNoOptions" name="yesOrNoOptions" aria-label="Default select example">
+                          <option selected value="1">Yes, I have</option>
+                          <option value="0">No, I have not</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                      <div class="col-sm text-right">
+                        <button type="submit" onClick="window.location.href=window.location.href" class="btn btn-primary">Save & Quit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
   <div role="tabpanel" class="tab-pane" id="inventory">
     <div class="ex-line-graphs">
