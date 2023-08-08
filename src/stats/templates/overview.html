@@ -9,311 +9,304 @@
 
 {% block content %}
 <div class="tab-content">
-	<div role="tabpanel" class="tab-pane active" id="lane-goodwin-full">
-		<div class="row statcards">
-			<div class="col-md-6 col-lg-3 mb-5 mb-md-3">
-				<div class="statcard">
-					<div class="p-a">
-						<span class="statcard-desc">Total Sessions</span>
-						<h2 class="statcard-number">
-							333
-						</h2>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-3 mb-5 mb-md-3">
-				<div class="statcard">
-					<div class="p-a">
-						<span class="statcard-desc">Last Session</span>
-						<h2 class="statcard-number">
-							Full fledged strength
-							<small class="badge badge-success">00:45:12</small>
-						</h2>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-3 mb-5 mb-md-3">
-				<div class="statcard">
-					<div class="p-a">
-						<span class="statcard-desc">Next session</span>
-						<h2 class="statcard-number">
-							Frontal strength
-							<small class="badge badge-danger">00:24:19</small>
-						</h2>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-3 mb-5 mb-md-3">
-				<div class="statcard">
-					<div class="p-a">
-						<span class="statcard-desc">Progress</span>
-						<h2 class="statcard-number">
-							Season 7
-						</h2>
-						<h2 class="statcard-number">
-							Week 4
-						</h2>
-						<h2 class="statcard-number">
-							Day 3
-						</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="hr-divider mt-5 mb-4">
-			<h3 class="hr-divider-content hr-divider-heading">
-				<a href="#docsModal" class="btn btn-outline-primary px-3" data-toggle="modal" >Add Workout Record</a>
-			</h3>
-		</div>
-	</div>
-
-	<!-- MODAL STARTS HERE -->
-	<div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">Add Workout Record</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				</div>
-
-				<div class="modal-body">
-					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane active" id="standard">
-							<form method="post">
-								<div class="form-group row mt-2">
-									<label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
-									<div class="col-sm">
-										<div class="btn-toolbar-item input-with-icon">
-											<input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control" value="1991/07/24" data-provide="datepicker">
-											<span class="icon icon-calendar"></span>
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group row mt-2">
-									<label for="hours"  class="col-sm col-form-label">Hours/Minutes/Seconds:</label>
-									<div class="col-2">
-										<div class="btn-toolbar-item">
-											<input type="number" class="form-control" id="hours" min="0" max="24" step="1" name="hours" placeholder="Hours" value = 0>
-										</div>
-									</div>
-                  <div class="col-2">
-										<div class="btn-toolbar-item">
-											<input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes" placeholder="Minutes">
-										</div>
-									</div>
-                  <div class="col-2">
-										<div class="btn-toolbar-item">
-											<input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds" placeholder="Seconds">
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group row mt-2">
-									<div class="col-sm text-right">
-										<button type="submit" onClick="window.location.href=window.location.href" class="btn btn-primary">Save & Quit</button>
-									</div>
-								</div>
-							</form>
-						</div>
-
-						<div role="tabpanel" class="tab-pane" id="advanced">
-							<form method="post">
-								<div class="form-group row mt-2">
-									<label for="calendar" class="col-sm col-form-label">Blabla:</label>
-									<div class="col-sm">
-										<div class="btn-toolbar-item input-with-icon">
-											<input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control" value="1991/07/24" data-provide="datepicker">
-											<span class="icon icon-calendar"></span>
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group row mt-2">
-									<label for="yesOrNoOptions" class="col-sm col-form-label">Have you done that workout?</label>
-									<div class="col-sm">
-										<select class="form-control" id="yesOrNoOptions" name="yesOrNoOptions" aria-label="Default select example">
-											<option selected value="1">Yes, I have</option>
-											<option value="0">No, I have not</option>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group row mt-2">
-									<div class="col-sm text-right">
-										<button type="submit" onClick="window.location.href=window.location.href" class="btn btn-primary">Save & Quit</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="container">
-						<div class="hr-divider my-4">
-							<ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
-								<li class="nav-item" role="presentation">
-									<a href="#standard" class="nav-link active" role="tab" data-toggle="tab"
-									   aria-controls="standard">Standard</a>
-								</li>
-								<li class="nav-item" role="presentation">
-									<a href="#advanced" class="nav-link" role="tab" data-toggle="tab" aria-controls="advanced">Advanced</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div role="tabpanel" class="tab-pane" id="inventory">
-		<div class="ex-line-graphs">
-			<canvas
-					class="ex-line-graph"
-					width="600" height="400"
-					data-chart="bar"
-					data-labels="['August','September','October','November','December','January','February']"
-					data-dataset="[[65, 59, 80, 81, 56, 55, 40], [28, 48, 40, 19, 86, 27, 90]]"
-					data-dataset-options="[{label: 'First dataset'}, {label: 'Second dataset'}]">
-			</canvas>
-		</div>
-	</div>
-
-	<div role="tabpanel" class="tab-pane" id="jakub-chin-up">
-		<div class="row ex-graphs text-center">
-			<div class="col-sm-4 mb-4 mb-sm-0">
-				<div class="w-3 mx-auto">
-					<canvas
-							class="ex-graph"
-							width="200" height="200"
-							data-chart="doughnut"
-							data-dataset="[230, 130]"
-							data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
-							data-labels="['Returning', 'New']">
-					</canvas>
-				</div>
-				<strong class="text-muted">Traffic</strong>
-				<h3>New vs Returning</h3>
-			</div>
-			<div class="col-sm-4 mb-4 mb-sm-0">
-				<div class="w-3 mx-auto">
-					<canvas
-							class="ex-graph"
-							width="200" height="200"
-							data-chart="doughnut"
-							data-dataset="[330, 30]"
-							data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
-							data-labels="['Returning', 'New']">
-					</canvas>
-				</div>
-				<strong class="text-muted">Revenue</strong>
-				<h3>New vs Recurring</h3>
-			</div>
-			<div class="col-sm-4 mb-4 mb-sm-0">
-				<div class="w-3 mx-auto">
-					<canvas
-							class="ex-graph"
-							width="200" height="200"
-							data-chart="doughnut"
-							data-dataset="[100, 260]"
-							data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
-							data-labels="['Referrals', 'Direct']"
-					>
-					</canvas>
-				</div>
-				<strong class="text-muted">Traffic</strong>
-				<h3>Direct vs Referrals</h3>
-			</div>
-		</div>
-	</div>
+  <div role="tabpanel" class="tab-pane active" id="lane-goodwin-full">
+    <div class="row statcards">
+      <div class="col-md-6 col-lg-3 mb-5 mb-md-3">
+        <div class="statcard">
+          <div class="p-a">
+            <span class="statcard-desc">Total Sessions</span>
+            <h2 class="statcard-number">
+              333
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-5 mb-md-3">
+        <div class="statcard">
+          <div class="p-a">
+            <span class="statcard-desc">Last Session</span>
+            <h2 class="statcard-number">
+              Full fledged strength
+              <small class="badge badge-success">00:45:12</small>
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-5 mb-md-3">
+        <div class="statcard">
+          <div class="p-a">
+            <span class="statcard-desc">Next session</span>
+            <h2 class="statcard-number">
+              Frontal strength
+              <small class="badge badge-danger">00:24:19</small>
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-5 mb-md-3">
+        <div class="statcard">
+          <div class="p-a">
+            <span class="statcard-desc">Progress</span>
+            <h2 class="statcard-number">
+              Season 7
+            </h2>
+            <h2 class="statcard-number">
+              Week 4
+            </h2>
+            <h2 class="statcard-number">
+              Day 3
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hr-divider mt-5 mb-4">
+      <h3 class="hr-divider-content hr-divider-heading">
+        <a href="#docsModal" class="btn btn-outline-primary px-3" data-toggle="modal">Add Workout Record</a>
+      </h3>
+    </div>
+  </div>
+  
+  <!-- MODAL STARTS HERE -->
+  <div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Add Workout Record</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        </div>
+        
+        <div class="modal-body">
+          <form method="post">
+            <div class="form-group row mt-2">
+              <label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
+              <div class="col-sm">
+                <div class="btn-toolbar-item input-with-icon">
+                  <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control"
+                         value="1991/07/24" data-provide="datepicker">
+                  <span class="icon icon-calendar"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group row mt-2">
+              <label for="hours" class="col-sm col-form-label">Hours/Minutes/Seconds:</label>
+              <div class="col-2">
+                <div class="btn-toolbar-item">
+                  <input type="number" class="form-control" id="hours" min="0" max="24" step="1" name="hours"
+                         placeholder="Hours" value=0>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="btn-toolbar-item">
+                  <input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes"
+                         placeholder="Minutes">
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="btn-toolbar-item">
+                  <input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds"
+                         placeholder="Seconds">
+                </div>
+              </div>
+            </div>
+            
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="standard">
+              </div>
+              
+              <div role="tabpanel" class="tab-pane" id="advanced">
+                <div class="form-group row mt-2">
+                  <label for="calendar" class="col-sm col-form-label">Blabla:</label>
+                  <div class="col-sm">
+                    <div class="btn-toolbar-item input-with-icon">
+                      <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd"
+                             class="form-control" value="1991/07/24" data-provide="datepicker">
+                      <span class="icon icon-calendar"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group row mt-2">
+              <div class="col-sm text-right">
+                <button type="submit" onClick="window.location.href=window.location.href" class="btn btn-primary">Save &
+                  Quit
+                </button>
+              </div>
+            </div>
+            
+            <div class="container">
+              <div class="hr-divider my-4">
+                <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <a href="#standard" class="nav-link active" role="tab" data-toggle="tab"
+                       aria-controls="standard">Standard</a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a href="#advanced" class="nav-link" role="tab" data-toggle="tab"
+                       aria-controls="advanced">Advanced</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div role="tabpanel" class="tab-pane" id="inventory">
+    <div class="ex-line-graphs">
+      <canvas
+        class="ex-line-graph"
+        width="600" height="400"
+        data-chart="bar"
+        data-labels="['August','September','October','November','December','January','February']"
+        data-dataset="[[65, 59, 80, 81, 56, 55, 40], [28, 48, 40, 19, 86, 27, 90]]"
+        data-dataset-options="[{label: 'First dataset'}, {label: 'Second dataset'}]">
+      </canvas>
+    </div>
+  </div>
+  
+  <div role="tabpanel" class="tab-pane" id="jakub-chin-up">
+    <div class="row ex-graphs text-center">
+      <div class="col-sm-4 mb-4 mb-sm-0">
+        <div class="w-3 mx-auto">
+          <canvas
+            class="ex-graph"
+            width="200" height="200"
+            data-chart="doughnut"
+            data-dataset="[230, 130]"
+            data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
+            data-labels="['Returning', 'New']">
+          </canvas>
+        </div>
+        <strong class="text-muted">Traffic</strong>
+        <h3>New vs Returning</h3>
+      </div>
+      <div class="col-sm-4 mb-4 mb-sm-0">
+        <div class="w-3 mx-auto">
+          <canvas
+            class="ex-graph"
+            width="200" height="200"
+            data-chart="doughnut"
+            data-dataset="[330, 30]"
+            data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
+            data-labels="['Returning', 'New']">
+          </canvas>
+        </div>
+        <strong class="text-muted">Revenue</strong>
+        <h3>New vs Recurring</h3>
+      </div>
+      <div class="col-sm-4 mb-4 mb-sm-0">
+        <div class="w-3 mx-auto">
+          <canvas
+            class="ex-graph"
+            width="200" height="200"
+            data-chart="doughnut"
+            data-dataset="[100, 260]"
+            data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
+            data-labels="['Referrals', 'Direct']"
+          >
+          </canvas>
+        </div>
+        <strong class="text-muted">Traffic</strong>
+        <h3>Direct vs Referrals</h3>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="hr-divider mt-5 mb-4">
-	<h3 class="hr-divider-content hr-divider-heading">Details</h3>
+  <h3 class="hr-divider-content hr-divider-heading">Details</h3>
 </div>
 
 <div class="row">
-	<div class="col-lg-4 mb-5">
-		<div class="list-group mb-3">
-			<h6 class="list-group-header">
-				Sets in next workout
-			</h6>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Pull-ups</span>
-				<span class="text-muted">20</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Push-ups</span>
-				<span class="text-muted">40</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Burpees</span>
-				<span class="text-muted">30</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Lunges</span>
-				<span class="text-muted">15</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span class="font-weight-normal">Total circles:</span>
-				<span class="font-weight-normal">5</span>
-			</a>
-
-		</div>
-	</div>
-
-	<div class="col-lg-4 mb-5">
-		<div class="list-group mb-3">
-			<h6 class="list-group-header">
-				Best workout times
-			</h6>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Core Strength</span>
-				<span class="text-muted">00:31:49</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Full Fledged Strength</span>
-				<span class="text-muted">00:41:14</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Leg Strength</span>
-				<span class="text-muted">00:19:29</span>
-			</a>
-		</div>
-	</div>
-
-	<div class="col-lg-4 mb-5">
-		<div class="list-group mb-3">
-			<h6 class="list-group-header">
-				Frontal Strength workout progress
-			</h6>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Season 1 Week 1</span>
-				<span class="text-muted">00:57:27</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Season 1 Week 2</span>
-				<span class="text-muted">00:42:45</span>
-			</a>
-
-			<a class="list-group-item list-group-item-action justify-content-between" href="#">
-				<span>Season 1 Week 4</span>
-				<span class="text-muted">00:40:59</span>
-			</a>
-
-		</div>
-		<a href="#" class="btn btn-outline-primary px-3">See all</a>
-	</div>
+  <div class="col-lg-4 mb-5">
+    <div class="list-group mb-3">
+      <h6 class="list-group-header">
+        Sets in next workout
+      </h6>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Pull-ups</span>
+        <span class="text-muted">20</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Push-ups</span>
+        <span class="text-muted">40</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Burpees</span>
+        <span class="text-muted">30</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Lunges</span>
+        <span class="text-muted">15</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span class="font-weight-normal">Total circles:</span>
+        <span class="font-weight-normal">5</span>
+      </a>
+    
+    </div>
+  </div>
+  
+  <div class="col-lg-4 mb-5">
+    <div class="list-group mb-3">
+      <h6 class="list-group-header">
+        Best workout times
+      </h6>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Core Strength</span>
+        <span class="text-muted">00:31:49</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Full Fledged Strength</span>
+        <span class="text-muted">00:41:14</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Leg Strength</span>
+        <span class="text-muted">00:19:29</span>
+      </a>
+    </div>
+  </div>
+  
+  <div class="col-lg-4 mb-5">
+    <div class="list-group mb-3">
+      <h6 class="list-group-header">
+        Frontal Strength workout progress
+      </h6>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Season 1 Week 1</span>
+        <span class="text-muted">00:57:27</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Season 1 Week 2</span>
+        <span class="text-muted">00:42:45</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action justify-content-between" href="#">
+        <span>Season 1 Week 4</span>
+        <span class="text-muted">00:40:59</span>
+      </a>
+    
+    </div>
+    <a href="#" class="btn btn-outline-primary px-3">See all</a>
+  </div>
 </div>
 
 {% endblock %}
