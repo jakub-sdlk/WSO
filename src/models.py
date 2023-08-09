@@ -15,7 +15,7 @@ class Users(db.Model, UserMixin):
 
 class Sessions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date)
+    date = db.Column(db.String)
     hours = db.Column(db.Integer)
     minutes = db.Column(db.Integer)
     seconds = db.Column(db.Integer)
