@@ -63,6 +63,20 @@
   </div>
 </nav>
 
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close btn-close" data-dismiss="alert" aria-label="close">X
+            </button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
 <div class="container-fluid container-fluid-spacious">
   <div class="dashhead mt-4">
     <div class="dashhead-titles">
@@ -105,6 +119,7 @@
     // execute/clear BS loaders for docs
     $(function () { while (window.BS && window.BS.loader && window.BS.loader.length) { (window.BS.loader.pop())() } })
   
+
 </script>
 <script type="text/javascript">
       $('#calendar').datepicker({
@@ -117,6 +132,7 @@
 
       });
     
+
 </script>
 </body>
 
