@@ -8,8 +8,8 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @stats.route("/", methods=['GET', 'POST'])
 @login_required
 def overview():
-    sessions = Sessions.query.all()
-    num_of_sessions = Sessions.query.count()
+    sessions = Sessions.query.filter_by(user_id=current_user.id).all()
+    num_of_sessions = Sessions.query.filter_by(user_id=current_user.id).count()
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
