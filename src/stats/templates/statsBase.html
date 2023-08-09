@@ -132,6 +132,33 @@
 
       });
     
+</script>
+<!-- Script bellow deals with confirm form resubmission bug -->
+
+<script>
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+</script>
+
+<!-- Script bellow refreshes the page only once after it is loaded -
+Without it the user must refresh the page manually to update data after addning new session record
+-->
+<script type='text/javascript'>
+
+(function()
+{
+  if( window.localStorage )
+  {
+    if( !localStorage.getItem('firstLoad') )
+    {
+      localStorage['firstLoad'] = true;
+      window.location.reload();
+    }
+    else
+      localStorage.removeItem('firstLoad');
+  }
+})();
 
 </script>
 </body>
