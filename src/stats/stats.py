@@ -8,6 +8,8 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @stats.route("/", methods=['GET', 'POST'])
 @login_required
 def overview():
+    sessions = Sessions.query.all()
+    num_of_sessions = Sessions.query.count()
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
@@ -23,4 +25,4 @@ def overview():
             db.session.commit()
             flash('Workout record added!', category='success')
 
-    return render_template("overview.html", user=current_user)
+    return render_template("overview.html", user=current_user, sessions=sessions, num_of_sessions=num_of_sessions)
