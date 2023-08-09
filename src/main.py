@@ -15,7 +15,8 @@ def create_app():
     from auth.auth import auth
     from stats.stats import stats
 
-    from models import Users
+    from models import Users, Sessions
+
 
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(stats, url_prefix="/stats")
