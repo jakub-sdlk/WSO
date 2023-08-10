@@ -25,6 +25,7 @@
   </div>
 </div>
 
+<!-- Statcards start here -->
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane active" id="lane-goodwin-full">
     <div class="row statcards">
@@ -78,167 +79,110 @@
         </div>
       </div>
     </div>
-    <div class="hr-divider mt-5 mb-4">
-      <h3 class="hr-divider-content hr-divider-heading">
-        <a href="#docsModal" class="btn btn-outline-primary px-3" data-toggle="modal">Add Workout Record</a>
-      </h3>
-    </div>
   </div>
-  
-  <!-- MODAL STARTS HERE -->
-  <div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Add Workout Record</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button>
-        </div>
-        
-        <div class="modal-body">
-          <form method="POST">
-            <div class="form-group row mt-2">
-              <label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
-              <div class="col-sm">
-                <div class="btn-toolbar-item input-with-icon">
-                  <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control"
-                         value="1991/07/24" data-provide="datepicker">
-                  <span class="icon icon-calendar"></span>
-                </div>
+</div>
+
+<!-- Add workout record button -->
+<div class="hr-divider mt-5 mb-4">
+  <h3 class="hr-divider-content hr-divider-heading">
+    <a href="#docsModal" class="btn btn-outline-primary px-3" data-toggle="modal">Add Workout Record</a>
+  </h3>
+</div>
+
+
+<!-- MODAL STARTS HERE -->
+<div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Add Workout Record</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      </div>
+      
+      <div class="modal-body">
+        <form method="POST">
+          <div class="form-group row mt-2">
+            <label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
+            <div class="col-sm">
+              <div class="btn-toolbar-item input-with-icon">
+                <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control"
+                       value="1991/07/24" data-provide="datepicker">
+                <span class="icon icon-calendar"></span>
               </div>
             </div>
-            
-            <div class="form-group row mt-2">
-              <label for="hours" class="col-sm col-form-label">Hours/Minutes/Seconds:</label>
-              <div class="col-2">
-                <div class="btn-toolbar-item">
-                  <input type="number" class="form-control" id="hours" min="0" max="24" step="1" name="hours"
-                         placeholder="Hours" value=0>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="btn-toolbar-item">
-                  <input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes"
-                         placeholder="Minutes">
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="btn-toolbar-item">
-                  <input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds"
-                         placeholder="Seconds">
-                </div>
+          </div>
+          
+          <div class="form-group row mt-2">
+            <label for="hours" class="col-sm col-form-label">Hours/Minutes/Seconds:</label>
+            <div class="col-2">
+              <div class="btn-toolbar-item">
+                <input type="number" class="form-control" id="hours" min="0" max="24" step="1" name="hours"
+                       placeholder="Hours" value=0>
               </div>
             </div>
-            
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="standard">
+            <div class="col-2">
+              <div class="btn-toolbar-item">
+                <input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes"
+                       placeholder="Minutes">
               </div>
-              
-              <div role="tabpanel" class="tab-pane" id="advanced">
-                <div class="form-group row mt-2">
-                  <label for="calendar" class="col-sm col-form-label">Blabla:</label>
-                  <div class="col-sm">
-                    <div class="btn-toolbar-item input-with-icon">
-                      <input type="text" id="kalenda" name="calendar" data-date-format="yyyy/mm/dd"
-                             class="form-control" value="1991/07/24" data-provide="datepicker">
-                      <span class="icon icon-calendar"></span>
-                    </div>
+            </div>
+            <div class="col-2">
+              <div class="btn-toolbar-item">
+                <input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds"
+                       placeholder="Seconds">
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="standard">
+            </div>
+            
+            <div role="tabpanel" class="tab-pane" id="advanced">
+              <div class="form-group row mt-2">
+                <label for="calendar" class="col-sm col-form-label">Blabla:</label>
+                <div class="col-sm">
+                  <div class="btn-toolbar-item input-with-icon">
+                    <input type="text" id="kalenda" name="calendar" data-date-format="yyyy/mm/dd"
+                           class="form-control" value="1991/07/24" data-provide="datepicker">
+                    <span class="icon icon-calendar"></span>
                   </div>
                 </div>
               </div>
             </div>
-            
-            <div class="form-group row mt-2">
-              <div class="col-sm text-right">
-                <button type="submit" class="btn btn-primary">
-                  Save & Quit
-                </button>
-              </div>
+          </div>
+          
+          <div class="form-group row mt-2">
+            <div class="col-sm text-right">
+              <button type="submit" class="btn btn-primary">
+                Save & Quit
+              </button>
             </div>
-            
-            <div class="container">
-              <div class="hr-divider my-4">
-                <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <a href="#standard" class="nav-link active" role="tab" data-toggle="tab"
-                       aria-controls="standard">Standard</a>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <a href="#advanced" class="nav-link" role="tab" data-toggle="tab"
-                       aria-controls="advanced">Advanced</a>
-                  </li>
-                </ul>
-              </div>
+          </div>
+          
+          <div class="container">
+            <div class="hr-divider my-4">
+              <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <a href="#standard" class="nav-link active" role="tab" data-toggle="tab"
+                     aria-controls="standard">Standard</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a href="#advanced" class="nav-link" role="tab" data-toggle="tab"
+                     aria-controls="advanced">Advanced</a>
+                </li>
+              </ul>
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div role="tabpanel" class="tab-pane" id="inventory">
-    <div class="ex-line-graphs">
-      <canvas
-        class="ex-line-graph"
-        width="600" height="400"
-        data-chart="bar"
-        data-labels="['August','September','October','November','December','January','February']"
-        data-dataset="[[65, 59, 80, 81, 56, 55, 40], [28, 48, 40, 19, 86, 27, 90]]"
-        data-dataset-options="[{label: 'First dataset'}, {label: 'Second dataset'}]">
-      </canvas>
-    </div>
-  </div>
-  
-  <div role="tabpanel" class="tab-pane" id="jakub-chin-up">
-    <div class="row ex-graphs text-center">
-      <div class="col-sm-4 mb-4 mb-sm-0">
-        <div class="w-3 mx-auto">
-          <canvas
-            class="ex-graph"
-            width="200" height="200"
-            data-chart="doughnut"
-            data-dataset="[230, 130]"
-            data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
-            data-labels="['Returning', 'New']">
-          </canvas>
-        </div>
-        <strong class="text-muted">Traffic</strong>
-        <h3>New vs Returning</h3>
-      </div>
-      <div class="col-sm-4 mb-4 mb-sm-0">
-        <div class="w-3 mx-auto">
-          <canvas
-            class="ex-graph"
-            width="200" height="200"
-            data-chart="doughnut"
-            data-dataset="[330, 30]"
-            data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
-            data-labels="['Returning', 'New']">
-          </canvas>
-        </div>
-        <strong class="text-muted">Revenue</strong>
-        <h3>New vs Recurring</h3>
-      </div>
-      <div class="col-sm-4 mb-4 mb-sm-0">
-        <div class="w-3 mx-auto">
-          <canvas
-            class="ex-graph"
-            width="200" height="200"
-            data-chart="doughnut"
-            data-dataset="[100, 260]"
-            data-dataset-options="{ backgroundColor: ['#1ca8dd', '#1bc98e'] }"
-            data-labels="['Referrals', 'Direct']"
-          >
-          </canvas>
-        </div>
-        <strong class="text-muted">Traffic</strong>
-        <h3>Direct vs Referrals</h3>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Workout details start here -->
 <div class="hr-divider mt-5 mb-4">
   <h3 class="hr-divider-content hr-divider-heading">Details</h3>
 </div>
