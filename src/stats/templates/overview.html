@@ -8,6 +8,23 @@
 {% block h2_title %} Workout Overview {% endblock %}
 
 {% block content %}
+<!-- Workout selector -->
+<div class="hr-divider my-4">
+  <div class="container">
+    <form method="post">
+      <div class="form-group row mt-2 justify-content-center">
+        <div class="col-md-auto">
+          <select class="form-control text-center" id="scheduleSelector" name="scheduleSelector"
+                  aria-label="scheduleSelector">
+            <option selected value="1">Lane Goodwin Full</option>
+            <option value="2">Jakub Chin-Up</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane active" id="lane-goodwin-full">
     <div class="row statcards">
