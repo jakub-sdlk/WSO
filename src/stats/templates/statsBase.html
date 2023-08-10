@@ -26,6 +26,8 @@
       *width: 100%;
     }
   
+  
+  
   </style>
 </head>
 
@@ -63,19 +65,19 @@
   </div>
 </nav>
 
-  {% with messages = get_flashed_messages(with_categories=True) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        {% if category == 'error' %}
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close btn-close" data-dismiss="alert" aria-label="close">X
-            </button>
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category == 'error' %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close btn-close" data-dismiss="alert" aria-label="close">X
+        </button>
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 <div class="container-fluid container-fluid-spacious">
   <div class="dashhead mt-4">
@@ -86,25 +88,19 @@
   </div>
   
   <div class="hr-divider my-4">
-    <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
-      <li class="nav-item" role="presentation">
-        <form method="post" class="inline">
-          <button type="submit" name="schedule_id" value="1" class="nav-link active" role="tab">Lane Goodwin Full</button>
-          
-        </form>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a href="#jakub-chin-up" class="nav-link" role="tab" data-toggle="tab" aria-controls="jakub-chin-up">Jakub
-          Chin Up</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a href="#jakub-bass" class="nav-link" role="tab" data-toggle="tab" aria-controls="jakub-bass">Jakub Bass</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a href="#lane-goodwin-best-of" class="nav-link" role="tab" data-toggle="tab"
-           aria-controls="lane-goodwin-best-of">Lane Goodwin Best Of</a>
-      </li>
-    </ul>
+    <div class="container">
+      <form method="post">
+        
+        <div class="form-group row mt-2 justify-content-center">
+          <div class="col-md-auto">
+            <select class="form-control text-center" id="scheduleSelector" name="scheduleSelector" aria-label="scheduleSelector">
+              <option selected value="1">Lane Goodwin Full</option>
+              <option value="2">Jakub Chin-Up</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
   
   {% block content %}{% endblock %}
@@ -122,6 +118,8 @@
     $(function () { while (window.BS && window.BS.loader && window.BS.loader.length) { (window.BS.loader.pop())() } })
   
 
+
+  
 </script>
 <script type="text/javascript">
       $('#calendar').datepicker({
@@ -134,6 +132,8 @@
 
       });
     
+
+  
 </script>
 <!-- Script bellow deals with confirm form resubmission bug -->
 
@@ -141,6 +141,8 @@
       if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
       }
+
+  
 </script>
 
 <!-- Script bellow refreshes the page only once after it is loaded -
@@ -161,6 +163,8 @@ Without it the user must refresh the page manually to update data after addning 
       localStorage.removeItem('firstLoad');
   }
 })();
+
+
 
 </script>
 </body>
