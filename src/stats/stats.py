@@ -18,7 +18,10 @@ def overview():
     active_schedule_id = int(session['active_schedule_id'])
 
     all_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).all()
-    num_of_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).count()
+    num_of_workout_sessions = WorkoutSessions.query.filter_by(
+        user_id=current_user.id,
+        schedule_id=active_schedule_id
+    ).count()
 
     all_schedules = Schedules.query.all()
     # Create basic schedules in case the database was deleted in development process
