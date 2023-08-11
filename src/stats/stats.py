@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
-from models import Workout_sessions
+from models import WorkoutSessions
 from db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
@@ -8,8 +8,8 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @stats.route("/", methods=['GET', 'POST'])
 @login_required
 def overview():
-    all_workout_sessions = Workout_sessions.query.filter_by(user_id=current_user.id).all()
-    num_of_workout_sessions = Workout_sessions.query.filter_by(user_id=current_user.id).count()
+    all_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).all()
+    num_of_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).count()
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
@@ -19,8 +19,16 @@ def overview():
         if not date or not hours or not minutes or not seconds:
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')
         else:
-            workout_session = Workout_sessions(
-                date=date, hours=hours, minutes=minutes, seconds=seconds, user_id=current_user.id)
+            workout_session = WorkoutSessions(
+                date=date,
+                hours=hours,
+                minutes=minutes,
+                seconds=seconds,
+                user_id=current_user.id,
+                season=1,
+                schedule_id=1,
+                pos_in_schedule=1
+            )
             db.session.add(workout_session)
             db.session.commit()
             flash('Workout record added!', category='success')

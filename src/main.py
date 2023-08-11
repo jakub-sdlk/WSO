@@ -15,7 +15,7 @@ def create_app():
     from auth.auth import auth
     from stats.stats import stats
 
-    from models import Users, Workout_sessions
+    from models import Users, WorkoutSessions
 
 
     app.register_blueprint(auth, url_prefix="/auth")
