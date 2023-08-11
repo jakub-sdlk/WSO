@@ -8,6 +8,7 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @stats.route("/", methods=['GET', 'POST'])
 @login_required
 def overview():
+    all_workout_sessions = Workout_sessions.query.filter_by(user_id=current_user.id).all()
     num_of_workout_sessions = Workout_sessions.query.filter_by(user_id=current_user.id).count()
     if request.method == "POST":
         date = request.form.get('calendar')
@@ -26,5 +27,6 @@ def overview():
 
     return render_template("overview.html",
                            user=current_user,
+                           all_workout_sessions=all_workout_sessions,
                            num_of_workout_sessions=num_of_workout_sessions
                            )
