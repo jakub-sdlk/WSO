@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
-from models import WorkoutSessions
+from models import WorkoutSessions, Schedules
 from db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
@@ -10,6 +10,9 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 def overview():
     all_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).all()
     num_of_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).count()
+
+    all_schedules = Schedules.query.all()
+
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
@@ -36,5 +39,6 @@ def overview():
     return render_template("overview.html",
                            user=current_user,
                            all_workout_sessions=all_workout_sessions,
-                           num_of_workout_sessions=num_of_workout_sessions
+                           num_of_workout_sessions=num_of_workout_sessions,
+                           all_schedules=all_schedules
                            )

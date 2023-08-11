@@ -10,20 +10,22 @@
 {% block content %}
 <!-- Workout selector -->
 <div class="hr-divider my-4">
+  {% if all_schedules %}
   <div class="container">
     <form method="get">
       <div class="form-group row mt-2 justify-content-center">
         <div class="col-md-auto">
-          <select onchange="this.form.submit()" class="form-control text-center" id="scheduleSelector" name="scheduleSelector"
-                  aria-label="scheduleSelector">
-            <option selected value="1">Lane Goodwin Full</option>
-            <option value="2">Jakub Chin-Up</option>
-            <option value="3">Jakub Bass</option>
+          <select onchange="this.form.submit()" class="form-control text-center" id="scheduleSelector"
+                  name="scheduleSelector" aria-label="scheduleSelector">
+            {% for schedule in all_schedules %}
+              <option value="{{ schedule.id}}">{{ schedule.name }}</option>
+            {% endfor %}
           </select>
         </div>
       </div>
     </form>
   </div>
+  {% endif %}
 </div>
 
 <!-- Statcards start here -->
