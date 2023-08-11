@@ -10,10 +10,10 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
-    sessions = db.relationship('Sessions', backref='users', passive_deletes=True)
+    workout_sessions = db.relationship('Workout_sessions', backref='users', passive_deletes=True)
 
 
-class Sessions(db.Model):
+class Workout_sessions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String)
     hours = db.Column(db.Integer)
