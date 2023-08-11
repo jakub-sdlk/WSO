@@ -53,7 +53,7 @@ def overview():
                 seconds=seconds,
                 user_id=current_user.id,
                 season=1,
-                schedule_id=1,
+                schedule_id=active_schedule_id,
                 pos_in_schedule=1
             )
             db.session.add(workout_session)
