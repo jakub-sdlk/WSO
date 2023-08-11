@@ -24,3 +24,8 @@ class WorkoutSessions(db.Model):
     schedule_id = db.Column(db.Integer)  # add foreign key relationship later on
     pos_in_schedule = db.Column(db.Integer)
 
+
+class Schedules(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+
