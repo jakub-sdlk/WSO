@@ -12,6 +12,9 @@ def overview():
     #  For now this code deals with switching the schedules
     if 'active_schedule_id' in session:
         session['active_schedule_id'] = request.args.get('scheduleSelector')
+    else:
+        session['active_schedule_id'] = 1
+    #  This must be here, because the page refreshes twice - it sets id to 1 and then to None - scheduleSelector is none
     if session['active_schedule_id'] is None:
         session['active_schedule_id'] = 1
 
