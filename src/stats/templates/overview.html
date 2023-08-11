@@ -18,7 +18,11 @@
           <select onchange="this.form.submit()" class="form-control text-center" id="scheduleSelector"
                   name="scheduleSelector" aria-label="scheduleSelector">
             {% for schedule in all_schedules %}
-              <option value="{{ schedule.id}}">{{ schedule.name }}</option>
+            {% if schedule.id == last_schedule %}
+              <option selected value="{{ schedule.id }}" >{{ schedule.name }} </option>
+            {% else %}
+              <option  value="{{ schedule.id }}">{{ schedule.name }}</option>
+            {% endif %}
             {% endfor %}
           </select>
         </div>

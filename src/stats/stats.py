@@ -1,13 +1,21 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from models import WorkoutSessions, Schedules
 from db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 
+
 @stats.route("/", methods=['GET', 'POST'])
 @login_required
 def overview():
+    if 'last_schedule' in session:
+        session['last_schedule'] = request.args.get('scheduleSelector')
+    if session['last_schedule'] is None:
+        session['last_schedule'] = 1
+
+    last_schedule = int(session['last_schedule'])
+
     all_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).all()
     num_of_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).count()
 
@@ -40,5 +48,6 @@ def overview():
                            user=current_user,
                            all_workout_sessions=all_workout_sessions,
                            num_of_workout_sessions=num_of_workout_sessions,
-                           all_schedules=all_schedules
+                           all_schedules=all_schedules,
+                           last_schedule=last_schedule
                            )
