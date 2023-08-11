@@ -9,6 +9,7 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @stats.route("/", methods=['GET', 'POST'])
 @login_required
 def overview():
+    #  For now this code deals with switching the schedules
     if 'last_schedule' in session:
         session['last_schedule'] = request.args.get('scheduleSelector')
     if session['last_schedule'] is None:
@@ -20,6 +21,21 @@ def overview():
     num_of_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).count()
 
     all_schedules = Schedules.query.all()
+    # Create basic schedules in case the database was deleted in development process
+    if not all_schedules:
+        schedule1 = Schedules(
+            name="Lane Goodwin Full"
+        )
+        schedule2 = Schedules(
+            name="Lane Goodwin Best Of"
+        )
+        schedule3 = Schedules(
+            name="Bla Bla"
+        )
+        db.session.add(schedule1)
+        db.session.add(schedule2)
+        db.session.add(schedule3)
+        db.session.commit()
 
     if request.method == "POST":
         date = request.form.get('calendar')
