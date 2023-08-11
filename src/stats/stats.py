@@ -10,12 +10,12 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @login_required
 def overview():
     #  For now this code deals with switching the schedules
-    if 'last_schedule' in session:
-        session['last_schedule'] = request.args.get('scheduleSelector')
-    if session['last_schedule'] is None:
-        session['last_schedule'] = 1
+    if 'active_schedule_id' in session:
+        session['active_schedule_id'] = request.args.get('scheduleSelector')
+    if session['active_schedule_id'] is None:
+        session['active_schedule_id'] = 1
 
-    last_schedule = int(session['last_schedule'])
+    active_schedule_id = int(session['active_schedule_id'])
 
     all_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).all()
     num_of_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).count()
@@ -65,5 +65,5 @@ def overview():
                            all_workout_sessions=all_workout_sessions,
                            num_of_workout_sessions=num_of_workout_sessions,
                            all_schedules=all_schedules,
-                           last_schedule=last_schedule
+                           active_schedule_id=active_schedule_id
                            )

@@ -18,7 +18,7 @@
           <select onchange="this.form.submit()" class="form-control text-center" id="scheduleSelector"
                   name="scheduleSelector" aria-label="scheduleSelector">
             {% for schedule in all_schedules %}
-            {% if schedule.id == last_schedule %}
+            {% if schedule.id == active_schedule_id %}
               <option selected value="{{ schedule.id }}" >{{ schedule.name }} </option>
             {% else %}
               <option  value="{{ schedule.id }}">{{ schedule.name }}</option>
