@@ -52,7 +52,13 @@
           <div class="p-a">
             <span class="statcard-desc">Last Session</span>
             <h2 class="statcard-number">
-              Full fledged strength
+              {% if last_workout_session %}
+                {{ last_workout_session.schedule_id }}
+                {{ last_workout_session.position_in_schedule }}
+                {{ last_workout_session.id }}
+              {% else %}
+                {{ "No workouts done" }}
+              {% endif %}
               <small class="badge badge-success">00:45:12</small>
             </h2>
           </div>

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
+from sqlalchemy.sql import func
 from models import WorkoutSessions, Schedules
 from db import db
 
@@ -20,13 +21,22 @@ def overview():
 
     active_schedule_id = int(session['active_schedule_id'])
 
-    all_workout_sessions = WorkoutSessions.query.filter_by(user_id=current_user.id).all()
+    all_workout_sessions = WorkoutSessions.query.filter_by(
+        user_id=current_user.id,
+        schedule_id=active_schedule_id).all()
+
     num_of_workout_sessions = WorkoutSessions.query.filter_by(
         user_id=current_user.id,
         schedule_id=active_schedule_id
     ).count()
-
     all_schedules = Schedules.query.all()
+
+    last_workout_session = WorkoutSessions.query.filter_by(
+        user_id=current_user.id, schedule_id=active_schedule_id
+    ).order_by(
+        WorkoutSessions.id.desc()
+    ).first()
+
     # Create basic schedules in case the database was deleted in development process
     if not all_schedules:
         schedule1 = Schedules(
@@ -71,5 +81,6 @@ def overview():
                            all_workout_sessions=all_workout_sessions,
                            num_of_workout_sessions=num_of_workout_sessions,
                            all_schedules=all_schedules,
-                           active_schedule_id=active_schedule_id
+                           active_schedule_id=active_schedule_id,
+                           last_workout_session=last_workout_session
                            )
