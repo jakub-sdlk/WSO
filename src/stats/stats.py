@@ -60,7 +60,7 @@ def overview():
                 user_id=current_user.id,
                 season=1,
                 schedule_id=active_schedule_id,
-                pos_in_schedule=1
+                position_in_schedule=1
             )
             db.session.add(workout_session)
             db.session.commit()
