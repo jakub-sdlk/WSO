@@ -82,6 +82,16 @@ def overview():
         db.session.add(position104)
         db.session.commit()
 
+    # calculate schedule_id and position_in_schedule from workout session position
+
+    # get all workout sessions here
+
+    all_workout_sessions = WorkoutSessions.query.filter_by(
+        user_id=current_user.id,
+        schedule_id=active_schedule_id).all()
+
+    user_workout_sessions_count = len(all_workout_sessions)
+
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
@@ -100,7 +110,8 @@ def overview():
 
                 user_id=current_user.id,
                 workout_id=1,
-                position=1
+                position_id=1,
+                schedule_id=active_schedule_id
             )
             db.session.add(workout_session)
             db.session.commit()

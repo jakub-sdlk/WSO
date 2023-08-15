@@ -32,8 +32,8 @@ class WorkoutSessions(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
-    position = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
-
+    position_id = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
+    schedule_id = db.Column(db.Integer, db.ForeignKey('schedules.id'), nullable=False)
     positions = db.relationship('Positions', backref='workout_session', lazy=True)
 
     def __repr__(self):
@@ -53,6 +53,7 @@ class Workouts(db.Model):
 class Schedules(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
+    workout_sessions = db.relationship('WorkoutSessions', backref='schedule', lazy=True)
 
     def __repr__(self):
         return f'<Schedule: {self.name}>'
