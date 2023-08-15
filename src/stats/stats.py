@@ -21,21 +21,7 @@ def overview():
 
     active_schedule_id = int(session['active_schedule_id'])
 
-    all_workout_sessions = WorkoutSessions.query.filter_by(
-        user_id=current_user.id,
-        schedule_id=active_schedule_id).all()
-
-    num_of_workout_sessions = WorkoutSessions.query.filter_by(
-        user_id=current_user.id,
-        schedule_id=active_schedule_id
-    ).count()
     all_schedules = Schedules.query.all()
-
-    last_workout_session = WorkoutSessions.query.filter_by(
-        user_id=current_user.id, schedule_id=active_schedule_id
-    ).order_by(
-        WorkoutSessions.id.desc()
-    ).first()
 
     # Create basic schedules in case the database was deleted in development process
     if not all_schedules:
@@ -78,9 +64,6 @@ def overview():
 
     return render_template("overview.html",
                            user=current_user,
-                           all_workout_sessions=all_workout_sessions,
-                           num_of_workout_sessions=num_of_workout_sessions,
                            all_schedules=all_schedules,
-                           active_schedule_id=active_schedule_id,
-                           last_workout_session=last_workout_session
+                           active_schedule_id=active_schedule_id
                            )
