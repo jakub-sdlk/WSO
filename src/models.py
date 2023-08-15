@@ -7,6 +7,11 @@ user_schedule = db.Table('user_schedule',
                          db.Column('schedule_id', db.Integer, db.ForeignKey('schedules.id'))
                          )
 
+workout_schedule = db.Table('workout_schedule',
+                            db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id')),
+                            db.Column('schedule_id', db.Integer, db.ForeignKey('schedules.id'))
+                            )
+
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,18 +42,19 @@ class WorkoutSessions(db.Model):
         return f'<WorkoutSession: {self.id}>'
 
 
+class Workouts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    number_of_circles = db.Column(db.Integer)
+    in_schedules = db.relationship('Schedules', secondary=workout_schedule, backref='workouts')
+
+    def __repr__(self):
+        return f'<Workout: {self.name}>'
+
+
 class Schedules(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
 
     def __repr__(self):
         return f'<Schedule: {self.name}>'
-
-
-class Workouts(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(150))
-    number_of_circles = db.Column(db.Integer)
-
-    def __repr__(self):
-        return f'<Workout: {self.name}>'

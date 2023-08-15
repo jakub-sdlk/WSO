@@ -55,7 +55,7 @@
               {% if last_workout_session %}
                 {{ last_workout_session.schedule_id }}
                 {{ last_workout_session.position_in_schedule }}
-                {{ last_workout_session.id }}
+                {{ all_workout_sessions }}
               {% else %}
                 {{ "No workouts done" }}
               {% endif %}
