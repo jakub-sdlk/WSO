@@ -89,7 +89,7 @@ def overview():
 
     user_workout_sessions_count = len(all_workout_sessions)
 
-    # calculate position_id in here
+    # calculate position_id and next workout_id here
 
     if user_workout_sessions_count == 0:
         position_id = (active_schedule_id * 100) + 1
