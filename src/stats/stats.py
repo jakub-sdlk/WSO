@@ -39,6 +39,8 @@ def overview():
         db.session.add(schedule3)
         db.session.commit()
 
+
+
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
@@ -53,10 +55,11 @@ def overview():
                 hours=hours,
                 minutes=minutes,
                 seconds=seconds,
-                user_id=current_user.id,
                 season=1,
-                schedule_id=active_schedule_id,
-                position_in_schedule=1
+
+                user_id=current_user.id,
+                workout_id=1,
+                position=1
             )
             db.session.add(workout_session)
             db.session.commit()

@@ -7,11 +7,6 @@ user_schedule = db.Table('user_schedule',
                          db.Column('schedule_id', db.Integer, db.ForeignKey('schedules.id'))
                          )
 
-workout_schedule = db.Table('workout_schedule',
-                            db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id')),
-                            db.Column('schedule_id', db.Integer, db.ForeignKey('schedules.id'))
-                            )
-
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,10 +28,13 @@ class WorkoutSessions(db.Model):
     hours = db.Column(db.Integer)
     minutes = db.Column(db.Integer)
     seconds = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
     season = db.Column(db.Integer)  # add foreign key relationship later on
-    schedule_id = db.Column(db.Integer, db.ForeignKey('schedules.id'))
-    position_in_schedule = db.Column(db.Integer)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
+    position = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
+
+    positions = db.relationship('Positions', backref='workout_session', lazy=True)
 
     def __repr__(self):
         return f'<WorkoutSession: {self.id}>'
@@ -46,7 +44,7 @@ class Workouts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     number_of_circles = db.Column(db.Integer)
-    in_schedules = db.relationship('Schedules', secondary=workout_schedule, backref='workouts')
+    positions = db.relationship('Positions', backref='workout', lazy=True)
 
     def __repr__(self):
         return f'<Workout: {self.name}>'
@@ -58,3 +56,8 @@ class Schedules(db.Model):
 
     def __repr__(self):
         return f'<Schedule: {self.name}>'
+
+
+class Positions(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
