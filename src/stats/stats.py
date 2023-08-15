@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from sqlalchemy.sql import func
 from models import WorkoutSessions, Schedules, Workouts, Positions
 from db import db
+from datetime import time
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 
@@ -126,5 +127,5 @@ def overview():
                            all_schedules=all_schedules,
                            active_schedule_id=active_schedule_id,
                            all_workout_sessions=all_workout_sessions,
-                           user_workout_sessions_count=user_workout_sessions_count
-                           )
+                           user_workout_sessions_count=user_workout_sessions_count,
+                           time=time)

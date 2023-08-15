@@ -54,11 +54,22 @@
             <h2 class="statcard-number">
               {% if all_workout_sessions %}
                 {{ all_workout_sessions[-1].position_id }}
+                {{ all_workout_sessions[-1].positions.workout.name}}
               {% else %}
                 {{ "No workouts done" }}
               {% endif %}
-              <small class="badge badge-success">00:45:12</small>
             </h2>
+            {% if all_workout_sessions %}
+            <h5>
+              <small class="badge badge-success">
+                {{ time(
+                  all_workout_sessions[-1].hours,
+                  all_workout_sessions[-1].minutes,
+                  all_workout_sessions[-1].seconds
+                  ) }}
+              </small>
+            </h5>
+            {% endif %}
           </div>
         </div>
       </div>
