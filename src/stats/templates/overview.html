@@ -52,10 +52,8 @@
           <div class="p-a">
             <span class="statcard-desc">Last Session</span>
             <h2 class="statcard-number">
-              {% if last_workout_session %}
-                {{ last_workout_session.schedule_id }}
-                {{ last_workout_session.position_in_schedule }}
-                {{ all_workout_sessions }}
+              {% if all_workout_sessions %}
+                {{ all_workout_sessions[-1].position_id }}
               {% else %}
                 {{ "No workouts done" }}
               {% endif %}
