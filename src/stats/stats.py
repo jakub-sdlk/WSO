@@ -120,5 +120,7 @@ def overview():
     return render_template("overview.html",
                            user=current_user,
                            all_schedules=all_schedules,
-                           active_schedule_id=active_schedule_id
+                           active_schedule_id=active_schedule_id,
+                           all_workout_sessions=all_workout_sessions,
+                           user_workout_sessions_count=user_workout_sessions_count
                            )
