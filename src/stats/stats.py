@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
-from models import WorkoutSessions, Schedules
+from models import WorkoutSessions, Schedules, Workouts, Positions
 from db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
@@ -21,9 +21,9 @@ def overview():
 
     active_schedule_id = int(session['active_schedule_id'])
 
+    # Create basic schedules in case the database was deleted in development process
     all_schedules = Schedules.query.all()
 
-    # Create basic schedules in case the database was deleted in development process
     if not all_schedules:
         schedule1 = Schedules(
             name="Lane Goodwin Full"
@@ -39,7 +39,48 @@ def overview():
         db.session.add(schedule3)
         db.session.commit()
 
+    # Create basic workouts in case the database was deleted in development process
 
+    all_workouts = Workouts.query.all()
+
+    if not all_workouts:
+        workout1 = Workouts(
+            name="Core Strength", number_of_circles=5
+        )
+        workout2 = Workouts(
+            name="Full Fledged Strength", number_of_circles=5
+        )
+        workout3 = Workouts(
+            name="Leg Strength", number_of_circles=5
+        )
+        db.session.add(workout1)
+        db.session.add(workout2)
+        db.session.add(workout3)
+        db.session.commit()
+
+    # Create basic positions table in case the database was deleted in development process
+
+    all_positions = Positions.query.all()
+
+    if not all_positions:
+        position101 = Positions(
+            id=101, workout_id=1
+        )
+        position102 = Positions(
+            id=102, workout_id=3
+        )
+        position103 = Positions(
+            id=103, workout_id=1
+        )
+        position104 = Positions(
+            id=104, workout_id=2
+        )
+
+        db.session.add(position101)
+        db.session.add(position102)
+        db.session.add(position103)
+        db.session.add(position104)
+        db.session.commit()
 
     if request.method == "POST":
         date = request.form.get('calendar')
