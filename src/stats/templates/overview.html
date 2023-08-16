@@ -181,9 +181,9 @@
                 <label for="season_setup" class="col-sm col-form-label"> Season setup: </label>
                   <div class="col-sm">
                     <div class="btn-toolbar-item">
-                    <select class="form-control" id="season_setup">
-                      <option selected value="1"> Continue current season </option>
-                      <option value="2"> Start new season</option>
+                    <select class="form-control" id="season_setup" name="season_setup">
+                      <option selected value="{{ current_workout_session_season }}"> Continue current season </option>
+                      <option value="{{ current_workout_session_season + 1 }}"> Start new season</option>
                     </select>
                     </div>
                   </div>
