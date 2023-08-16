@@ -101,13 +101,16 @@ def overview():
 
     next_workout = Positions.query.filter_by(id=position_id).first()
 
-    next_workout_best_time = WorkoutSessions.query.filter_by(
-        workout_id=next_workout.workout_id,
-    ).order_by(
-        WorkoutSessions.hours,
-        WorkoutSessions.minutes,
-        WorkoutSessions.seconds
-    ).first()
+    if next_workout:
+        next_workout_best_time_session = WorkoutSessions.query.filter_by(
+            workout_id=next_workout.workout_id,
+        ).order_by(
+            WorkoutSessions.hours,
+            WorkoutSessions.minutes,
+            WorkoutSessions.seconds
+        ).first()
+    else:
+        next_workout_best_time_session = None
 
     if request.method == "POST":
         date = request.form.get('calendar')
@@ -117,6 +120,11 @@ def overview():
 
         if not date or not hours or not minutes or not seconds:
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')
+        elif not next_workout:
+            flash(
+                f'No more workouts in current schedule. Start a new season or choose another schedule',
+                category='error'
+            )
         else:
             workout_session = WorkoutSessions(
                 date=date,
@@ -142,4 +150,4 @@ def overview():
                            user_workout_sessions_count=user_workout_sessions_count,
                            time=time,
                            next_workout=next_workout,
-                           next_workout_best_time=next_workout_best_time)
+                           next_workout_best_time_session=next_workout_best_time_session)

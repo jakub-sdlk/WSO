@@ -84,13 +84,13 @@
                 {{ "No more workouts. Start a new season" }}
               {% endif %}
             </h2>
-            {% if next_workout_best_time %}
+            {% if next_workout_best_time_session %}
             <h5>
               <small class="badge badge-danger" >
                 {{ time(
-                  next_workout_best_time.hours,
-                  next_workout_best_time.minutes,
-                  next_workout_best_time.seconds
+                  next_workout_best_time_session.hours,
+                  next_workout_best_time_session.minutes,
+                  next_workout_best_time_session.seconds
                 ) }}
               </small>
             </h5>
