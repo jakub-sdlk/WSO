@@ -62,3 +62,5 @@ class Schedules(db.Model):
 class Positions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
+    week = db.Column(db.Integer)
+    day = db.Column(db.Integer)
