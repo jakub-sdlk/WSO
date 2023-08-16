@@ -106,10 +106,18 @@
               Season {{ current_workout_session_season }}
             </h2>
             <h2 class="statcard-number">
-              Week 4
+              {% if all_workout_sessions %}
+                Week {{ all_workout_sessions[-1].positions.week }}
+              {% else %}
+                Week
+              {% endif %}
             </h2>
             <h2 class="statcard-number">
-              Day 3
+              {% if all_workout_sessions %}
+                Day {{ all_workout_sessions[-1].positions.day }}
+              {% else %}
+                Day
+              {% endif %}
             </h2>
           </div>
         </div>
