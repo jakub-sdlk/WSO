@@ -89,13 +89,25 @@ def overview():
 
     user_workout_sessions_count = len(all_workout_sessions)
 
-    # calculate position_id and next workout_id here
+    # calculate position_id
 
     if user_workout_sessions_count == 0:
         position_id = (active_schedule_id * 100) + 1
     else:
         last_workout_session_position_id = int(all_workout_sessions[-1].position_id)
         position_id = (active_schedule_id * 100) + (last_workout_session_position_id % 100) + 1
+
+    # calculate next_workout_id and best time that the workout was ever achieved
+
+    next_workout = Positions.query.filter_by(id=position_id).first()
+
+    next_workout_best_time = WorkoutSessions.query.filter_by(
+        workout_id=next_workout.workout_id,
+    ).order_by(
+        WorkoutSessions.hours,
+        WorkoutSessions.minutes,
+        WorkoutSessions.seconds
+    ).first()
 
     if request.method == "POST":
         date = request.form.get('calendar')
@@ -114,7 +126,7 @@ def overview():
                 season=1,
 
                 user_id=current_user.id,
-                workout_id=1,
+                workout_id=next_workout.workout_id,
                 position_id=position_id,
                 schedule_id=active_schedule_id
             )
@@ -128,4 +140,6 @@ def overview():
                            active_schedule_id=active_schedule_id,
                            all_workout_sessions=all_workout_sessions,
                            user_workout_sessions_count=user_workout_sessions_count,
-                           time=time)
+                           time=time,
+                           next_workout=next_workout,
+                           next_workout_best_time=next_workout_best_time)

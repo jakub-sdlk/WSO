@@ -76,11 +76,25 @@
       <div class="col-md-6 col-lg-3 mb-5 mb-md-3">
         <div class="statcard">
           <div class="p-a">
-            <span class="statcard-desc">Next session</span>
+            <span class="statcard-desc">Next Session</span>
             <h2 class="statcard-number">
-              Frontal strength
-              <small class="badge badge-danger">00:24:19</small>
+              {% if next_workout %}
+                {{ next_workout.workout.name }}
+              {% else %}
+                {{ "No more workouts. Start a new season" }}
+              {% endif %}
             </h2>
+            {% if next_workout_best_time %}
+            <h5>
+              <small class="badge badge-danger" >
+                {{ time(
+                  next_workout_best_time.hours,
+                  next_workout_best_time.minutes,
+                  next_workout_best_time.seconds
+                ) }}
+              </small>
+            </h5>
+            {% endif %}
           </div>
         </div>
       </div>
