@@ -125,6 +125,7 @@ def overview():
         hours = request.form.get('hours')
         minutes = request.form.get('minutes')
         seconds = request.form.get('seconds')
+        season = request.form.get('season_setup')
 
         if not date or not hours or not minutes or not seconds:
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')
@@ -139,7 +140,7 @@ def overview():
                 hours=hours,
                 minutes=minutes,
                 seconds=seconds,
-                season=current_workout_session_season,
+                season=season,
 
                 user_id=current_user.id,
                 workout_id=next_workout.workout_id,
@@ -159,4 +160,5 @@ def overview():
                            time=time,
                            next_workout=next_workout,
                            next_workout_best_time_session=next_workout_best_time_session,
-                           current_workout_session_season=current_workout_session_season)
+                           current_workout_session_season=current_workout_session_season
+                           )

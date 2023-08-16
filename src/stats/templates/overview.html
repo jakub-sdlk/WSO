@@ -177,9 +177,16 @@
             </div>
             
             <div role="tabpanel" class="tab-pane" id="advanced">
-              <div class="form-group">
-                <label class="btn btn-secondary" for="next_season">Start a new season:</label>
-                <input type="checkbox" id="next_season" name="next_season" class="btn-check" >
+              <div class="form-group row mt-2">
+                <label for="season_setup" class="col-sm col-form-label"> Season setup: </label>
+                  <div class="col-sm">
+                    <div class="btn-toolbar-item">
+                    <select class="form-control" id="season_setup">
+                      <option selected value="1"> Continue current season </option>
+                      <option value="2"> Start new season</option>
+                    </select>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
