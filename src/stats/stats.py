@@ -104,6 +104,7 @@ def overview():
     if next_workout:
         next_workout_best_time_session = WorkoutSessions.query.filter_by(
             workout_id=next_workout.workout_id,
+            user_id=current_user.id
         ).order_by(
             WorkoutSessions.hours,
             WorkoutSessions.minutes,
