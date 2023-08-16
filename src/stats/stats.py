@@ -120,7 +120,6 @@ def overview():
     else:
         current_workout_session_season = all_workout_sessions[-1].season
 
-
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
