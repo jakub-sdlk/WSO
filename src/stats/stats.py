@@ -33,7 +33,7 @@ def overview():
             name="Lane Goodwin Best Of"
         )
         schedule3 = Schedules(
-            name="Jakub Bass"
+            name="Triatlon"
         )
         schedule4 = Schedules(
             name="Frontal Strength Only"
@@ -64,11 +64,26 @@ def overview():
         workout5 = Workouts(
             name="Frontal Strength", number_of_circles=5
         )
+
+        workout21 = Workouts(
+            id=21, name="Běh 3km", number_of_circles=1
+        )
+        workout22 = Workouts(
+            id=22, name="Jízda na kole 20km", number_of_circles=1
+        )
+        workout23 = Workouts(
+            id=23, name="Plavání 1,5km", number_of_circles=1
+        )
         db.session.add(workout1)
         db.session.add(workout2)
         db.session.add(workout3)
         db.session.add(workout4)
         db.session.add(workout5)
+
+        db.session.add(workout21)
+        db.session.add(workout22)
+        db.session.add(workout23)
+
         db.session.commit()
 
     # Create basic positions table in case the database was deleted in development process
@@ -102,6 +117,26 @@ def overview():
             id=404, workout_id=5, week=2, day=1
         )
 
+        position301 = Positions(
+            id=301, workout_id=21, week=1, day=1
+        )
+        position302 = Positions(
+            id=302, workout_id=22, week=1, day=2
+        )
+        position303 = Positions(
+            id=303, workout_id=23, week=1, day=3
+        )
+
+        position304 = Positions(
+            id=304, workout_id=21, week=2, day=1
+        )
+        position305 = Positions(
+            id=305, workout_id=22, week=2, day=2
+        )
+        position306 = Positions(
+            id=306, workout_id=23, week=2, day=3
+        )
+
         db.session.add(position101)
         db.session.add(position102)
         db.session.add(position103)
@@ -111,6 +146,13 @@ def overview():
         db.session.add(position402)
         db.session.add(position403)
         db.session.add(position404)
+
+        db.session.add(position301)
+        db.session.add(position302)
+        db.session.add(position303)
+        db.session.add(position304)
+        db.session.add(position305)
+        db.session.add(position306)
 
         db.session.commit()
 
