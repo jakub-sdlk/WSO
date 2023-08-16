@@ -127,7 +127,7 @@ def overview():
         seconds = request.form.get('seconds')
         new_season = request.form.get('season_setup')
 
-        if new_season == "1":
+        if int(new_season):  # new_season returns 0 | 1 as a string
             current_workout_session_season += 1
             position_id = (active_schedule_id * 100) + 1
             next_workout = Positions.query.filter_by(id=position_id).first()
