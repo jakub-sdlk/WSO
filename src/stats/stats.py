@@ -113,6 +113,14 @@ def overview():
     else:
         next_workout_best_time_session = None
 
+    # calculate current workout session season
+
+    if user_workout_sessions_count == 0:
+        current_workout_session_season = 1
+    else:
+        current_workout_session_season = all_workout_sessions[-1].season
+
+
     if request.method == "POST":
         date = request.form.get('calendar')
         hours = request.form.get('hours')
@@ -132,7 +140,7 @@ def overview():
                 hours=hours,
                 minutes=minutes,
                 seconds=seconds,
-                season=1,
+                season=current_workout_session_season,
 
                 user_id=current_user.id,
                 workout_id=next_workout.workout_id,
@@ -151,4 +159,5 @@ def overview():
                            user_workout_sessions_count=user_workout_sessions_count,
                            time=time,
                            next_workout=next_workout,
-                           next_workout_best_time_session=next_workout_best_time_session)
+                           next_workout_best_time_session=next_workout_best_time_session,
+                           current_workout_session_season=current_workout_session_season)
