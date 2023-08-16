@@ -33,11 +33,15 @@ def overview():
             name="Lane Goodwin Best Of"
         )
         schedule3 = Schedules(
-            name="Bla Bla"
+            name="Jakub Bass"
+        )
+        schedule4 = Schedules(
+            name="Frontal Strength Only"
         )
         db.session.add(schedule1)
         db.session.add(schedule2)
         db.session.add(schedule3)
+        db.session.add(schedule4)
         db.session.commit()
 
     # Create basic workouts in case the database was deleted in development process
@@ -54,9 +58,17 @@ def overview():
         workout3 = Workouts(
             name="Leg Strength", number_of_circles=5
         )
+        workout4 = Workouts(
+            name="V-Taper", number_of_circles=5
+        )
+        workout5 = Workouts(
+            name="Frontal Strength", number_of_circles=5
+        )
         db.session.add(workout1)
         db.session.add(workout2)
         db.session.add(workout3)
+        db.session.add(workout4)
+        db.session.add(workout5)
         db.session.commit()
 
     # Create basic positions table in case the database was deleted in development process
@@ -65,22 +77,41 @@ def overview():
 
     if not all_positions:
         position101 = Positions(
-            id=101, workout_id=1
+            id=101, workout_id=1, week=1, day=1
         )
         position102 = Positions(
-            id=102, workout_id=3
+            id=102, workout_id=3, week=1, day=2
         )
         position103 = Positions(
-            id=103, workout_id=1
+            id=103, workout_id=1, week=1, day=3
         )
         position104 = Positions(
-            id=104, workout_id=2
+            id=104, workout_id=2, week=1, day=4
+        )
+
+        position401 = Positions(
+            id=401, workout_id=5, week=1, day=1
+        )
+        position402 = Positions(
+            id=402, workout_id=5, week=1, day=2
+        )
+        position403 = Positions(
+            id=403, workout_id=5, week=1, day=3
+        )
+        position404 = Positions(
+            id=404, workout_id=5, week=2, day=1
         )
 
         db.session.add(position101)
         db.session.add(position102)
         db.session.add(position103)
         db.session.add(position104)
+
+        db.session.add(position401)
+        db.session.add(position402)
+        db.session.add(position403)
+        db.session.add(position404)
+
         db.session.commit()
 
     all_workout_sessions = WorkoutSessions.query.filter_by(
