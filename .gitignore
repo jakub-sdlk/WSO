@@ -42,5 +42,3 @@ venv.bak/
 .idea/**/dbnavigator.xml
 
 
-# Folder for automated tests
-tests/
