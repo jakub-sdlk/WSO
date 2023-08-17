@@ -1,12 +1,12 @@
 from flask_login import LoginManager
 from flask import Flask, redirect, url_for
 from os import path
-from auth.auth import auth
-from stats.stats import stats
+from src.auth.auth import auth
+from src.stats.stats import stats
 
-from models import Users, WorkoutSessions
+from src.models import Users, WorkoutSessions
 
-from db import db, DB_NAME
+from src.db import db, DB_NAME
 
 
 def create_database(app):
@@ -18,6 +18,7 @@ def create_database(app):
 
 app = Flask(__name__)
 app.secret_key = "WSO"
+app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -26,7 +27,6 @@ db.init_app(app)
 app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(stats, url_prefix="/stats")
 
-create_database(app=app)
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
@@ -44,4 +44,5 @@ def index():
 
 
 if __name__ == "__main__":
+    create_database(app=app)
     app.run(debug=True)

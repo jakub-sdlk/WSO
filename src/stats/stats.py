@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
-from models import WorkoutSessions, Schedules, Workouts, Positions
-from db import db
+from src.models import WorkoutSessions, Schedules, Workouts, Positions
+from src.db import db
 from datetime import time
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
