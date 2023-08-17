@@ -31,6 +31,18 @@ class Users(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
 
+    @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
+    @classmethod
+    def count_all(cls):
+        return cls.query.count()
+
 
 class WorkoutSessions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
