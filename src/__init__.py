@@ -21,6 +21,7 @@ app.secret_key = "WSO"
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['TESTING'] = False
 
 db.init_app(app)
 
@@ -35,7 +36,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(id):
-    return Users.query.get(int(id))
+    return db.session.get(Users, id)
 
 
 @app.route("/")
