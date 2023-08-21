@@ -46,7 +46,7 @@ class WorkoutSessions(db.Model, GeneralModel):
         return f'<WorkoutSession: {self.id}; {self.workout_id}>'
 
 
-class Workouts(db.Model):
+class Workouts(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     number_of_circles = db.Column(db.Integer)
@@ -57,7 +57,7 @@ class Workouts(db.Model):
         return f'<Workout: {self.id}; {self.name}>'
 
 
-class Schedules(db.Model):
+class Schedules(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     workout_sessions = db.relationship('WorkoutSessions', backref='schedule', lazy=True)
@@ -66,7 +66,7 @@ class Schedules(db.Model):
         return f'<Schedule: {self.id}; {self.name}>'
 
 
-class Positions(db.Model):
+class Positions(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
     week = db.Column(db.Integer)
