@@ -4,10 +4,16 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+# noinspection PyArgumentList
 class UserTest(GeneralBaseTest):
     def test_create_user(self):
         with self.app_context():
-            test = Users("John", "Doe", "John@Doe.com", generate_password_hash("1234", method='sha256'))
+            test = Users(
+                first_name="John",
+                last_name="Doe",
+                email="John@Doe.com",
+                password=generate_password_hash("1234", method='sha256')
+            )
 
             self.assertIsNone(Users.find_by_id(1))
 
@@ -29,8 +35,19 @@ class UserTest(GeneralBaseTest):
 
     def test_create_multiple_users(self):
         with self.app_context():
-            test1 = Users("John", "Doe", "John@Doe.com", generate_password_hash("1234", method='sha256'))
-            test2 = Users("John", "Doe", "test@test.com", generate_password_hash("1234", method='sha256'))
+            test1 = Users(
+                first_name="John",
+                last_name="Doe",
+                email="John@Doe.com",
+                password=generate_password_hash("1234", method='sha256')
+            )
+
+            test2 = Users(
+                first_name="Test",
+                last_name="Osteron",
+                email="test@test.com",
+                password=generate_password_hash("1234", method='sha256')
+            )
 
             self.assertIsNone(Users.find_by_id(1))
 
@@ -48,8 +65,19 @@ class UserTest(GeneralBaseTest):
 
     def test_user_email_is_unique(self):
         with self.app_context():
-            test1 = Users("John", "Doe", "John@Doe.com", generate_password_hash("1234", method='sha256'))
-            test2 = Users("John", "Doe", "John@Doe.com", generate_password_hash("1234", method='sha256'))
+            test1 = Users(
+                first_name="John",
+                last_name="Doe",
+                email="John@Doe.com",
+                password=generate_password_hash("1234", method='sha256')
+            )
+
+            test2 = Users(
+                first_name="John",
+                last_name="Doe",
+                email="John@Doe.com",
+                password=generate_password_hash("1234", method='sha256')
+            )
 
             try:
                 test1.save_to_db()
