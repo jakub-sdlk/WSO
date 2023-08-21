@@ -1,7 +1,7 @@
 from src.db import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-from general_model import GeneralModel
+from src.general_model import GeneralModel
 
 user_schedule = db.Table('user_schedule',
                          db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -21,7 +21,7 @@ class Users(db.Model, UserMixin, GeneralModel):
 
     def __repr__(self):
         return f'<User: {self.id}; {self.email}>'
-    
+
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
@@ -39,16 +39,18 @@ class WorkoutSessions(db.Model, GeneralModel):
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
     position_id = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedules.id'), nullable=False)
+
     positions = db.relationship('Positions', backref='workout_session', lazy=True)
 
     def __repr__(self):
-        return f'<WorkoutSession: {self.id}; {self.name} >'
+        return f'<WorkoutSession: {self.id}; {self.workout_id}>'
 
 
 class Workouts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     number_of_circles = db.Column(db.Integer)
+
     positions = db.relationship('Positions', backref='workout', lazy=True)
 
     def __repr__(self):

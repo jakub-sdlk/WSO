@@ -16,3 +16,13 @@ class UserTest(UnitBaseTest):
         self.assertEqual(test.email, "John@Doe.com")
         self.assertEqual(test.password, 1234)
 
+    def test_repr_method(self):
+        test = Users(
+            id=10,
+            first_name="John",
+            last_name="Doe",
+            email="John@Doe.com",
+            password=1234)
+
+        expected = '<User: 10; John@Doe.com>'
+        self.assertEqual(expected, repr(test))
