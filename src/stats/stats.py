@@ -154,7 +154,6 @@ def overview():
         db.session.add(position306)
 
         db.session.commit()
-
     all_workout_sessions = WorkoutSessions.query.filter_by(
         user_id=current_user.id, schedule_id=active_schedule_id
     ).all()
@@ -224,8 +223,7 @@ def overview():
                 position_id=position_id,
                 schedule_id=active_schedule_id
             )
-            db.session.add(workout_session)
-            db.session.commit()
+            WorkoutSessions.save_to_db(workout_session)
             flash('Workout record added!', category='success')
 
     return render_template("overview.html",

@@ -1,6 +1,7 @@
 from src.db import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from general_model import GeneralModel
 
 user_schedule = db.Table('user_schedule',
                          db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -8,7 +9,7 @@ user_schedule = db.Table('user_schedule',
                          )
 
 
-class Users(db.Model, UserMixin):
+class Users(db.Model, UserMixin, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
@@ -18,24 +19,15 @@ class Users(db.Model, UserMixin):
     workout_sessions = db.relationship('WorkoutSessions', backref='users', passive_deletes=True)
     registered_schedules = db.relationship('Schedules', secondary=user_schedule, backref='registered_users')
 
-    def save_to_db(self):
-        db.session.add(self)
-        db.session.commit()
-
+    def __repr__(self):
+        return f'<User: {self.id}; {self.email}>'
+    
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
-    @classmethod
-    def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
 
-    @classmethod
-    def count_all(cls):
-        return cls.query.count()
-
-
-class WorkoutSessions(db.Model):
+class WorkoutSessions(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String)
     hours = db.Column(db.Integer)
@@ -50,7 +42,7 @@ class WorkoutSessions(db.Model):
     positions = db.relationship('Positions', backref='workout_session', lazy=True)
 
     def __repr__(self):
-        return f'<WorkoutSession: {self.id}>'
+        return f'<WorkoutSession: {self.id}; {self.name} >'
 
 
 class Workouts(db.Model):
@@ -60,7 +52,7 @@ class Workouts(db.Model):
     positions = db.relationship('Positions', backref='workout', lazy=True)
 
     def __repr__(self):
-        return f'<Workout: {self.name}>'
+        return f'<Workout: {self.id}; {self.name}>'
 
 
 class Schedules(db.Model):
@@ -69,7 +61,7 @@ class Schedules(db.Model):
     workout_sessions = db.relationship('WorkoutSessions', backref='schedule', lazy=True)
 
     def __repr__(self):
-        return f'<Schedule: {self.name}>'
+        return f'<Schedule: {self.id}; {self.name}>'
 
 
 class Positions(db.Model):
@@ -77,3 +69,6 @@ class Positions(db.Model):
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
     week = db.Column(db.Integer)
     day = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f'<Position: {self.id}; {self.workout_id}>'
