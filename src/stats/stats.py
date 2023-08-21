@@ -43,7 +43,6 @@ def overview():
         db.session.add(schedule3)
         db.session.add(schedule4)
         db.session.commit()
-
     # Create basic workouts in case the database was deleted in development process
 
     all_workouts = Workouts.query.all()

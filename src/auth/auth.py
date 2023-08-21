@@ -14,7 +14,7 @@ def login():
         email = request.form.get("login_email")
         password = request.form.get("login_password")
 
-        user = Users.query.filter_by(email=email).first()
+        user = Users.find_by_email(email)
         if user:
             if check_password_hash(user.password, password):
                 flash("Logged in!", category='success')
@@ -28,6 +28,7 @@ def login():
     return render_template("login.html", user=current_user)
 
 
+# noinspection PyArgumentList
 @auth.route("/signup", methods=["POST", "GET"])
 def signup():
     if request.method == 'POST':
@@ -36,7 +37,7 @@ def signup():
         email = request.form.get("signup_email")
         password = request.form.get("signup_password")
 
-        email_exist = Users.query.filter_by(email=email).first()
+        email_exist = Users.find_by_email(email)
 
         if email_exist:
             flash("This email is already registered.", category='error')
@@ -52,8 +53,8 @@ def signup():
                 first_name=first_name, 
                 last_name=last_name, 
                 password=generate_password_hash(password, method='sha256'))
-            db.session.add(new_user)
-            db.session.commit()
+
+            new_user.save_to_db()
             login_user(new_user, remember=True)
             flash('User created')
             return redirect(url_for('stats.overview'))
