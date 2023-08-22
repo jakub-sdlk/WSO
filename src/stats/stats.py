@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
-from src.models import WorkoutSession, Schedules, Workout, Positions
+from src.models import WorkoutSession, Schedule, Workout, Positions
 from src.db import db
 from datetime import time
 
@@ -23,19 +23,19 @@ def overview():
     active_schedule_id = int(session['active_schedule_id'])
 
     # Create basic schedules in case the database was deleted in development process
-    all_schedules = Schedules.query.all()
+    all_schedules = Schedule.query.all()
 
     if not all_schedules:
-        schedule1 = Schedules(
+        schedule1 = Schedule(
             name="Lane Goodwin Full"
         )
-        schedule2 = Schedules(
+        schedule2 = Schedule(
             name="Lane Goodwin Best Of"
         )
-        schedule3 = Schedules(
+        schedule3 = Schedule(
             name="Triatlon"
         )
-        schedule4 = Schedules(
+        schedule4 = Schedule(
             name="Frontal Strength Only"
         )
         db.session.add(schedule1)

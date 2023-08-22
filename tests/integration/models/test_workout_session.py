@@ -1,4 +1,4 @@
-from src.models import WorkoutSession, User, Workout, Positions, Schedules
+from src.models import WorkoutSession, User, Workout, Positions, Schedule
 from tests.general_base_test import GeneralBaseTest
 from werkzeug.security import generate_password_hash
 
@@ -188,7 +188,7 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=1
             )
 
-            schedule1 = Schedules(
+            schedule1 = Schedule(
                 name="Triatlon"
                 )
 
@@ -198,5 +198,5 @@ class WorkoutSessionTest(GeneralBaseTest):
             except Exception as e:
                 self.assertIsNone(e)
             finally:
-                self.assertEqual(1, workout_session_1.schedules.id)
-                self.assertEqual("Triatlon", workout_session_1.schedules.name)
+                self.assertEqual(1, workout_session_1.schedule.id)
+                self.assertEqual("Triatlon", workout_session_1.schedule.name)

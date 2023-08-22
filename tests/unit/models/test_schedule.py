@@ -1,17 +1,17 @@
-from src.models import Schedules
+from src.models import Schedule
 from tests.unit.unit_base_test import UnitBaseTest
 
 
-class SchedulesTest(UnitBaseTest):
+class ScheduleTest(UnitBaseTest):
     def test_create_schedule(self):
-        test = Schedules(
+        test = Schedule(
             name="Sample Schedule"
         )
 
         self.assertEqual(test.name, "Sample Schedule")
 
     def test_repr_method(self):
-        test = Schedules(
+        test = Schedule(
             id=10,
             name="Sample Schedule"
         )

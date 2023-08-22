@@ -5,7 +5,7 @@ from src.general_model import GeneralModel
 
 user_schedule = db.Table('user_schedule',
                          db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                         db.Column('schedule_id', db.Integer, db.ForeignKey('schedules.id'))
+                         db.Column('schedule_id', db.Integer, db.ForeignKey('schedule.id'))
                          )
 
 
@@ -17,7 +17,7 @@ class User(db.Model, UserMixin, GeneralModel):
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     workout_sessions = db.relationship('WorkoutSession', backref='user', passive_deletes=True)
-    registered_schedules = db.relationship('Schedules', secondary=user_schedule, backref='registered_users')
+    registered_schedules = db.relationship('Schedule', secondary=user_schedule, backref='registered_users')
 
     def __repr__(self):
         return f'<User: {self.id}; {self.email}>'
@@ -38,7 +38,7 @@ class WorkoutSession(db.Model, GeneralModel):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'), nullable=False)
     position_id = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
-    schedule_id = db.Column(db.Integer, db.ForeignKey('schedules.id'), nullable=False)
+    schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
 
     positions = db.relationship('Positions', backref='workout_session', lazy=True)
 
@@ -77,10 +77,10 @@ class Workout(db.Model, GeneralModel):
         return f'<Workout: {self.id}; {self.name}>'
 
 
-class Schedules(db.Model, GeneralModel):
+class Schedule(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
-    workout_sessions = db.relationship('WorkoutSession', backref='schedules', lazy=True)
+    workout_sessions = db.relationship('WorkoutSession', backref='schedule', lazy=True)
 
     def __repr__(self):
         return f'<Schedule: {self.id}; {self.name}>'

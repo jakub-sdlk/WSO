@@ -1,4 +1,4 @@
-from src.models import User, WorkoutSession, Schedules
+from src.models import User, WorkoutSession, Schedule
 from tests.general_base_test import GeneralBaseTest
 from datetime import datetime
 from werkzeug.security import generate_password_hash
@@ -174,16 +174,16 @@ class UserTest(GeneralBaseTest):
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            schedule1 = Schedules(
+            schedule1 = Schedule(
                 name="Lane Goodwin Full"
             )
-            schedule2 = Schedules(
+            schedule2 = Schedule(
                 name="Lane Goodwin Best Of"
             )
-            schedule3 = Schedules(
+            schedule3 = Schedule(
                 name="Triatlon"
             )
-            schedule4 = Schedules(
+            schedule4 = Schedule(
                 name="Frontal Strength Only"
             )
 
