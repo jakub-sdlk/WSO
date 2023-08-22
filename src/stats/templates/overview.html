@@ -54,7 +54,7 @@
             <h2 class="statcard-number">
               {% if all_workout_sessions %}
                 {{ all_workout_sessions[-1].position_id }}
-                {{ all_workout_sessions[-1].positions.workout.name}}
+                {{ all_workout_sessions[-1].position.workout.name}}
               {% else %}
                 {{ "No workouts done" }}
               {% endif %}
@@ -107,14 +107,14 @@
             </h2>
             <h2 class="statcard-number">
               {% if all_workout_sessions %}
-                Week {{ all_workout_sessions[-1].positions.week }}
+                Week {{ all_workout_sessions[-1].position.week }}
               {% else %}
                 Week
               {% endif %}
             </h2>
             <h2 class="statcard-number">
               {% if all_workout_sessions %}
-                Day {{ all_workout_sessions[-1].positions.day }}
+                Day {{ all_workout_sessions[-1].position.day }}
               {% else %}
                 Day
               {% endif %}

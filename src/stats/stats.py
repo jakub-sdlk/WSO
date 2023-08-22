@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
-from src.models import WorkoutSession, Schedule, Workout, Positions
+from src.models import WorkoutSession, Schedule, Workout, Position
 from src.db import db
 from datetime import time
 
@@ -87,52 +87,52 @@ def overview():
 
     # Create basic positions table in case the database was deleted in development process
 
-    all_positions = Positions.query.all()
+    all_positions = Position.query.all()
 
     if not all_positions:
-        position101 = Positions(
+        position101 = Position(
             id=101, workout_id=1, week=1, day=1
         )
-        position102 = Positions(
+        position102 = Position(
             id=102, workout_id=3, week=1, day=2
         )
-        position103 = Positions(
+        position103 = Position(
             id=103, workout_id=1, week=1, day=3
         )
-        position104 = Positions(
+        position104 = Position(
             id=104, workout_id=2, week=1, day=4
         )
 
-        position401 = Positions(
+        position401 = Position(
             id=401, workout_id=5, week=1, day=1
         )
-        position402 = Positions(
+        position402 = Position(
             id=402, workout_id=5, week=1, day=2
         )
-        position403 = Positions(
+        position403 = Position(
             id=403, workout_id=5, week=1, day=3
         )
-        position404 = Positions(
+        position404 = Position(
             id=404, workout_id=5, week=2, day=1
         )
 
-        position301 = Positions(
+        position301 = Position(
             id=301, workout_id=21, week=1, day=1
         )
-        position302 = Positions(
+        position302 = Position(
             id=302, workout_id=22, week=1, day=2
         )
-        position303 = Positions(
+        position303 = Position(
             id=303, workout_id=23, week=1, day=3
         )
 
-        position304 = Positions(
+        position304 = Position(
             id=304, workout_id=21, week=2, day=1
         )
-        position305 = Positions(
+        position305 = Position(
             id=305, workout_id=22, week=2, day=2
         )
-        position306 = Positions(
+        position306 = Position(
             id=306, workout_id=23, week=2, day=3
         )
 
@@ -170,7 +170,7 @@ def overview():
 
     # calculate next_workout_id and best time that the workout was ever achieved
 
-    next_workout = Positions.query.filter_by(id=position_id).first()
+    next_workout = Position.query.filter_by(id=position_id).first()
 
     if next_workout:
         next_workout_best_time_session = WorkoutSession.query.filter_by(
@@ -201,7 +201,7 @@ def overview():
         if int(new_season):  # new_season returns 0 | 1 as a string
             current_workout_session_season += 1
             position_id = (active_schedule_id * 100) + 1
-            next_workout = Positions.query.filter_by(id=position_id).first()
+            next_workout = Position.query.filter_by(id=position_id).first()
 
         if not date or not hours or not minutes or not seconds:
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')

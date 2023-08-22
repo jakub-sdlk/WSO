@@ -37,10 +37,10 @@ class WorkoutSession(db.Model, GeneralModel):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'), nullable=False)
-    position_id = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
+    position_id = db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
 
-    positions = db.relationship('Positions', backref='workout_session', lazy=True)
+    positions = db.relationship('Position', backref='workout_session', lazy=True)
 
     def __repr__(self):
         return f'<WorkoutSession: {self.id}; {self.workout_id}>'
@@ -70,7 +70,7 @@ class Workout(db.Model, GeneralModel):
     name = db.Column(db.String(150))
     number_of_circles = db.Column(db.Integer)
 
-    positions = db.relationship('Positions', backref='workout', lazy=True)
+    positions = db.relationship('Position', backref='workout', lazy=True)
     workout_sessions = db.relationship('WorkoutSession', backref='workout', lazy=True)
 
     def __repr__(self):
@@ -86,7 +86,7 @@ class Schedule(db.Model, GeneralModel):
         return f'<Schedule: {self.id}; {self.name}>'
 
 
-class Positions(db.Model, GeneralModel):
+class Position(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'), nullable=False)
     week = db.Column(db.Integer)

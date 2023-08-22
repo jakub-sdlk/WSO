@@ -1,4 +1,4 @@
-from src.models import WorkoutSession, User, Workout, Positions, Schedule
+from src.models import WorkoutSession, User, Workout, Position, Schedule
 from tests.general_base_test import GeneralBaseTest
 from werkzeug.security import generate_password_hash
 
@@ -161,7 +161,7 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=1
             )
 
-            position101 = Positions(
+            position101 = Position(
                 id=101, workout_id=1, week=1, day=1
             )
 
@@ -171,8 +171,8 @@ class WorkoutSessionTest(GeneralBaseTest):
             except Exception as e:
                 self.assertIsNone(e)
             finally:
-                self.assertEqual(101, workout_session_1.positions.id)
-                self.assertEqual(1, workout_session_1.positions.week)
+                self.assertEqual(101, workout_session_1.position.id)
+                self.assertEqual(1, workout_session_1.position.week)
 
     def test_schedule_relationship(self):
         with self.app_context():
