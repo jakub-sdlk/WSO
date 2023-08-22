@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
-from src.models import WorkoutSession, Schedules, Workouts, Positions
+from src.models import WorkoutSession, Schedules, Workout, Positions
 from src.db import db
 from datetime import time
 
@@ -45,32 +45,32 @@ def overview():
         db.session.commit()
     # Create basic workouts in case the database was deleted in development process
 
-    all_workouts = Workouts.query.all()
+    all_workouts = Workout.query.all()
 
     if not all_workouts:
-        workout1 = Workouts(
+        workout1 = Workout(
             name="Core Strength", number_of_circles=5
         )
-        workout2 = Workouts(
+        workout2 = Workout(
             name="Full Fledged Strength", number_of_circles=5
         )
-        workout3 = Workouts(
+        workout3 = Workout(
             name="Leg Strength", number_of_circles=5
         )
-        workout4 = Workouts(
+        workout4 = Workout(
             name="V-Taper", number_of_circles=5
         )
-        workout5 = Workouts(
+        workout5 = Workout(
             name="Frontal Strength", number_of_circles=5
         )
 
-        workout21 = Workouts(
+        workout21 = Workout(
             id=21, name="Běh 3km", number_of_circles=1
         )
-        workout22 = Workouts(
+        workout22 = Workout(
             id=22, name="Jízda na kole 20km", number_of_circles=1
         )
-        workout23 = Workouts(
+        workout23 = Workout(
             id=23, name="Plavání 1,5km", number_of_circles=1
         )
         db.session.add(workout1)

@@ -1,10 +1,10 @@
-from src.models import Workouts
+from src.models import Workout
 from tests.unit.unit_base_test import UnitBaseTest
 
 
-class WorkoutsTest(UnitBaseTest):
+class WorkoutTest(UnitBaseTest):
     def test_create_workout(self):
-        test = Workouts(
+        test = Workout(
             name="Sample Workout",
             number_of_circles=3
         )
@@ -13,7 +13,7 @@ class WorkoutsTest(UnitBaseTest):
         self.assertEqual(test.number_of_circles, 3)
 
     def test_repr_method(self):
-        test = Workouts(
+        test = Workout(
             id=10,
             name="Sample Workout",
             number_of_circles=3

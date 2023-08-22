@@ -1,4 +1,4 @@
-from src.models import WorkoutSession, User, Workouts, Positions, Schedules
+from src.models import WorkoutSession, User, Workout, Positions, Schedules
 from tests.general_base_test import GeneralBaseTest
 from werkzeug.security import generate_password_hash
 
@@ -133,7 +133,7 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=1
             )
 
-            workout1 = Workouts(
+            workout1 = Workout(
                 name="Core Strength",
                 number_of_circles=5
             )
@@ -144,8 +144,8 @@ class WorkoutSessionTest(GeneralBaseTest):
             except Exception as e:
                 self.assertIsNone(e)
             finally:
-                self.assertEqual(1, workout_session_1.workouts.id)
-                self.assertEqual("Core Strength", workout_session_1.workouts.name)
+                self.assertEqual(1, workout_session_1.workout.id)
+                self.assertEqual("Core Strength", workout_session_1.workout.name)
 
     def test_position_relationship(self):
         with self.app_context():
