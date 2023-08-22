@@ -92,17 +92,25 @@ class WorkoutTest(GeneralBaseTest):
                 id=101, workout_id=1, week=1, day=1
             )
 
+            position206 = Position(
+                id=206, workout_id=1, week=2, day=2
+            )
+
             try:
                 workout1.save_to_db()
                 position101.save_to_db()
+                position206.save_to_db()
             except Exception as e:
                 self.assertIsNone(e)
             finally:
                 self.assertIsInstance(workout1.positions[0], Position)
-                self.assertEqual(1, len(workout1.positions))
+                self.assertEqual(2, len(workout1.positions))
 
                 self.assertEqual(101, workout1.positions[0].id)
                 self.assertEqual(1, workout1.positions[0].week)
+
+                self.assertEqual(206, workout1.positions[1].id)
+                self.assertEqual(2, workout1.positions[1].week)
 
 
 
