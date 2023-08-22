@@ -10,8 +10,6 @@ from unittest import TestCase
 from src import app
 from src.db import db
 
-from src.models import Users
-from werkzeug.security import generate_password_hash
 
 
 class GeneralBaseTest(TestCase):

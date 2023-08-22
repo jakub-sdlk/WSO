@@ -45,13 +45,33 @@ class WorkoutSessions(db.Model, GeneralModel):
     def __repr__(self):
         return f'<WorkoutSession: {self.id}; {self.workout_id}>'
 
+    @classmethod
+    def find_by_season(cls, season):
+        return cls.query.filter_by(season=season).all()
+    @classmethod
+    def find_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).all()
+
+    @classmethod
+    def find_by_workout_id(cls, workout_id):
+        return cls.query.filter_by(workout_id=workout_id).all()
+
+    @classmethod
+    def find_by_position_id(cls, position_id):
+        return cls.query.filter_by(position_id=position_id).all()
+
+    @classmethod
+    def find_by_schedule_id(cls, schedule_id):
+        return cls.query.filter_by(schedule_id=schedule_id).all()
+
 
 class Workouts(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     number_of_circles = db.Column(db.Integer)
 
-    positions = db.relationship('Positions', backref='workout', lazy=True)
+    positions = db.relationship('Positions', backref='workouts', lazy=True)
+    workout_sessions = db.relationship('WorkoutSessions', backref='workouts', lazy=True)
 
     def __repr__(self):
         return f'<Workout: {self.id}; {self.name}>'
@@ -60,7 +80,7 @@ class Workouts(db.Model, GeneralModel):
 class Schedules(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
-    workout_sessions = db.relationship('WorkoutSessions', backref='schedule', lazy=True)
+    workout_sessions = db.relationship('WorkoutSessions', backref='schedules', lazy=True)
 
     def __repr__(self):
         return f'<Schedule: {self.id}; {self.name}>'
@@ -71,6 +91,8 @@ class Positions(db.Model, GeneralModel):
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
     week = db.Column(db.Integer)
     day = db.Column(db.Integer)
+
+    workout_sessions = db.relationship('WorkoutSessions', backref='position', lazy=True)
 
     def __repr__(self):
         return f'<Position: {self.id}; {self.workout_id}>'

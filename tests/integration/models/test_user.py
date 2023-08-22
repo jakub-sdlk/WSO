@@ -1,4 +1,4 @@
-from src.models import Users, WorkoutSessions, Schedules, user_schedule
+from src.models import Users, WorkoutSessions, Schedules
 from tests.general_base_test import GeneralBaseTest
 from datetime import datetime
 from werkzeug.security import generate_password_hash
@@ -217,3 +217,6 @@ class UserTest(GeneralBaseTest):
                 self.assertEqual(user1.registered_schedules[0].id, 1)
                 self.assertEqual(user2.registered_schedules[2].id, 4)
                 self.assertEqual(user2.registered_schedules[1].name, "Triatlon")
+
+                self.assertEqual(len(user1.registered_schedules), 1)
+                self.assertEqual(len(user2.registered_schedules), 3)
