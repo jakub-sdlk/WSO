@@ -4,19 +4,19 @@ from sqlalchemy.sql import func
 from src.general_model import GeneralModel
 
 user_schedule = db.Table('user_schedule',
-                         db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                          db.Column('schedule_id', db.Integer, db.ForeignKey('schedules.id'))
                          )
 
 
-class Users(db.Model, UserMixin, GeneralModel):
+class User(db.Model, UserMixin, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
-    workout_sessions = db.relationship('WorkoutSessions', backref='users', passive_deletes=True)
+    workout_sessions = db.relationship('WorkoutSession', backref='user', passive_deletes=True)
     registered_schedules = db.relationship('Schedules', secondary=user_schedule, backref='registered_users')
 
     def __repr__(self):
@@ -27,7 +27,7 @@ class Users(db.Model, UserMixin, GeneralModel):
         return cls.query.filter_by(email=email).first()
 
 
-class WorkoutSessions(db.Model, GeneralModel):
+class WorkoutSession(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String)
     hours = db.Column(db.Integer)
@@ -35,7 +35,7 @@ class WorkoutSessions(db.Model, GeneralModel):
     seconds = db.Column(db.Integer)
     season = db.Column(db.Integer)  # add foreign key relationship later on
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
     position_id = db.Column(db.Integer, db.ForeignKey('positions.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedules.id'), nullable=False)
@@ -71,7 +71,7 @@ class Workouts(db.Model, GeneralModel):
     number_of_circles = db.Column(db.Integer)
 
     positions = db.relationship('Positions', backref='workouts', lazy=True)
-    workout_sessions = db.relationship('WorkoutSessions', backref='workouts', lazy=True)
+    workout_sessions = db.relationship('WorkoutSession', backref='workouts', lazy=True)
 
     def __repr__(self):
         return f'<Workout: {self.id}; {self.name}>'
@@ -80,7 +80,7 @@ class Workouts(db.Model, GeneralModel):
 class Schedules(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
-    workout_sessions = db.relationship('WorkoutSessions', backref='schedules', lazy=True)
+    workout_sessions = db.relationship('WorkoutSession', backref='schedules', lazy=True)
 
     def __repr__(self):
         return f'<Schedule: {self.id}; {self.name}>'
@@ -92,7 +92,7 @@ class Positions(db.Model, GeneralModel):
     week = db.Column(db.Integer)
     day = db.Column(db.Integer)
 
-    workout_sessions = db.relationship('WorkoutSessions', backref='position', lazy=True)
+    workout_sessions = db.relationship('WorkoutSession', backref='position', lazy=True)
 
     def __repr__(self):
         return f'<Position: {self.id}; {self.workout_id}>'

@@ -1,11 +1,11 @@
-from src.models import WorkoutSessions
+from src.models import WorkoutSession
 from tests.unit.unit_base_test import UnitBaseTest
 
 
 # noinspection PyArgumentList
 class WorkoutSessionsTest(UnitBaseTest):
     def test_create_workout_session(self):
-        test = WorkoutSessions(
+        test = WorkoutSession(
             date="1991/07/24",
             hours=1,
             minutes=30,
@@ -28,7 +28,7 @@ class WorkoutSessionsTest(UnitBaseTest):
         self.assertEqual(test.schedule_id, 4)
 
     def test_repr_method(self):
-        test = WorkoutSessions(
+        test = WorkoutSession(
             id=10,
             date="1991/07/24",
             hours=1,

@@ -1,4 +1,4 @@
-from src.models import Users, WorkoutSessions, Schedules
+from src.models import User, WorkoutSession, Schedules
 from tests.general_base_test import GeneralBaseTest
 from datetime import datetime
 from werkzeug.security import generate_password_hash
@@ -8,14 +8,14 @@ from werkzeug.security import generate_password_hash
 class UserTest(GeneralBaseTest):
     def test_create_user(self):
         with self.app_context():
-            test = Users(
+            test = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            self.assertIsNone(Users.find_by_id(1))
+            self.assertIsNone(User.find_by_id(1))
 
             try:
                 test.save_to_db()
@@ -23,34 +23,34 @@ class UserTest(GeneralBaseTest):
                 self.assertIsNone(e)
             finally:
                 # test that id is created automatically
-                self.assertIsNotNone(Users.find_by_id(1))
-                self.assertEqual("John@Doe.com", Users.find_by_id(1).email)
+                self.assertIsNotNone(User.find_by_id(1))
+                self.assertEqual("John@Doe.com", User.find_by_id(1).email)
 
                 # check that date_created is added to the database automatically
-                self.assertIsNotNone(Users.find_by_id(1).date_created)
-                self.assertIsInstance(Users.find_by_id(1).date_created, datetime)
+                self.assertIsNotNone(User.find_by_id(1).date_created)
+                self.assertIsInstance(User.find_by_id(1).date_created, datetime)
 
                 # check that password is saved hashed
-                self.assertIsNotNone(Users.find_by_id(1).password)
-                self.assertIn("sha256$", Users.find_by_id(1).password)
+                self.assertIsNotNone(User.find_by_id(1).password)
+                self.assertIn("sha256$", User.find_by_id(1).password)
 
     def test_create_multiple_users(self):
         with self.app_context():
-            test1 = Users(
+            test1 = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            test2 = Users(
+            test2 = User(
                 first_name="Test",
                 last_name="Osteron",
                 email="test@test.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            self.assertIsNone(Users.find_by_id(1))
+            self.assertIsNone(User.find_by_id(1))
 
             try:
                 test1.save_to_db()
@@ -58,22 +58,22 @@ class UserTest(GeneralBaseTest):
             except Exception as e:
                 self.assertIsNone(e)
             finally:
-                self.assertIsNotNone(Users.find_by_id(1))
-                self.assertEqual("John@Doe.com", Users.find_by_id(1).email)
-                self.assertIsNotNone(Users.find_by_id(2))
-                self.assertEqual("test@test.com", Users.find_by_id(2).email)
-                self.assertEqual(2, Users.count_all())
+                self.assertIsNotNone(User.find_by_id(1))
+                self.assertEqual("John@Doe.com", User.find_by_id(1).email)
+                self.assertIsNotNone(User.find_by_id(2))
+                self.assertEqual("test@test.com", User.find_by_id(2).email)
+                self.assertEqual(2, User.count_all())
 
     def test_user_email_is_unique(self):
         with self.app_context():
-            test1 = Users(
+            test1 = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            test2 = Users(
+            test2 = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
@@ -87,28 +87,28 @@ class UserTest(GeneralBaseTest):
                 self.assertIn("(sqlite3.IntegrityError)", e.__str__())
             finally:
                 with self.app_context():
-                    self.assertIsNotNone(Users.find_by_id(1))
-                    self.assertIsNone(Users.find_by_id(2))
-                    self.assertEqual(1, Users.find_by_email("John@Doe.com").id)
-                    self.assertEqual(1, Users.count_all())
+                    self.assertIsNotNone(User.find_by_id(1))
+                    self.assertIsNone(User.find_by_id(2))
+                    self.assertEqual(1, User.find_by_email("John@Doe.com").id)
+                    self.assertEqual(1, User.count_all())
 
     def test_workout_sessions_relationship(self):
         with self.app_context():
-            user1 = Users(
+            user1 = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            user2 = Users(
+            user2 = User(
                 first_name="Test",
                 last_name="Osteron",
                 email="test@test.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            workout_session_user_1 = WorkoutSessions(
+            workout_session_user_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -120,7 +120,7 @@ class UserTest(GeneralBaseTest):
                 schedule_id=5
             )
 
-            workout_session_user_2 = WorkoutSessions(
+            workout_session_user_2 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -160,14 +160,14 @@ class UserTest(GeneralBaseTest):
 
     def test_registered_schedules_relationship(self):
         with self.app_context():
-            user1 = Users(
+            user1 = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
                 password=generate_password_hash("1234", method='sha256')
             )
 
-            user2 = Users(
+            user2 = User(
                 first_name="Test",
                 last_name="Osteron",
                 email="test@test.com",

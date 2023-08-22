@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
-from src.models import WorkoutSessions, Schedules, Workouts, Positions
+from src.models import WorkoutSession, Schedules, Workouts, Positions
 from src.db import db
 from datetime import time
 
@@ -154,7 +154,7 @@ def overview():
         db.session.add(position306)
 
         db.session.commit()
-    all_workout_sessions = WorkoutSessions.query.filter_by(
+    all_workout_sessions = WorkoutSession.query.filter_by(
         user_id=current_user.id, schedule_id=active_schedule_id
     ).all()
 
@@ -173,13 +173,13 @@ def overview():
     next_workout = Positions.query.filter_by(id=position_id).first()
 
     if next_workout:
-        next_workout_best_time_session = WorkoutSessions.query.filter_by(
+        next_workout_best_time_session = WorkoutSession.query.filter_by(
             workout_id=next_workout.workout_id,
             user_id=current_user.id
         ).order_by(
-            WorkoutSessions.hours,
-            WorkoutSessions.minutes,
-            WorkoutSessions.seconds
+            WorkoutSession.hours,
+            WorkoutSession.minutes,
+            WorkoutSession.seconds
         ).first()
     else:
         next_workout_best_time_session = None
@@ -211,7 +211,7 @@ def overview():
                 category='error'
             )
         else:
-            workout_session = WorkoutSessions(
+            workout_session = WorkoutSession(
                 date=date,
                 hours=hours,
                 minutes=minutes,
@@ -223,7 +223,7 @@ def overview():
                 position_id=position_id,
                 schedule_id=active_schedule_id
             )
-            WorkoutSessions.save_to_db(workout_session)
+            WorkoutSession.save_to_db(workout_session)
             flash('Workout record added!', category='success')
 
     return render_template("overview.html",

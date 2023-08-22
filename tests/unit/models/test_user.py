@@ -1,11 +1,11 @@
-from src.models import Users
+from src.models import User
 from tests.unit.unit_base_test import UnitBaseTest
 
 
 # noinspection PyArgumentList
 class UserTest(UnitBaseTest):
     def test_create_user(self):
-        test = Users(
+        test = User(
             first_name="John",
             last_name="Doe",
             email="John@Doe.com",
@@ -17,7 +17,7 @@ class UserTest(UnitBaseTest):
         self.assertEqual(test.password, 1234)
 
     def test_repr_method(self):
-        test = Users(
+        test = User(
             id=10,
             first_name="John",
             last_name="Doe",

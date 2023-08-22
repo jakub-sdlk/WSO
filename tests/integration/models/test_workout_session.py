@@ -1,4 +1,4 @@
-from src.models import WorkoutSessions, Users, Workouts, Positions, Schedules
+from src.models import WorkoutSession, User, Workouts, Positions, Schedules
 from tests.general_base_test import GeneralBaseTest
 from werkzeug.security import generate_password_hash
 
@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash
 class WorkoutSessionTest(GeneralBaseTest):
     def test_create_workout_session(self):
         with self.app_context():
-            workout_session_1 = WorkoutSessions(
+            workout_session_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -19,19 +19,19 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=5
             )
 
-            self.assertIsNone(WorkoutSessions.find_by_id(1))
+            self.assertIsNone(WorkoutSession.find_by_id(1))
 
             try:
                 workout_session_1.save_to_db()
             except Exception as e:
                 self.assertIsNone(e)
             finally:
-                self.assertIsNotNone(WorkoutSessions.find_by_id(1))
-                self.assertEqual(1, WorkoutSessions.find_by_id(1).id)
+                self.assertIsNotNone(WorkoutSession.find_by_id(1))
+                self.assertEqual(1, WorkoutSession.find_by_id(1).id)
 
     def test_class_methods(self):
         with self.app_context():
-            workout_session_1 = WorkoutSessions(
+            workout_session_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -43,7 +43,7 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=1
             )
 
-            workout_session_2 = WorkoutSessions(
+            workout_session_2 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -55,7 +55,7 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=1
             )
 
-            workout_session_3 = WorkoutSessions(
+            workout_session_3 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -75,23 +75,23 @@ class WorkoutSessionTest(GeneralBaseTest):
                 self.assertIsNone(e)
             finally:
                 # class methods should return lists with these lengths
-                self.assertEqual(2, len(WorkoutSessions.find_by_season(1)))
-                self.assertEqual(2, len(WorkoutSessions.find_by_workout_id(1)))
-                self.assertEqual(3, len(WorkoutSessions.find_by_user_id(1)))
-                self.assertEqual(1, len(WorkoutSessions.find_by_position_id(201)))
-                self.assertEqual(2, len(WorkoutSessions.find_by_schedule_id(1)))
+                self.assertEqual(2, len(WorkoutSession.find_by_season(1)))
+                self.assertEqual(2, len(WorkoutSession.find_by_workout_id(1)))
+                self.assertEqual(3, len(WorkoutSession.find_by_user_id(1)))
+                self.assertEqual(1, len(WorkoutSession.find_by_position_id(201)))
+                self.assertEqual(2, len(WorkoutSession.find_by_schedule_id(1)))
 
                 # if nothing is found, .first() returns None, whereas .all() returns an empty list
-                self.assertIsNone(WorkoutSessions.find_by_id(5))
-                self.assertListEqual(WorkoutSessions.find_by_user_id(2), [])
+                self.assertIsNone(WorkoutSession.find_by_id(5))
+                self.assertListEqual(WorkoutSession.find_by_user_id(2), [])
 
                 # check that the data in lists can be queried and are correct
-                self.assertEqual(101, WorkoutSessions.find_by_user_id(1)[0].position_id)
-                self.assertEqual(30, WorkoutSessions.find_by_user_id(1)[1].minutes)
+                self.assertEqual(101, WorkoutSession.find_by_user_id(1)[0].position_id)
+                self.assertEqual(30, WorkoutSession.find_by_user_id(1)[1].minutes)
 
     def test_user_relationship(self):
         with self.app_context():
-            workout_session_1 = WorkoutSessions(
+            workout_session_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -103,7 +103,7 @@ class WorkoutSessionTest(GeneralBaseTest):
                 schedule_id=1
             )
 
-            user1 = Users(
+            user1 = User(
                 first_name="John",
                 last_name="Doe",
                 email="John@Doe.com",
@@ -116,12 +116,12 @@ class WorkoutSessionTest(GeneralBaseTest):
             except Exception as e:
                 self.assertIsNone(e)
             finally:
-                self.assertEqual(1, workout_session_1.users.id)
-                self.assertEqual("John@Doe.com", workout_session_1.users.email)
+                self.assertEqual(1, workout_session_1.user.id)
+                self.assertEqual("John@Doe.com", workout_session_1.user.email)
 
     def test_workout_relationship(self):
         with self.app_context():
-            workout_session_1 = WorkoutSessions(
+            workout_session_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -149,7 +149,7 @@ class WorkoutSessionTest(GeneralBaseTest):
 
     def test_position_relationship(self):
         with self.app_context():
-            workout_session_1 = WorkoutSessions(
+            workout_session_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,
@@ -176,7 +176,7 @@ class WorkoutSessionTest(GeneralBaseTest):
 
     def test_schedule_relationship(self):
         with self.app_context():
-            workout_session_1 = WorkoutSessions(
+            workout_session_1 = WorkoutSession(
                 date="1991/07/24",
                 hours=1,
                 minutes=30,

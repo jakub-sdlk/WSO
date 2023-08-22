@@ -4,7 +4,7 @@ from os import path
 from src.auth.auth import auth
 from src.stats.stats import stats
 
-from src.models import Users, WorkoutSessions
+from src.models import User, WorkoutSession
 
 from src.db import db, DB_NAME
 
@@ -36,7 +36,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(id):
-    return db.session.get(Users, id)
+    return db.session.get(User, id)
 
 
 @app.route("/")
