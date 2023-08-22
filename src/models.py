@@ -40,7 +40,7 @@ class WorkoutSession(db.Model, GeneralModel):
     position_id = db.Column(db.Integer, db.ForeignKey('position.id'), nullable=False)
     schedule_id = db.Column(db.Integer, db.ForeignKey('schedule.id'), nullable=False)
 
-    positions = db.relationship('Position', backref='workout_session', lazy=True)
+    # positions = db.relationship('Position', backref='workout_session', lazy=True)
 
     def __repr__(self):
         return f'<WorkoutSession: {self.id}; {self.workout_id}>'
