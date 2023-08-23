@@ -12,13 +12,7 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @login_required
 def overview():
     #  For now this code deals with switching the schedules
-    if 'active_schedule_id' in session:
-        session['active_schedule_id'] = request.args.get('scheduleSelector')
-    else:
-        session['active_schedule_id'] = 1
-    #  This must be here, because the page refreshes twice - it sets id to 1 and then to None - scheduleSelector is none
-    if session['active_schedule_id'] is None:
-        session['active_schedule_id'] = 1
+    session['active_schedule_id'] = request.args.get('scheduleSelector')
 
     active_schedule_id = int(session['active_schedule_id'])
 
@@ -227,7 +221,6 @@ def overview():
             flash('Workout record added!', category='success')
             return redirect(url_for("stats.sent"))
 
-
     return render_template("overview.html",
                            user=current_user,
                            all_schedules=all_schedules,
@@ -243,5 +236,4 @@ def overview():
 
 @stats.route("/sent", methods=['GET', 'POST'])
 def sent():
-
-    return redirect(url_for("stats.overview"))
+    return redirect(url_for("stats.overview", scheduleSelector=session['active_schedule_id']))

@@ -2,6 +2,7 @@ from tests.general_base_test import GeneralBaseTest
 from src.models import User
 from werkzeug.security import generate_password_hash
 from flask import get_flashed_messages
+from flask_login import current_user
 
 
 class AuthTest(GeneralBaseTest):
@@ -46,7 +47,8 @@ class AuthTest(GeneralBaseTest):
 
                 self.assertEqual(1, len(response.history))
                 self.assertEqual("/stats/", response.request.path)
-                self.assertIn(b"User:+1;+John@Doe.com", response.request.query_string)
+                self.assertEqual("John@Doe.com", current_user.email)
+                self.assertEqual(b'scheduleSelector=1', response.request.query_string)
 
     def test_login_user_incorrect_password(self):
         with self.app() as client:
@@ -135,7 +137,8 @@ class AuthTest(GeneralBaseTest):
 
                 self.assertEqual(1, len(response.history))
                 self.assertEqual("/stats/", response.request.path)
-                self.assertIn(b"User:+1;+John@Doe.com", response.request.query_string)
+                self.assertEqual("John@Doe.com", current_user.email)
+                self.assertEqual(b'scheduleSelector=1', response.request.query_string)
 
     def test_signup_existing_user(self):
         with self.app() as client:

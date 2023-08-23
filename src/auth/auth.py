@@ -29,7 +29,9 @@ def login():
             if check_password_hash(user.password, password):
                 flash("Logged in!", category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('stats.overview', user=current_user))
+                if not'active_schedule_id' in session:
+                    session['active_schedule_id'] = 1
+                return redirect(url_for('stats.overview', scheduleSelector=session['active_schedule_id']))
             else:
                 flash("Incorrect password", category='error')
         else:
@@ -71,7 +73,7 @@ def signup():
             new_user.save_to_db()
             login_user(new_user, remember=True)
             flash('User created', category='success')
-            return redirect(url_for('stats.overview', user=current_user))
+            return redirect(url_for('stats.overview', scheduleSelector=1))
 
     return show_correct_response_code("signup.html")
 
