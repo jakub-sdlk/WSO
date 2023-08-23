@@ -15,8 +15,8 @@
     <form method="get">
       <div class="form-group row mt-2 justify-content-center">
         <div class="col-md-auto">
-          <select onchange="this.form.submit()" class="form-control text-center" id="scheduleSelector"
-                  name="scheduleSelector" aria-label="scheduleSelector">
+          <select onchange="this.form.submit()" class="form-control text-center" id="schedule_selector"
+                  name="schedule_selector" aria-label="schedule_selector">
             {% for schedule in all_schedules %}
             {% if schedule.id == active_schedule_id %}
               <option selected value="{{ schedule.id }}" >{{ schedule.name }} </option>

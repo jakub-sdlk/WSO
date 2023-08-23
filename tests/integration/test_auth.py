@@ -48,7 +48,7 @@ class AuthTest(GeneralBaseTest):
                 self.assertEqual(1, len(response.history))
                 self.assertEqual("/stats/", response.request.path)
                 self.assertEqual("John@Doe.com", current_user.email)
-                self.assertEqual(b'scheduleSelector=1', response.request.query_string)
+                self.assertEqual(b'schedule_selector=1', response.request.query_string)
 
     def test_login_user_incorrect_password(self):
         with self.app() as client:
@@ -138,7 +138,7 @@ class AuthTest(GeneralBaseTest):
                 self.assertEqual(1, len(response.history))
                 self.assertEqual("/stats/", response.request.path)
                 self.assertEqual("John@Doe.com", current_user.email)
-                self.assertEqual(b'scheduleSelector=1', response.request.query_string)
+                self.assertEqual(b'schedule_selector=1', response.request.query_string)
 
     def test_signup_existing_user(self):
         with self.app() as client:

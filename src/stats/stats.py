@@ -12,7 +12,7 @@ stats = Blueprint("stats", __name__, static_folder="static", template_folder="te
 @login_required
 def overview():
     #  For now this code deals with switching the schedules
-    session['active_schedule_id'] = request.args.get('scheduleSelector')
+    session['active_schedule_id'] = request.args.get('schedule_selector')
 
     active_schedule_id = int(session['active_schedule_id'])
 
@@ -236,4 +236,4 @@ def overview():
 
 @stats.route("/sent", methods=['GET', 'POST'])
 def sent():
-    return redirect(url_for("stats.overview", scheduleSelector=session['active_schedule_id']))
+    return redirect(url_for("stats.overview", schedule_selector=session['active_schedule_id']))

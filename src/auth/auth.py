@@ -31,7 +31,7 @@ def login():
                 login_user(user, remember=True)
                 if not'active_schedule_id' in session:
                     session['active_schedule_id'] = 1
-                return redirect(url_for('stats.overview', scheduleSelector=session['active_schedule_id']))
+                return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
             else:
                 flash("Incorrect password", category='error')
         else:
@@ -73,7 +73,7 @@ def signup():
             new_user.save_to_db()
             login_user(new_user, remember=True)
             flash('User created', category='success')
-            return redirect(url_for('stats.overview', scheduleSelector=1))
+            return redirect(url_for('stats.overview', schedule_selector=1))
 
     return show_correct_response_code("signup.html")
 
