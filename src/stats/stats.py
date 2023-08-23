@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, session
+from flask import Blueprint, render_template, request, flash, session, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy.sql import func
 from src.models import WorkoutSession, Schedule, Workout, Position
@@ -225,6 +225,8 @@ def overview():
             )
             WorkoutSession.save_to_db(workout_session)
             flash('Workout record added!', category='success')
+            return redirect(url_for("stats.sent"))
+
 
     return render_template("overview.html",
                            user=current_user,
@@ -237,3 +239,9 @@ def overview():
                            next_workout_best_time_session=next_workout_best_time_session,
                            current_workout_session_season=current_workout_session_season
                            )
+
+
+@stats.route("/sent", methods=['GET', 'POST'])
+def sent():
+
+    return redirect(url_for("stats.overview"))

@@ -132,25 +132,25 @@
 <!-- Script bellow refreshes the page only once after it is loaded -
 Without it the user must refresh the page manually to update data after adning new session record
 -->
-<script type='text/javascript'>
+<!--<script type='text/javascript'>-->
 
-(function()
-{
-  if( window.localStorage )
-  {
-    if( !localStorage.getItem('firstLoad') )
-    {
-      localStorage['firstLoad'] = true;
-      window.location.reload();
-    }
-    else
-      localStorage.removeItem('firstLoad');
-  }
-})();
+<!--(function()-->
+<!--{-->
+<!--  if( window.localStorage )-->
+<!--  {-->
+<!--    if( !localStorage.getItem('firstLoad') )-->
+<!--    {-->
+<!--      localStorage['firstLoad'] = true;-->
+<!--      window.location.reload();-->
+<!--    }-->
+<!--    else-->
+<!--      localStorage.removeItem('firstLoad');-->
+<!--  }-->
+<!--})();-->
 
 
 
-</script>
+<!--</script>-->
 </body>
 
 </html>
