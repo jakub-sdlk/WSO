@@ -18,7 +18,6 @@ def show_correct_response_code(render_template_file):
     return render_template(render_template_file), 200
 
 
-
 @auth.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
@@ -38,6 +37,7 @@ def login():
 
     return show_correct_response_code("login.html")
 
+
 # noinspection PyArgumentList
 @auth.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -51,6 +51,10 @@ def signup():
 
         if email_exist:
             flash("This email is already registered.", category='error')
+        elif not first_name:
+            flash("First name is required.", category='error')
+        elif not last_name:
+            flash("Last name is required.", category='error')
         # Change this later for regex, or check the email_validator package
         elif len(email) < 5:
             flash("Email is invalid.", category='error')

@@ -81,7 +81,6 @@ class AuthTest(GeneralBaseTest):
     def test_login_non_existing_user(self):
         with self.app() as client:
             with self.app_context():
-
                 response = client.post(
                     "auth/login",
                     follow_redirects=True,
@@ -114,7 +113,6 @@ class AuthTest(GeneralBaseTest):
     def test_signup_new_user(self):
         with self.app() as client:
             with self.app_context():
-
                 response = client.post(
                     "auth/signup",
                     follow_redirects=True,
@@ -171,5 +169,142 @@ class AuthTest(GeneralBaseTest):
                 self.assertEqual("/auth/signup", response.request.path)
                 self.assertNotIn(b"User:+1;+John@Doe.com", response.request.query_string)
 
+    def test_signup_empty_first_name(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "auth/signup",
+                    follow_redirects=True,
+                    data={
+                        "signup_first_name": "",
+                        "signup_last_name": "Doe",
+                        "signup_email": "John@Doe.com",
+                        "signup_password": 1234
+                    })
 
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("First name is required.", message)
+
+                self.assertEqual(0, len(response.history))
+
+
+    def test_signup_empty_last_name(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "auth/signup",
+                    follow_redirects=True,
+                    data={
+                        "signup_first_name": "John",
+                        "signup_last_name": "",
+                        "signup_email": "John@Doe.com",
+                        "signup_password": 1234
+                    })
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("Last name is required.", message)
+
+                self.assertEqual(0, len(response.history))
+
+    def test_signup_empty_email(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "auth/signup",
+                    follow_redirects=True,
+                    data={
+                        "signup_first_name": "John",
+                        "signup_last_name": "Doe",
+                        "signup_email": "",
+                        "signup_password": 1234
+                    })
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("Email is invalid.", message)
+
+                self.assertEqual(0, len(response.history))
+
+    def test_signup_invalid_email(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "auth/signup",
+                    follow_redirects=True,
+                    data={
+                        "signup_first_name": "John",
+                        "signup_last_name": "Doe",
+                        "signup_email": "test",
+                        "signup_password": 1234
+                    })
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("Email is invalid.", message)
+
+                self.assertEqual(0, len(response.history))
+
+    def test_signup_empty_password(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "auth/signup",
+                    follow_redirects=True,
+                    data={
+                        "signup_first_name": "John",
+                        "signup_last_name": "Doe",
+                        "signup_email": "John@Doe.com",
+                        "signup_password": ""
+                    })
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("Invalid password.", message)
+
+                self.assertEqual(0, len(response.history))
+
+    def test_signup_invalid_password(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "auth/signup",
+                    follow_redirects=True,
+                    data={
+                        "signup_first_name": "John",
+                        "signup_last_name": "Doe",
+                        "signup_email": "John@Doe.com",
+                        "signup_password": 12
+                    })
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("Invalid password.", message)
+
+                self.assertEqual(0, len(response.history))
 
