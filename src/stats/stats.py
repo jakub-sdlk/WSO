@@ -14,6 +14,9 @@ def overview():
     #  For now this code deals with switching the schedules
     session['active_schedule_id'] = request.args.get('schedule_selector')
 
+    if session['active_schedule_id'] is None:
+        session['active_schedule_id'] = 1
+
     active_schedule_id = int(session['active_schedule_id'])
 
     # Create basic schedules in case the database was deleted in development process
