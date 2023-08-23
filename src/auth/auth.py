@@ -8,7 +8,14 @@ auth = Blueprint("auth", __name__, static_folder="static", template_folder="temp
 
 
 def show_correct_response_code(render_template_file):
-    pass
+    messages = get_flashed_messages(with_categories=True)
+    error_during_login_flag = False
+    for category, message in messages:
+        if category == 'error':
+            error_during_login_flag = True
+    if error_during_login_flag:
+        return render_template(render_template_file), 401
+    return render_template(render_template_file), 200
 
 
 
@@ -29,17 +36,7 @@ def login():
         else:
             flash("Email does not exist", category='error')
 
-    messages = get_flashed_messages(with_categories=True)
-    error_during_login_flag = False
-    for category, message in messages:
-        if category == 'error':
-            error_during_login_flag = True
-    if error_during_login_flag:
-        return render_template("login.html"), 401
-    return render_template("login.html"), 200
-
-
-
+    return show_correct_response_code("login.html")
 
 # noinspection PyArgumentList
 @auth.route("/signup", methods=["POST", "GET"])
@@ -72,14 +69,7 @@ def signup():
             flash('User created', category='success')
             return redirect(url_for('stats.overview', user=current_user))
 
-    messages = get_flashed_messages(with_categories=True)
-    error_during_login_flag = False
-    for category, message in messages:
-        if category == 'error':
-            error_during_login_flag = True
-    if error_during_login_flag:
-        return render_template("signup.html"), 401
-    return render_template("signup.html"), 200
+    return show_correct_response_code("signup.html")
 
 
 @auth.route("/logout")
