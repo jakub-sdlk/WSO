@@ -177,3 +177,43 @@ class StatsTest(GeneralBaseTest):
                 self.assertEqual("/auth/login", response.request.path)
                 self.assertIn(b"Log into your account", response.data)
                 self.assertIn(b'next=%2Fstats%2F', response.request.query_string)
+
+    def test_all_schedules_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                all_schedules = Schedule.query.all()
+
+                expected1 = "[<Schedule: 1; Lane Goodwin Full>, <Schedule: 2; Triatlon>]"
+                self.assertEqual(expected1, str(all_schedules))
+
+                #  Make sure you can loop through the all_schedules and get correct results
+                expected2 = ("Lane Goodwin Full", "Triatlon")
+                for count, schedule in enumerate(all_schedules):
+                    self.assertEqual(count + 1, schedule.id)
+                    self.assertEqual(expected2[count], schedule.name)
+
+    def test_new_user_stats_are_correct(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234
+                    })
+                #  Check that schedule 1 is selected
+                expected1 = b"""<option selected value="1" >Lane Goodwin Full </option>"""
+                self.assertIn(expected1, response.data)
+
+    def test_user_can_add_workout_session(self):
+        pass
+
+    def test_stats_are_correct_after_adding_workout_session(self):
+        pass
+
+    def test_switching_between_schedules(self):
+        pass
+
+    def test_end_of_schedule_displays_correctly(self):
+        pass
