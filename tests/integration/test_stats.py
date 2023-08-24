@@ -1,7 +1,7 @@
 from tests.general_base_test import GeneralBaseTest
 from src.models import User, Schedule, Workout, Position
 from werkzeug.security import generate_password_hash
-from flask import get_flashed_messages
+from flask import get_flashed_messages, session, request
 from flask_login import current_user
 
 
@@ -142,7 +142,6 @@ class StatsTest(GeneralBaseTest):
                 self.assertEqual(0, len(response.history))
                 self.assertEqual("/stats/", response.request.path)
                 self.assertIn(b"Overview", response.data)
-                self.assertEqual("John@Doe.com", current_user.email)
 
     def test_log_out_logged_user(self):
         with self.app() as client:
@@ -178,6 +177,49 @@ class StatsTest(GeneralBaseTest):
                 self.assertIn(b"Log into your account", response.data)
                 self.assertIn(b'next=%2Fstats%2F', response.request.query_string)
 
+    def test_current_user_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234
+                    })
+
+                self.assertEqual("John@Doe.com", current_user.email)
+                self.assertEqual("John", current_user.first_name)
+
+                client.get(
+                    "/auth/logout",
+                    follow_redirects=True
+                )
+                #  Know when the user logged out, accessing current user email should throw an error
+                try:
+                    self.assertFalse("John@Doe.com", current_user.email)
+                except AttributeError as e:
+                    self.assertIsNotNone(e)
+                finally:
+                    test2 = User(
+                        first_name="Test",
+                        last_name="Osteron",
+                        email="test@test.com",
+                        password=generate_password_hash("1234", method='sha256')
+                    )
+                    test2.save_to_db()
+
+                    client.post(
+                        "/auth/login",
+                        follow_redirects=True,
+                        data={
+                            "login_email": "test@test.com",
+                            "login_password": 1234
+                        })
+
+                    self.assertEqual("test@test.com", current_user.email)
+                    self.assertEqual("Test", current_user.first_name)
+
     def test_all_schedules_variable(self):
         with self.app() as client:
             with self.app_context():
@@ -191,6 +233,64 @@ class StatsTest(GeneralBaseTest):
                 for count, schedule in enumerate(all_schedules):
                     self.assertEqual(count + 1, schedule.id)
                     self.assertEqual(expected2[count], schedule.name)
+
+    def test_active_schedule_id_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                response = client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                active_schedule_id = int(session['active_schedule_id'])
+
+                self.assertEqual(b'schedule_selector=1', response.request.query_string)
+                self.assertEqual(1, active_schedule_id)
+
+                response = client.get(
+                    "/stats/",
+                    follow_redirects=True,
+                    query_string={
+                        "schedule_selector": 2
+                    })
+
+                active_schedule_id = int(session['active_schedule_id'])
+
+                self.assertEqual(b'schedule_selector=2', response.request.query_string)
+                self.assertEqual(2, active_schedule_id)
+
+    def test_all_workout_sessions_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                pass
+
+    def test_user_workout_sessions_count_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                pass
+
+    def test_time_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                pass
+
+    def test_next_workout_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                pass
+
+    def test_next_workout_best_time_session_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                pass
+
+    def test_current_workout_session_season_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                pass
 
     def test_new_user_stats_are_correct(self):
         with self.app() as client:
