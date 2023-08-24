@@ -151,6 +151,7 @@ def overview():
         db.session.add(position306)
 
         db.session.commit()
+        
     all_workout_sessions = WorkoutSession.query.filter_by(
         user_id=current_user.id, schedule_id=active_schedule_id
     ).all()
