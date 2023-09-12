@@ -1,23 +1,25 @@
-from flask import Blueprint, render_template, request, flash, session, redirect, url_for
-from flask_login import login_required, current_user
-from datetime import time
+from flask import session
+from flask_login import current_user
 
 from src.models import WorkoutSession, Schedule, Workout, Position
-from src.db import db
 
 
 class Calculator:
-    def __init__(self):
-        self.all_schedules = Schedule.query.all()
+    def __init__(self, new_season_flag=False):
+        # When new_season_flag is True, calculator returns data for first workout of each schedule
+        self.new_season_flag = new_season_flag
+
+        self.all_schedules = self.get_all_schedules()
         self.active_schedule_id = self.get_active_schedule_id()
-        self.all_workouts = Workout.query.all()
-        self.all_positions = Position.query.all()
         self.all_workout_sessions = self.get_all_workout_sessions()
         self.user_workout_sessions_count = self.get_user_workout_sessions_count()
         self.next_position_id = self.calculate_next_position_id()
         self.next_position = self.get_next_position()
         self.next_workout_best_time = self.calculate_next_workout_best_time()
         self.current_workout_session_season = self.calculate_current_workout_session_season()
+
+    def get_all_schedules(self):
+        return Schedule.query.all()
 
     def get_active_schedule_id(self):
         return int(session['active_schedule_id'])
@@ -36,6 +38,9 @@ class Calculator:
         else:
             last_workout_session_position_id = int(self.all_workout_sessions[-1].position_id)
             next_position_id = (self.active_schedule_id * 100) + (last_workout_session_position_id % 100) + 1
+
+        if self.new_season_flag:
+            next_position_id = (self.active_schedule_id * 100) + 1
 
         return next_position_id
 
@@ -62,5 +67,8 @@ class Calculator:
             current_workout_session_season = 1
         else:
             current_workout_session_season = self.all_workout_sessions[-1].season
+
+        if self.new_season_flag:
+            current_workout_session_season += 1
 
         return current_workout_session_season
