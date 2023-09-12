@@ -4,7 +4,7 @@ from flask_login import current_user
 
 from tests.general_base_test import GeneralBaseTest
 
-from src.models import User
+from src.models import User, WorkoutSession
 from src.stats.stats_calculator import Calculator
 from src.stats.database_generator import DatabaseGenerator
 
@@ -187,6 +187,37 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertListEqual([], calculator.get_all_workout_sessions())
 
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                # This is the session of another user, the calculator should ignore it
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=2,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertListEqual([workout_session_1], calculator.get_all_workout_sessions())
+                self.assertEqual(1, len(calculator.get_all_workout_sessions()))
+
     def test_user_workout_sessions_count_variable(self):
         with self.app() as client:
             with self.app_context():
@@ -201,6 +232,37 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertEqual(0, calculator.get_user_workout_sessions_count())
 
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                # This is the session of another user, the calculator should ignore it
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=2,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(1, calculator.get_user_workout_sessions_count())
+
+
     def test_position_id_variable(self):
         with self.app() as client:
             with self.app_context():
@@ -214,6 +276,37 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertEqual(101, calculator.next_position_id)
+
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                # This is the session of another user, the calculator should ignore it
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=2,
+                    workout_id=21,
+                    position_id=201,
+                    schedule_id=2
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(102, calculator.next_position_id)
+
 
     def test_next_position_variable(self):
         with self.app() as client:
@@ -231,6 +324,24 @@ class StatsTest(GeneralBaseTest):
                     "<Position: 101; 1>", str(calculator.next_position)
                 )
 
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(
+                    "<Position: 102; 3>", str(calculator.next_position)
+                )
+
     def test_next_workout_best_time_variable(self):
         with self.app() as client:
             with self.app_context():
@@ -244,6 +355,49 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertIsNone(calculator.next_workout_best_time)
+
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=3,
+                    position_id=102,
+                    schedule_id=1
+                )
+
+                # This is the session of another user, the calculator should ignore it
+                workout_session_3 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=0,
+                    minutes=1,
+                    seconds=1,
+                    season=1,
+                    user_id=2,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertIsNotNone(calculator.next_workout_best_time)
+                self.assertEqual(1, calculator.next_workout_best_time.hours)
 
     def test_current_workout_session_season_variable(self):
         with self.app() as client:
