@@ -4,7 +4,7 @@ from datetime import time
 
 from src.models import WorkoutSession, Schedule
 from src.stats.stats_calculator import Calculator
-from src.stats.sample_workout_maker import WorkoutMaker
+from src.stats.database_generator import DatabaseGenerator
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 
@@ -20,7 +20,7 @@ def overview():
 
     # create basic schedules in case the database was deleted in development process
     if not Schedule.query.all():
-        WorkoutMaker.recreate_development_database()
+        DatabaseGenerator.recreate_development_database()
 
     # create calculator
     calculator = Calculator()
