@@ -1,8 +1,10 @@
 from tests.general_base_test import GeneralBaseTest
-from src.models import User, Schedule, Workout, Position
+from src.models import User, Schedule, Workout, Position, WorkoutSession
 from werkzeug.security import generate_password_hash
 from flask import get_flashed_messages, session, request
 from flask_login import current_user
+
+from src.stats.stats_calculator import Calculator
 
 
 # noinspection PyArgumentList
@@ -265,12 +267,30 @@ class StatsTest(GeneralBaseTest):
     def test_all_workout_sessions_variable(self):
         with self.app() as client:
             with self.app_context():
-                pass
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+                self.assertListEqual([], calculator.get_all_workout_sessions())
 
     def test_user_workout_sessions_count_variable(self):
         with self.app() as client:
             with self.app_context():
-                pass
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+                self.assertEqual(0, calculator.get_user_workout_sessions_count())
 
     def test_time_variable(self):
         with self.app() as client:
