@@ -222,20 +222,6 @@ class StatsTest(GeneralBaseTest):
                     self.assertEqual("test@test.com", current_user.email)
                     self.assertEqual("Test", current_user.first_name)
 
-    def test_all_schedules_variable(self):
-        with self.app() as client:
-            with self.app_context():
-                all_schedules = Schedule.query.all()
-
-                expected1 = "[<Schedule: 1; Lane Goodwin Full>, <Schedule: 2; Triatlon>]"
-                self.assertEqual(expected1, str(all_schedules))
-
-                #  Make sure you can loop through the all_schedules and get correct results
-                expected2 = ("Lane Goodwin Full", "Triatlon")
-                for count, schedule in enumerate(all_schedules):
-                    self.assertEqual(count + 1, schedule.id)
-                    self.assertEqual(expected2[count], schedule.name)
-
     def test_active_schedule_id_variable(self):
         with self.app() as client:
             with self.app_context():
@@ -247,10 +233,10 @@ class StatsTest(GeneralBaseTest):
                         "login_password": 1234,
                     })
 
-                active_schedule_id = int(session['active_schedule_id'])
+                calculator = Calculator()
 
                 self.assertEqual(b'schedule_selector=1', response.request.query_string)
-                self.assertEqual(1, active_schedule_id)
+                self.assertEqual(1, calculator.active_schedule_id)
 
                 response = client.get(
                     "/stats/",
@@ -259,10 +245,32 @@ class StatsTest(GeneralBaseTest):
                         "schedule_selector": 2
                     })
 
-                active_schedule_id = int(session['active_schedule_id'])
+                calculator = Calculator()
 
                 self.assertEqual(b'schedule_selector=2', response.request.query_string)
-                self.assertEqual(2, active_schedule_id)
+                self.assertEqual(2, calculator.active_schedule_id)
+
+    def test_all_schedules_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+
+                expected1 = "[<Schedule: 1; Lane Goodwin Full>, <Schedule: 2; Triatlon>]"
+                self.assertEqual(expected1, str(calculator.all_schedules))
+
+                #  Make sure you can loop through the all_schedules and get correct results
+                expected2 = ("Lane Goodwin Full", "Triatlon")
+                for count, schedule in enumerate(calculator.all_schedules):
+                    self.assertEqual(count + 1, schedule.id)
+                    self.assertEqual(expected2[count], schedule.name)
 
     def test_all_workout_sessions_variable(self):
         with self.app() as client:
@@ -292,25 +300,63 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertEqual(0, calculator.get_user_workout_sessions_count())
 
-    def test_time_variable(self):
+    def test_position_id_variable(self):
         with self.app() as client:
             with self.app_context():
-                pass
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
 
-    def test_next_workout_variable(self):
-        with self.app() as client:
-            with self.app_context():
-                pass
+                calculator = Calculator()
+                self.assertEqual(101, calculator.next_position_id)
 
-    def test_next_workout_best_time_session_variable(self):
+    def test_next_position_variable(self):
         with self.app() as client:
             with self.app_context():
-                pass
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+                self.assertEqual(
+                    "<Position: 101; 1>", str(calculator.next_position)
+                )
+
+    def test_next_workout_best_time_variable(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+                self.assertIsNone(calculator.next_workout_best_time)
 
     def test_current_workout_session_season_variable(self):
         with self.app() as client:
             with self.app_context():
-                pass
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+                self.assertEqual(1, calculator.current_workout_session_season)
 
     def test_new_user_stats_are_correct(self):
         with self.app() as client:

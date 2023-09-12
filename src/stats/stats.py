@@ -5,6 +5,8 @@ from src.models import WorkoutSession, Schedule, Workout, Position
 from src.db import db
 from datetime import time
 
+from src.stats.stats_calculator import Calculator
+
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 
 
@@ -17,10 +19,11 @@ def overview():
     if session['active_schedule_id'] is None:
         session['active_schedule_id'] = 1
 
-    active_schedule_id = int(session['active_schedule_id'])
+    calculator = Calculator()
+    active_schedule_id = calculator.get_active_schedule_id()
 
     # Create basic schedules in case the database was deleted in development process
-    all_schedules = Schedule.query.all()
+    all_schedules = calculator.all_schedules
 
     if not all_schedules:
         schedule1 = Schedule(
@@ -161,18 +164,18 @@ def overview():
     # calculate position_id
 
     if user_workout_sessions_count == 0:
-        position_id = (active_schedule_id * 100) + 1
+        next_position_id = (active_schedule_id * 100) + 1
     else:
         last_workout_session_position_id = int(all_workout_sessions[-1].position_id)
-        position_id = (active_schedule_id * 100) + (last_workout_session_position_id % 100) + 1
+        next_position_id = (active_schedule_id * 100) + (last_workout_session_position_id % 100) + 1
 
     # calculate next_workout_id and best time that the workout was ever achieved
 
-    next_workout = Position.query.filter_by(id=position_id).first()
+    next_position = Position.query.filter_by(id=next_position_id).first()
 
-    if next_workout:
+    if next_position:
         next_workout_best_time_session = WorkoutSession.query.filter_by(
-            workout_id=next_workout.workout_id,
+            workout_id=next_position.workout_id,
             user_id=current_user.id
         ).order_by(
             WorkoutSession.hours,
@@ -199,11 +202,11 @@ def overview():
         if int(new_season):  # new_season returns 0 | 1 as a string
             current_workout_session_season += 1
             position_id = (active_schedule_id * 100) + 1
-            next_workout = Position.query.filter_by(id=position_id).first()
+            next_position = Position.query.filter_by(id=position_id).first()
 
         if not date or not hours or not minutes or not seconds:
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')
-        elif not next_workout:
+        elif not next_position:
             flash(
                 f'No more workouts in current schedule. Start a new season or choose another schedule',
                 category='error'
@@ -217,8 +220,8 @@ def overview():
                 season=current_workout_session_season,
 
                 user_id=current_user.id,
-                workout_id=next_workout.workout_id,
-                position_id=position_id,
+                workout_id=next_position.workout_id,
+                position_id=next_position_id,
                 schedule_id=active_schedule_id
             )
             WorkoutSession.save_to_db(workout_session)
@@ -232,7 +235,7 @@ def overview():
                            all_workout_sessions=all_workout_sessions,
                            user_workout_sessions_count=user_workout_sessions_count,
                            time=time,
-                           next_workout=next_workout,
+                           next_position=next_position,
                            next_workout_best_time_session=next_workout_best_time_session,
                            current_workout_session_season=current_workout_session_season
                            )
