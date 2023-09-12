@@ -40,7 +40,7 @@
         <div class="statcard">
           <div class="p-a">
             <span class="statcard-desc">Total Workout Sessions</span>
-            <h2 class="statcard-number">
+            <h2 class="statcard-number" id="user_workout_sessions_count">
               {{ user_workout_sessions_count }}
             </h2>
             
@@ -51,9 +51,8 @@
         <div class="statcard">
           <div class="p-a">
             <span class="statcard-desc">Last Session</span>
-            <h2 class="statcard-number">
+            <h2 class="statcard-number" id="last-session-name">
               {% if all_workout_sessions %}
-                {{ all_workout_sessions[-1].position_id }}
                 {{ all_workout_sessions[-1].position.workout.name}}
               {% else %}
                 {{ "No workouts done" }}
@@ -61,7 +60,7 @@
             </h2>
             {% if all_workout_sessions %}
             <h5>
-              <small class="badge badge-success">
+              <small class="badge badge-success" id="last-session-time">
                 {{ time(
                   all_workout_sessions[-1].hours,
                   all_workout_sessions[-1].minutes,
@@ -77,7 +76,7 @@
         <div class="statcard">
           <div class="p-a">
             <span class="statcard-desc">Next Session</span>
-            <h2 class="statcard-number">
+            <h2 class="statcard-number" id="next-session">
               {% if next_position %}
                 {{ next_position.workout.name }}
               {% else %}
@@ -102,17 +101,17 @@
         <div class="statcard">
           <div class="p-a">
             <span class="statcard-desc">Progress</span>
-            <h2 class="statcard-number">
+            <h2 class="statcard-number" id="season">
               Season {{ current_workout_session_season }}
             </h2>
-            <h2 class="statcard-number">
+            <h2 class="statcard-number" id="week">
               {% if all_workout_sessions %}
                 Week {{ all_workout_sessions[-1].position.week }}
               {% else %}
                 Week
               {% endif %}
             </h2>
-            <h2 class="statcard-number">
+            <h2 class="statcard-number" id="day">
               {% if all_workout_sessions %}
                 Day {{ all_workout_sessions[-1].position.day }}
               {% else %}
