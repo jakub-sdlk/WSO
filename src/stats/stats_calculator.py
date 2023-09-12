@@ -15,7 +15,7 @@ class Calculator:
         self.user_workout_sessions_count = self.get_user_workout_sessions_count()
         self.next_position_id = self.calculate_next_position_id()
         self.next_position = self.get_next_position()
-        self.next_workout_best_time = self.calculate_next_workout_best_time()
+        self.next_workout_best_time_session = self.get_next_workout_best_time_session()
         self.current_workout_session_season = self.calculate_current_workout_session_season()
 
     def get_all_schedules(self):
@@ -47,7 +47,7 @@ class Calculator:
     def get_next_position(self):
         return Position.query.filter_by(id=self.next_position_id).first()
 
-    def calculate_next_workout_best_time(self):
+    def get_next_workout_best_time_session(self):
         if self.next_position:
             next_workout_best_time = WorkoutSession.query.filter_by(
                 workout_id=self.next_position.workout_id,

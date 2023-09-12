@@ -262,7 +262,6 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertEqual(1, calculator.get_user_workout_sessions_count())
 
-
     def test_position_id_variable(self):
         with self.app() as client:
             with self.app_context():
@@ -307,6 +306,30 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertEqual(102, calculator.next_position_id)
 
+                workout_session_3 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=21,
+                    position_id=201,
+                    schedule_id=2
+                )
+                workout_session_3.save_to_db()
+
+                # If the user wish to start a new season, calculator with new_season_flag=True
+                # handles the calculation and sets next_position_id to first position of the given schedule
+
+                client.get(
+                    "/stats/",
+                    follow_redirects=True,
+                    query_string={
+                        "schedule_selector": 2
+                    })
+                calculator = Calculator(new_season_flag=True)
+                self.assertEqual(201, calculator.next_position_id)
 
     def test_next_position_variable(self):
         with self.app() as client:
@@ -354,7 +377,7 @@ class StatsTest(GeneralBaseTest):
                     })
 
                 calculator = Calculator()
-                self.assertIsNone(calculator.next_workout_best_time)
+                self.assertIsNone(calculator.next_workout_best_time_session)
 
                 workout_session_1 = WorkoutSession(
                     date="1991/07/24",
@@ -394,10 +417,77 @@ class StatsTest(GeneralBaseTest):
                 )
                 workout_session_1.save_to_db()
                 workout_session_2.save_to_db()
+                workout_session_3.save_to_db()
 
                 calculator = Calculator()
-                self.assertIsNotNone(calculator.next_workout_best_time)
-                self.assertEqual(1, calculator.next_workout_best_time.hours)
+                self.assertIsNotNone(calculator.next_workout_best_time_session)
+                self.assertEqual(1, calculator.next_workout_best_time_session.hours)
+                self.assertEqual(30, calculator.next_workout_best_time_session.minutes)
+                self.assertEqual(20, calculator.next_workout_best_time_session.seconds)
+
+                # New season, but worse time
+                workout_session_5 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=2,
+                    minutes=1,
+                    seconds=1,
+                    season=2,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_6 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=2,
+                    user_id=1,
+                    workout_id=3,
+                    position_id=102,
+                    schedule_id=1
+                )
+                workout_session_5.save_to_db()
+                workout_session_6.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(1, calculator.next_workout_best_time_session.hours)
+                self.assertEqual(30, calculator.next_workout_best_time_session.minutes)
+                self.assertEqual(20, calculator.next_workout_best_time_session.seconds)
+
+                # New season, better than ever before
+                workout_session_7 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=0,
+                    minutes=59,
+                    seconds=59,
+                    season=3,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_8 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=3,
+                    user_id=1,
+                    workout_id=3,
+                    position_id=102,
+                    schedule_id=1
+                )
+                workout_session_7.save_to_db()
+                workout_session_8.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(0, calculator.next_workout_best_time_session.hours)
+                self.assertEqual(59, calculator.next_workout_best_time_session.minutes)
+                self.assertEqual(59, calculator.next_workout_best_time_session.seconds)
 
     def test_current_workout_session_season_variable(self):
         with self.app() as client:
@@ -412,3 +502,41 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertEqual(1, calculator.current_workout_session_season)
+
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(1, calculator.current_workout_session_season)
+
+                # The data should be retrived based on the last added workout session
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=2,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(2, calculator.current_workout_session_season)
+
+                # If the user wish to start a new season, calculator with new_season_flag=True
+                # handles the calculation and increases season by 1
+                calculator = Calculator(new_season_flag=True)
+                self.assertEqual(3, calculator.current_workout_session_season)
