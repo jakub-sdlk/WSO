@@ -48,6 +48,7 @@ class WorkoutSession(db.Model, GeneralModel):
     @classmethod
     def find_by_season(cls, season):
         return cls.query.filter_by(season=season).all()
+
     @classmethod
     def find_by_user_id(cls, user_id):
         return cls.query.filter_by(user_id=user_id).all()
@@ -96,3 +97,24 @@ class Position(db.Model, GeneralModel):
 
     def __repr__(self):
         return f"<Class: Position; Id: {self.id}; WorkoutId: {self.workout_id}>"
+
+
+class Exercise(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+
+    sets = db.relationship('Set', backref='exercise', lazy=True)
+
+    def __repr__(self):
+        return f"<Class: Exercise; Id: {self.id}; Name: {self.name}>"
+
+
+class Set(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+    exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), nullable=False)
+    position_in_workout = db.Column(db.Integer)
+    number_of_reps = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<Class: Set; Id: {self.id}; ExerciseId: {self.exercise_id}>"
+
