@@ -81,6 +81,7 @@ class Workout(db.Model, GeneralModel):
 class Schedule(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
+
     workout_sessions = db.relationship('WorkoutSession', backref='schedule', lazy=True)
 
     def __repr__(self):
