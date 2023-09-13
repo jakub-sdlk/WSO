@@ -18,5 +18,7 @@ class WorkoutTest(UnitBaseTest):
             name="Sample Workout",
             number_of_circles=3
         )
-        expected = '<Workout: 10; Sample Workout>'
+        expected = "<Class: Workout; Id: 10; Name: Sample Workout>"
         self.assertEqual(expected, repr(test))
+
+

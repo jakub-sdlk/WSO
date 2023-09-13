@@ -164,8 +164,9 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
 
-                expected1 = "[<Schedule: 1; Lane Goodwin Full>, <Schedule: 2; Triatlon>]"
-                self.assertEqual(expected1, str(calculator.all_schedules))
+                expected1 = "[<Class: Schedule; Id: 1; Name: Lane Goodwin Full>, <Class: Schedule; Id: 2; Name: " \
+                            "Triatlon>]"
+                self.assertEqual(expected1, repr(calculator.all_schedules))
 
                 #  Make sure you can loop through the all_schedules and get correct results
                 expected2 = ("Lane Goodwin Full", "Triatlon")
@@ -344,7 +345,7 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertEqual(
-                    "<Position: 101; 1>", str(calculator.next_position)
+                    "<Class: Position; Id: 101; WorkoutId: 1>", str(calculator.next_position)
                 )
 
                 workout_session_1 = WorkoutSession(
@@ -362,7 +363,7 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertEqual(
-                    "<Position: 102; 3>", str(calculator.next_position)
+                    "<Class: Position; Id: 102; WorkoutId: 3>", str(calculator.next_position)
                 )
 
     def test_next_workout_best_time_variable(self):

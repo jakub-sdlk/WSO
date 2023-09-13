@@ -24,5 +24,5 @@ class UserTest(UnitBaseTest):
             email="John@Doe.com",
             password=1234)
 
-        expected = '<User: 10; John@Doe.com>'
+        expected = "<Class: User; Id: 10; Email: John@Doe.com>"
         self.assertEqual(expected, repr(test))

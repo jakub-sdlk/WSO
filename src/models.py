@@ -20,7 +20,7 @@ class User(db.Model, UserMixin, GeneralModel):
     registered_schedules = db.relationship('Schedule', secondary=user_schedule, backref='registered_users')
 
     def __repr__(self):
-        return f'<User: {self.id}; {self.email}>'
+        return f"<Class: User; Id: {self.id}; Email: {self.email}>"
 
     @classmethod
     def find_by_email(cls, email):
@@ -43,7 +43,7 @@ class WorkoutSession(db.Model, GeneralModel):
     # positions = db.relationship('Position', backref='workout_session', lazy=True)
 
     def __repr__(self):
-        return f'<WorkoutSession: {self.id}; {self.workout_id}>'
+        return f"<Class: WorkoutSession; Id: {self.id}; WorkoutId: {self.workout_id}>"
 
     @classmethod
     def find_by_season(cls, season):
@@ -74,7 +74,7 @@ class Workout(db.Model, GeneralModel):
     workout_sessions = db.relationship('WorkoutSession', backref='workout', lazy=True)
 
     def __repr__(self):
-        return f'<Workout: {self.id}; {self.name}>'
+        return f"<Class: Workout; Id: {self.id}; Name: {self.name}>"
 
 
 class Schedule(db.Model, GeneralModel):
@@ -83,7 +83,7 @@ class Schedule(db.Model, GeneralModel):
     workout_sessions = db.relationship('WorkoutSession', backref='schedule', lazy=True)
 
     def __repr__(self):
-        return f'<Schedule: {self.id}; {self.name}>'
+        return f"<Class: Schedule; Id: {self.id}; Name: {self.name}>"
 
 
 class Position(db.Model, GeneralModel):
@@ -95,4 +95,4 @@ class Position(db.Model, GeneralModel):
     workout_sessions = db.relationship('WorkoutSession', backref='position', lazy=True)
 
     def __repr__(self):
-        return f'<Position: {self.id}; {self.workout_id}>'
+        return f"<Class: Position; Id: {self.id}; WorkoutId: {self.workout_id}>"

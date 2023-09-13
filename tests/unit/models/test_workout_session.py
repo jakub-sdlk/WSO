@@ -40,5 +40,5 @@ class WorkoutSessionsTest(UnitBaseTest):
             position_id=1,
             schedule_id=4
         )
-        expected = '<WorkoutSession: 10; 5>'
+        expected = "<Class: WorkoutSession; Id: 10; WorkoutId: 5>"
         self.assertEqual(expected, repr(test))
