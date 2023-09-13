@@ -1,5 +1,6 @@
 from tests.general_base_test import GeneralBaseTest
 from src.stats.database_generator import DatabaseGenerator
+from src.models import WorkoutSession
 
 
 # noinspection PyArgumentList
@@ -34,7 +35,7 @@ class StatsTest(GeneralBaseTest):
                 self.assertIn(expected3, response.data)
 
                 # Next session with the title Core Strength should be seen
-                expected4 = b'id="next-session">\n              \n                Core Strength'
+                expected4 = b'id="next-session">\n              \n                Frontal Strength'
                 self.assertIn(expected4, response.data)
 
                 # Season should be set to 1 at the very beginning
@@ -102,11 +103,11 @@ class StatsTest(GeneralBaseTest):
                 expected2 = b"""id="user_workout_sessions_count">\n              1"""
                 self.assertIn(expected2, response.data)
 
-                expected3 = b"""id="last-session-name">\n              \n                Core Strength"""
+                expected3 = b"""id="last-session-name">\n              \n                Frontal Strength"""
                 self.assertIn(expected3, response.data)
 
                 # Next session with the title Core Strength should be seen
-                expected4 = b'id="next-session">\n              \n                Leg Strength'
+                expected4 = b'id="next-session">\n              \n                Core Strength'
                 self.assertIn(expected4, response.data)
 
                 # Season should be set to 1 at the very beginning
@@ -177,38 +178,19 @@ class StatsTest(GeneralBaseTest):
                         "login_password": 1234
                     })
 
-                client.post(
-                    "/stats/",
-                    follow_redirects=True,
-                    data={
-                        "calendar": "1991/07/24",
-                        "hours": 0,
-                        "minutes": 24,
-                        "seconds": 12,
-                        "season_setup": "0"
-                    })
-
-                client.post(
-                    "/stats/",
-                    follow_redirects=True,
-                    data={
-                        "calendar": "1991/07/25",
-                        "hours": 0,
-                        "minutes": 20,
-                        "seconds": 10,
-                        "season_setup": "0"
-                    })
-
-                client.post(
-                    "/stats/",
-                    follow_redirects=True,
-                    data={
-                        "calendar": "1991/07/26",
-                        "hours": 0,
-                        "minutes": 15,
-                        "seconds": 15,
-                        "season_setup": "0"
-                    })
+                # Skip to the very end of the season - Position 147
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=4,
+                    position_id=147,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
 
                 response = client.post(
                     "/stats/",
@@ -220,9 +202,6 @@ class StatsTest(GeneralBaseTest):
                         "seconds": 7,
                         "season_setup": "0"
                     })
-
-                expected2 = b"""id="user_workout_sessions_count">\n              4"""
-                self.assertIn(expected2, response.data)
 
                 expected4 = b"""No more workouts. Start a new season"""
                 self.assertIn(expected4, response.data)

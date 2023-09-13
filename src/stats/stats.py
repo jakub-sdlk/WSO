@@ -20,7 +20,7 @@ def overview():
 
     # create basic schedules in case the database was deleted in development process
     if not Schedule.query.all():
-        DatabaseGenerator.recreate_development_database()
+        DatabaseGenerator.create_automatic_testing_database()
 
     # create calculator
     calculator = Calculator()

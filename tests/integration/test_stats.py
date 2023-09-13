@@ -345,7 +345,7 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertEqual(
-                    "<Class: Position; Id: 101; WorkoutId: 1>", str(calculator.next_position)
+                    "<Class: Position; Id: 101; WorkoutId: 5>", str(calculator.next_position)
                 )
 
                 workout_session_1 = WorkoutSession(
@@ -363,7 +363,7 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertEqual(
-                    "<Class: Position; Id: 102; WorkoutId: 3>", str(calculator.next_position)
+                    "<Class: Position; Id: 102; WorkoutId: 1>", str(calculator.next_position)
                 )
 
     def test_next_workout_best_time_variable(self):
@@ -388,7 +388,7 @@ class StatsTest(GeneralBaseTest):
                     season=1,
                     user_id=1,
                     workout_id=1,
-                    position_id=101,
+                    position_id=102,
                     schedule_id=1
                 )
 
@@ -399,8 +399,8 @@ class StatsTest(GeneralBaseTest):
                     seconds=20,
                     season=1,
                     user_id=1,
-                    workout_id=3,
-                    position_id=102,
+                    workout_id=8,
+                    position_id=104,
                     schedule_id=1
                 )
 
@@ -413,7 +413,7 @@ class StatsTest(GeneralBaseTest):
                     season=1,
                     user_id=2,
                     workout_id=1,
-                    position_id=101,
+                    position_id=102,
                     schedule_id=1
                 )
                 workout_session_1.save_to_db()
@@ -435,7 +435,7 @@ class StatsTest(GeneralBaseTest):
                     season=2,
                     user_id=1,
                     workout_id=1,
-                    position_id=101,
+                    position_id=102,
                     schedule_id=1
                 )
 
@@ -446,8 +446,8 @@ class StatsTest(GeneralBaseTest):
                     seconds=20,
                     season=2,
                     user_id=1,
-                    workout_id=3,
-                    position_id=102,
+                    workout_id=8,
+                    position_id=104,
                     schedule_id=1
                 )
                 workout_session_5.save_to_db()
@@ -467,7 +467,7 @@ class StatsTest(GeneralBaseTest):
                     season=3,
                     user_id=1,
                     workout_id=1,
-                    position_id=101,
+                    position_id=102,
                     schedule_id=1
                 )
 
@@ -478,8 +478,8 @@ class StatsTest(GeneralBaseTest):
                     seconds=20,
                     season=3,
                     user_id=1,
-                    workout_id=3,
-                    position_id=102,
+                    workout_id=8,
+                    position_id=104,
                     schedule_id=1
                 )
                 workout_session_7.save_to_db()
@@ -520,7 +520,7 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertEqual(1, calculator.current_workout_session_season)
 
-                # The data should be retrived based on the last added workout session
+                # The data should be retrieved based on the last added workout session
                 workout_session_2 = WorkoutSession(
                     date="1991/07/24",
                     hours=1,

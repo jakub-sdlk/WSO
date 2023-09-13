@@ -137,8 +137,7 @@ class WorkoutTest(GeneralBaseTest):
             finally:
                 self.assertListEqual([], workout1.sets)
 
-                workout1.sets.append(set1)
-                workout1.sets.append(set2)
+                workout1.sets.extend([set1, set2])
 
                 self.assertIsInstance(workout1.sets[0], Set)
 
