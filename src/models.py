@@ -8,6 +8,10 @@ user_schedule = db.Table('user_schedule',
                          db.Column('schedule_id', db.Integer, db.ForeignKey('schedule.id'))
                          )
 
+set_workout = db.Table('set_workout',
+                       db.Column('set_id', db.Integer, db.ForeignKey('set.id'), primary_key=True),
+                       db.Column('workout_id', db.Integer, db.ForeignKey('workout.id'), primary_key=True)
+                       )
 
 class User(db.Model, UserMixin, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,6 +20,7 @@ class User(db.Model, UserMixin, GeneralModel):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+
     workout_sessions = db.relationship('WorkoutSession', backref='user', passive_deletes=True)
     registered_schedules = db.relationship('Schedule', secondary=user_schedule, backref='registered_users')
 
@@ -73,6 +78,8 @@ class Workout(db.Model, GeneralModel):
 
     positions = db.relationship('Position', backref='workout', lazy=True)
     workout_sessions = db.relationship('WorkoutSession', backref='workout', lazy=True)
+    sets = db.relationship('Set', secondary=set_workout, lazy='subquery',
+                           backref=db.backref('workouts', lazy=True))
 
     def __repr__(self):
         return f"<Class: Workout; Id: {self.id}; Name: {self.name}>"
@@ -118,4 +125,3 @@ class Set(db.Model, GeneralModel):
 
     def __repr__(self):
         return f"<Class: Set; Id: {self.id}; ExerciseId: {self.exercise_id}>"
-

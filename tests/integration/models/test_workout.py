@@ -1,4 +1,4 @@
-from src.models import Workout, WorkoutSession, Position
+from src.models import Workout, WorkoutSession, Position, Set
 from tests.general_base_test import GeneralBaseTest
 
 
@@ -111,6 +111,42 @@ class WorkoutTest(GeneralBaseTest):
 
                 self.assertEqual(206, workout1.positions[1].id)
                 self.assertEqual(2, workout1.positions[1].week)
+
+    def test_set_relationship(self):
+        with self.app_context():
+            workout1 = Workout(
+                name="Core Strength",
+                number_of_circles=5
+            )
+            set1 = Set(
+                exercise_id=1,
+                position_in_workout=1,
+                number_of_reps=15
+            )
+            set2 = Set(
+                exercise_id=2,
+                position_in_workout=2,
+                number_of_reps=10
+            )
+            try:
+                workout1.save_to_db()
+                set1.save_to_db()
+                set2.save_to_db()
+            except Exception as e:
+                self.assertIsNone(e)
+            finally:
+                self.assertListEqual([], workout1.sets)
+
+                workout1.sets.append(set1)
+                workout1.sets.append(set2)
+
+                self.assertIsInstance(workout1.sets[0], Set)
+
+                self.assertEqual(1, workout1.sets[0].exercise_id)
+                self.assertEqual(2, workout1.sets[1].exercise_id)
+                self.assertEqual(2, workout1.sets[1].position_in_workout)
+                self.assertEqual(10, workout1.sets[1].number_of_reps)
+
 
 
 
