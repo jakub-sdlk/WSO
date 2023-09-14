@@ -78,7 +78,7 @@ class Workout(db.Model, GeneralModel):
 
     positions = db.relationship('Position', backref='workout', lazy=True)
     workout_sessions = db.relationship('WorkoutSession', backref='workout', lazy=True)
-    sets = db.relationship('Set', secondary=set_workout, lazy='subquery',
+    sets = db.relationship('Set', secondary=set_workout,
                            backref=db.backref('workouts', lazy=True))
 
     def __repr__(self):

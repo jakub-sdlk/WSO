@@ -69,7 +69,8 @@ def overview():
                            time=time,
                            next_position=calculator.next_position,
                            next_workout_best_time_session=calculator.next_workout_best_time_session,
-                           current_workout_session_season=calculator.current_workout_session_season
+                           current_workout_session_season=calculator.current_workout_session_season,
+                           sets_in_next_workout=calculator.sets_in_next_workout
                            )
 
 

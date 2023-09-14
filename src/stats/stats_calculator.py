@@ -1,7 +1,7 @@
 from flask import session
 from flask_login import current_user
 
-from src.models import WorkoutSession, Schedule, Workout, Position
+from src.models import WorkoutSession, Schedule, Workout, Position, set_workout
 
 
 class Calculator:
@@ -17,6 +17,7 @@ class Calculator:
         self.next_position = self.get_next_position()
         self.next_workout_best_time_session = self.get_next_workout_best_time_session()
         self.current_workout_session_season = self.calculate_current_workout_session_season()
+        self.sets_in_next_workout = self.get_sets_in_next_workout()
 
     def get_all_schedules(self):
         return Schedule.query.all()
@@ -72,3 +73,24 @@ class Calculator:
             current_workout_session_season += 1
 
         return current_workout_session_season
+
+    def get_sets_in_next_workout(self):
+        if self.next_position:
+            next_workout = Workout.query.filter_by(
+                id=self.next_position.workout_id
+            ).first()
+
+            # For some reason the next_workout.sets list is not sorted - objects inside change positions with every call
+            # This is a working solution - objects are sorted based on their position_in_workout attribute
+            ordered_sets = []
+            for i, value in enumerate(next_workout.sets, start=1):
+                for obj in next_workout.sets:
+                    if obj.position_in_workout == i:
+                        ordered_sets.append(obj)
+
+        else:
+            ordered_sets = None
+
+        return ordered_sets
+
+

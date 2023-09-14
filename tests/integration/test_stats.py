@@ -123,7 +123,7 @@ class StatsTest(GeneralBaseTest):
                     self.assertEqual("test@test.com", current_user.email)
                     self.assertEqual("Test", current_user.first_name)
 
-    def test_active_schedule_id_variable(self):
+    def test_active_schedule_id_attribute(self):
         with self.app() as client:
             with self.app_context():
                 response = client.post(
@@ -151,7 +151,7 @@ class StatsTest(GeneralBaseTest):
                 self.assertEqual(b'schedule_selector=2', response.request.query_string)
                 self.assertEqual(2, calculator.active_schedule_id)
 
-    def test_all_schedules_variable(self):
+    def test_all_schedules_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -174,7 +174,7 @@ class StatsTest(GeneralBaseTest):
                     self.assertEqual(count + 1, schedule.id)
                     self.assertEqual(expected2[count], schedule.name)
 
-    def test_all_workout_sessions_variable(self):
+    def test_all_workout_sessions_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -219,7 +219,7 @@ class StatsTest(GeneralBaseTest):
                 self.assertListEqual([workout_session_1], calculator.get_all_workout_sessions())
                 self.assertEqual(1, len(calculator.get_all_workout_sessions()))
 
-    def test_user_workout_sessions_count_variable(self):
+    def test_user_workout_sessions_count_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -263,7 +263,7 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator()
                 self.assertEqual(1, calculator.get_user_workout_sessions_count())
 
-    def test_position_id_variable(self):
+    def test_position_id_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -332,7 +332,7 @@ class StatsTest(GeneralBaseTest):
                 calculator = Calculator(new_season_flag=True)
                 self.assertEqual(201, calculator.next_position_id)
 
-    def test_next_position_variable(self):
+    def test_next_position_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -366,7 +366,7 @@ class StatsTest(GeneralBaseTest):
                     "<Class: Position; Id: 102; WorkoutId: 1>", str(calculator.next_position)
                 )
 
-    def test_next_workout_best_time_variable(self):
+    def test_next_workout_best_time_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -490,7 +490,7 @@ class StatsTest(GeneralBaseTest):
                 self.assertEqual(59, calculator.next_workout_best_time_session.minutes)
                 self.assertEqual(59, calculator.next_workout_best_time_session.seconds)
 
-    def test_current_workout_session_season_variable(self):
+    def test_current_workout_session_season_attribute(self):
         with self.app() as client:
             with self.app_context():
                 client.post(
@@ -541,3 +541,61 @@ class StatsTest(GeneralBaseTest):
                 # handles the calculation and increases season by 1
                 calculator = Calculator(new_season_flag=True)
                 self.assertEqual(3, calculator.current_workout_session_season)
+
+    def test_sets_in_next_workout_attribute(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+
+                # When first loaded, the sets for Frontal Strength should be available
+                self.assertIsNotNone(calculator.sets_in_next_workout)
+                self.assertEqual(4, len(calculator.sets_in_next_workout))
+
+                self.assertEqual("<Class: Set; Id: 16; ExerciseId: 3>", str(calculator.sets_in_next_workout[0]))
+                self.assertEqual(2, calculator.sets_in_next_workout[1].position_in_workout)
+                self.assertEqual(3, calculator.sets_in_next_workout[2].exercise_id)
+                self.assertEqual(18, calculator.sets_in_next_workout[-1].id)
+
+                # Workout can consist of different number of sets. Next workout should be Leg Skills with 3 sets only
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=4,
+                    position_id=106,
+                    schedule_id=1
+                )
+
+                workout_session_1.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(3, len(calculator.sets_in_next_workout))
+
+                # At the very end of the season, no sets_in_next_workout should return None
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=148,
+                    schedule_id=1
+                )
+
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertIsNone(calculator.sets_in_next_workout)

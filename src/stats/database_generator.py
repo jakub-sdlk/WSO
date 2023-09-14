@@ -582,10 +582,11 @@ class DatabaseGenerator:
             workout1, workout2, workout3, workout4, workout5,
             workout6, workout7, workout8, workout9, workout10,
             workout21, workout22, workout23,
-            exercise1, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, exercise8, exercise9,
+            exercise1, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, exercise8,
+            exercise9, exercise10, exercise11,
             set1, set2, set3, set4, set5, set6, set7, set8, set9, set10,
             set11, set12, set13, set14, set15, set16, set17, set18, set19, set20,
-            set21, set22, set23, set24, set25, set26, set27, set28, set29
+            set21, set22, set23, set24, set25, set26, set27, set28, set29, set30
         ]
         # Lane Goodwin Full Workout positions
         objects_to_add_to_session.extend([
@@ -625,3 +626,9 @@ class DatabaseGenerator:
         workout8.sets.extend([set22, set23, set24])
         workout9.sets.extend([set25, set26, set27])
         workout10.sets.extend([set13, set10])
+
+        workout21.sets.extend([set28])
+        workout22.sets.extend([set29])
+        workout23.sets.extend([set30])
+
+        db.session.commit()

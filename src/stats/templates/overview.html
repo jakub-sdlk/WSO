@@ -238,30 +238,17 @@
       <h6 class="list-group-header">
         Sets in next workout
       </h6>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Pull-ups</span>
-        <span class="text-muted">20</span>
-      </a>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Push-ups</span>
-        <span class="text-muted">40</span>
-      </a>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Burpees</span>
-        <span class="text-muted">30</span>
-      </a>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Lunges</span>
-        <span class="text-muted">15</span>
-      </a>
-      
+      {% if sets_in_next_workout %}
+        {% for s in sets_in_next_workout %}
+          <a class="list-group-item list-group-item-action justify-content-between" href="#" id="set {{ s.id }}">
+            <span>{{ s.exercise.name }}</span>
+            <span class="text-muted">{{ s.number_of_reps }}</span>
+          </a>
+        {% endfor %}
+      {% endif %}
       <a class="list-group-item list-group-item-action justify-content-between" href="#">
         <span class="font-weight-normal">Total circles:</span>
-        <span class="font-weight-normal">5</span>
+        <span class="font-weight-normal">{{ next_position.workout.number_of_circles }}</span>
       </a>
     
     </div>
