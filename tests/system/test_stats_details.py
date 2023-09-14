@@ -25,29 +25,19 @@ class StatsTest(GeneralBaseTest):
                         "login_password": 1234
                     })
                 #  Check that schedule 1 is selected
-                expected1 = b"""<option selected value="1" >Lane Goodwin Full </option>"""
-                self.assertIn(expected1, response.data)
 
-                expected2 = b"""id="user_workout_sessions_count">\n              0"""
+                expected1 = b"""id="set 16">\n            <span>Push Up"""
+                self.assertIn(expected1, response.data)
+                expected2 = b"""id="reps set 16">20</span>"""
                 self.assertIn(expected2, response.data)
 
-                expected3 = b"""No workouts done"""
+                expected3 = b"""id="set 17">\n            <span>Squat"""
                 self.assertIn(expected3, response.data)
-
-                # Next session with the title Core Strength should be seen
-                expected4 = b'id="next-session">\n              \n                Frontal Strength'
+                expected4 = b"""id="reps set 17">40</span>"""
                 self.assertIn(expected4, response.data)
 
-                # Season should be set to 1 at the very beginning
-                expected5 = b"""id="season">\n              Season 1"""
+                expected5 = b"""id="number-of-circles">5</span>"""
                 self.assertIn(expected5, response.data)
-
-                # Week and they should be empty at the very beginning
-                expected6 = b"""Week\n              \n            </h2>"""
-                self.assertIn(expected6, response.data)
-
-                expected7 = b"""Day\n              \n            </h2>"""
-                self.assertIn(expected7, response.data)
 
     def test_stats_details_are_correct_after_adding_workout_session(self):
         with self.app() as client:
@@ -71,30 +61,10 @@ class StatsTest(GeneralBaseTest):
                         "season_setup": "0"
                     })
 
-                expected2 = b"""id="user_workout_sessions_count">\n              1"""
+                expected1 = b"""id="set 1">\n            <span>Burpee"""
+                self.assertIn(expected1, response.data)
+                expected2 = b"""id="set 4">\n            <span>Lunge"""
                 self.assertIn(expected2, response.data)
-
-                expected3 = b"""id="last-session-name">\n              \n                Frontal Strength"""
-                self.assertIn(expected3, response.data)
-
-                # Next session with the title Core Strength should be seen
-                expected4 = b'id="next-session">\n              \n                Core Strength'
-                self.assertIn(expected4, response.data)
-
-                # Season should be set to 1 at the very beginning
-                expected5 = b"""id="season">\n              Season 1"""
-                self.assertIn(expected5, response.data)
-
-                # Week and they should be empty at the very beginning
-                expected6 = b"""id="week">\n              \n                Week 1"""
-                self.assertIn(expected6, response.data)
-
-                expected7 = b"""id="day">\n              \n                Day 1"""
-                self.assertIn(expected7, response.data)
-
-                # Last session time should be now displayed as well
-                expected8 = b"""id="last-session-time">\n                00:24:12"""
-                self.assertIn(expected8, response.data)
 
     def test_end_of_schedule_displays_stats_details_correctly(self):
         # Add workout sessions until you reach the end of season
@@ -134,11 +104,9 @@ class StatsTest(GeneralBaseTest):
                         "season_setup": "0"
                     })
 
-                expected4 = b"""No more workouts. Start a new season"""
-                self.assertIn(expected4, response.data)
+                expected1 = b"""Sets in next workout"""
+                self.assertNotIn(expected1, response.data)
 
-                expected6 = b"""id="week">\n              \n                Week 1"""
-                self.assertIn(expected6, response.data)
+                expected2 = b"""id="set"""
+                self.assertNotIn(expected2, response.data)
 
-                expected7 = b"""id="day">\n              \n                Day 4"""
-                self.assertIn(expected7, response.data)
