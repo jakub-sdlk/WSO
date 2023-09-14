@@ -11,6 +11,7 @@ class Calculator:
 
         self.all_schedules = self.get_all_schedules()
         self.active_schedule_id = self.get_active_schedule_id()
+        self.all_workouts_in_active_schedule = self.get_all_workouts_in_active_schedule()
         self.all_workout_sessions = self.get_all_workout_sessions()
         self.user_workout_sessions_count = self.get_user_workout_sessions_count()
         self.next_position_id = self.calculate_next_position_id()
@@ -26,6 +27,12 @@ class Calculator:
 
     def get_active_schedule_id(self):
         return int(session['active_schedule_id'])
+
+    def get_all_workouts_in_active_schedule(self):
+        active_schedule = Schedule.query.filter_by(
+            id=self.active_schedule_id
+        ).first()
+        return active_schedule.workouts
 
     def get_all_workout_sessions(self):
         return WorkoutSession.query.filter_by(
@@ -95,6 +102,27 @@ class Calculator:
         return ordered_sets
 
     def calculate_best_workout_times(self):
-        pass
+        if self.all_workout_sessions:
+            best_workout_sessions_list = []
+            for workout in self.all_workouts_in_active_schedule:
+                best_time_workout_session = WorkoutSession.query.filter_by(
+                    workout_id=workout.id,
+                    user_id=current_user.id
+                ).order_by(
+                    WorkoutSession.hours,
+                    WorkoutSession.minutes,
+                    WorkoutSession.seconds
+                ).first()
+
+                if best_time_workout_session:
+                    best_workout_sessions_list.append(best_time_workout_session)
+        else:
+            best_workout_sessions_list = None
+
+        return best_workout_sessions_list
+
+
+
+
 
 

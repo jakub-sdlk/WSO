@@ -174,6 +174,42 @@ class StatsTest(GeneralBaseTest):
                     self.assertEqual(count + 1, schedule.id)
                     self.assertEqual(expected2[count], schedule.name)
 
+    def test_all_workouts_in_active_schedule_attribute(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                calculator = Calculator()
+
+                self.assertEqual(10, len(calculator.all_workouts_in_active_schedule))
+                expected1 = "<Class: Workout; Id: 1; Name: Core Strength>"
+                self.assertEqual(expected1, str(calculator.all_workouts_in_active_schedule[0]))
+                expected2 = "<Class: Workout; Id: 10; Name: Core Skills>"
+                self.assertEqual(expected2, str(calculator.all_workouts_in_active_schedule[-1]))
+
+                # When switching to another schedule, this list should change
+
+                client.get(
+                    "/stats/",
+                    follow_redirects=True,
+                    query_string={
+                        "schedule_selector": 2
+                    })
+
+                calculator = Calculator()
+
+                self.assertEqual(3, len(calculator.all_workouts_in_active_schedule))
+                expected1 = "<Class: Workout; Id: 21; Name: Běh 3km>"
+                self.assertEqual(expected1, str(calculator.all_workouts_in_active_schedule[0]))
+                expected2 = "<Class: Workout; Id: 23; Name: Plavání 2km>"
+                self.assertEqual(expected2, str(calculator.all_workouts_in_active_schedule[-1]))
+
     def test_all_workout_sessions_attribute(self):
         with self.app() as client:
             with self.app_context():
@@ -611,16 +647,16 @@ class StatsTest(GeneralBaseTest):
                         "login_password": 1234,
                     })
 
-                # For a new user, there should be no best workout times
+                # New user should not see the list, the best_workout_times is set to None
                 calculator = Calculator()
                 self.assertIsNone(calculator.best_workout_times)
 
-                # After adding two workouts, they should be the best times achieved
+                # After adding two workout session, their times should be displayed
                 workout_session_1 = WorkoutSession(
                     date="1991/07/24",
                     hours=1,
-                    minutes=30,
-                    seconds=20,
+                    minutes=1,
+                    seconds=1,
                     season=1,
                     user_id=1,
                     workout_id=5,
@@ -631,8 +667,8 @@ class StatsTest(GeneralBaseTest):
                 workout_session_2 = WorkoutSession(
                     date="1991/07/24",
                     hours=1,
-                    minutes=30,
-                    seconds=20,
+                    minutes=15,
+                    seconds=15,
                     season=1,
                     user_id=1,
                     workout_id=1,
@@ -644,11 +680,15 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertIsNotNone(calculator.best_workout_times)
-                self.assertIsInstance(WorkoutSession, calculator.best_workout_times[0])
-                self.assertEqual(1, calculator.best_workout_times[0].id)
-                self.assertEqual(1, calculator.best_workout_times[0].hours)
+                self.assertIsInstance(calculator.best_workout_times[0], WorkoutSession,)
+                self.assertEqual(2, len(calculator.best_workout_times))
 
-                self.assertEqual(2, calculator.best_workout_times[1].id)
+                self.assertEqual(2, calculator.best_workout_times[0].id)
+                self.assertEqual(1, calculator.best_workout_times[0].hours)
+                self.assertEqual(15, calculator.best_workout_times[0].minutes)
+                self.assertEqual(15, calculator.best_workout_times[0].seconds)
+
+                self.assertEqual(1, calculator.best_workout_times[1].id)
 
                 # After adding same workouts in different season with worse time,
                 # The best times should stay the same
@@ -680,9 +720,8 @@ class StatsTest(GeneralBaseTest):
                 workout_session_2.save_to_db()
 
                 calculator = Calculator()
-                self.assertEqual(1, calculator.best_workout_times[0].id)
+                self.assertEqual(2, len(calculator.best_workout_times))
+
+                self.assertEqual(2, calculator.best_workout_times[0].id)
                 self.assertEqual(1, calculator.best_workout_times[0].hours)
-
-                self.assertEqual(2, calculator.best_workout_times[1].id)
-
-
+                self.assertEqual(1, calculator.best_workout_times[1].id)

@@ -24,8 +24,8 @@ class StatsTest(GeneralBaseTest):
                         "login_email": "John@Doe.com",
                         "login_password": 1234
                     })
-                #  Check that schedule 1 is selected
 
+                # Check that sets in next workout works
                 expected1 = b"""id="set 16">\n            <span>Push Up"""
                 self.assertIn(expected1, response.data)
                 expected2 = b"""id="reps set 16">20</span>"""
@@ -38,6 +38,13 @@ class StatsTest(GeneralBaseTest):
 
                 expected5 = b"""id="number-of-circles">5</span>"""
                 self.assertIn(expected5, response.data)
+
+                # Check that best workout times work - New user should not see the table
+                expected6 = b"""Best workout times"""
+                self.assertNotIn(expected6, response.data)
+
+                expected7 = b"""id="best-workout-"""
+                self.assertNotIn(expected7, response.data)
 
     def test_stats_details_are_correct_after_adding_workout_session(self):
         with self.app() as client:
@@ -61,10 +68,22 @@ class StatsTest(GeneralBaseTest):
                         "season_setup": "0"
                     })
 
+                # Check that sets in next workout works
                 expected1 = b"""id="set 1">\n            <span>Burpee"""
                 self.assertIn(expected1, response.data)
+
                 expected2 = b"""id="set 4">\n            <span>Lunge"""
                 self.assertIn(expected2, response.data)
+
+                # Check that best workout times work - user now should see the table and data in it
+                expected3 = b"""Best workout times"""
+                self.assertIn(expected3, response.data)
+
+                expected4 = b"""id="best-workout-Frontal Strength"""
+                self.assertIn(expected4, response.data)
+
+                expected4 = b"""id="best-time-of-Frontal Strength">\n              00:24:12"""
+                self.assertIn(expected4, response.data)
 
     def test_end_of_schedule_displays_stats_details_correctly(self):
         # Add workout sessions until you reach the end of season
@@ -103,10 +122,22 @@ class StatsTest(GeneralBaseTest):
                         "seconds": 7,
                         "season_setup": "0"
                     })
-
+                # Check that sets in next workout works - User should not see the table at the end of season
                 expected1 = b"""Sets in next workout"""
                 self.assertNotIn(expected1, response.data)
 
                 expected2 = b"""id="set"""
                 self.assertNotIn(expected2, response.data)
 
+                # Check that best workout times work - user now should see best times of two workouts
+                expected3 = b"""id="best-workout-Frontal Strength"""
+                self.assertIn(expected3, response.data)
+
+                expected4 = b"""id="best-time-of-Frontal Strength">\n              00:07:07"""
+                self.assertIn(expected4, response.data)
+
+                expected5 = b"""id="best-workout-V-Taper">V-Taper"""
+                self.assertIn(expected5, response.data)
+
+                expected6 = b"""id="best-time-of-V-Taper">\n              01:30:20"""
+                self.assertIn(expected6, response.data)

@@ -256,24 +256,23 @@
   
   <div class="col-lg-4 mb-5">
     <div class="list-group mb-3">
-      <h6 class="list-group-header">
+      {% if best_workout_times %}
+        <h6 class="list-group-header">
         Best workout times
       </h6>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Core Strength</span>
-        <span class="text-muted">00:31:49</span>
-      </a>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Full Fledged Strength</span>
-        <span class="text-muted">00:41:14</span>
-      </a>
-      
-      <a class="list-group-item list-group-item-action justify-content-between" href="#">
-        <span>Leg Strength</span>
-        <span class="text-muted">00:19:29</span>
-      </a>
+        {% for best in best_workout_times %}
+          <a class="list-group-item list-group-item-action justify-content-between" href="#">
+            <span id="best-workout-{{ best.workout.name }}">{{ best.workout.name }}</span>
+            <span class="text-muted" id="best-time-of-{{ best.workout.name }}">
+              {{ time(
+                best.hours,
+                best.minutes,
+                best.seconds
+              ) }}
+            </span>
+          </a>
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
   
