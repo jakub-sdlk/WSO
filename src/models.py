@@ -13,6 +13,12 @@ set_workout = db.Table('set_workout',
                        db.Column('workout_id', db.Integer, db.ForeignKey('workout.id'), primary_key=True)
                        )
 
+workout_schedule = db.Table('workout_schedule',
+                            db.Column('workout_id', db.Integer, db.ForeignKey('workout.id'), primary_key=True),
+                            db.Column('schedule_id', db.Integer, db.ForeignKey('schedule.id'), primary_key=True)
+                            )
+
+
 class User(db.Model, UserMixin, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(150))
@@ -90,6 +96,8 @@ class Schedule(db.Model, GeneralModel):
     name = db.Column(db.String(150))
 
     workout_sessions = db.relationship('WorkoutSession', backref='schedule', lazy=True)
+    workouts = db.relationship('Workout', secondary=workout_schedule,
+                               backref=db.backref('schedules', lazy=True))
 
     def __repr__(self):
         return f"<Class: Schedule; Id: {self.id}; Name: {self.name}>"

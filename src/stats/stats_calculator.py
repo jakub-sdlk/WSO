@@ -18,6 +18,8 @@ class Calculator:
         self.next_workout_best_time_session = self.get_next_workout_best_time_session()
         self.current_workout_session_season = self.calculate_current_workout_session_season()
         self.sets_in_next_workout = self.get_sets_in_next_workout()
+        self.best_workout_times = self.calculate_best_workout_times()
+
 
     def get_all_schedules(self):
         return Schedule.query.all()
@@ -87,10 +89,12 @@ class Calculator:
                 for obj in next_workout.sets:
                     if obj.position_in_workout == i:
                         ordered_sets.append(obj)
-
         else:
             ordered_sets = None
 
         return ordered_sets
+
+    def calculate_best_workout_times(self):
+        pass
 
 

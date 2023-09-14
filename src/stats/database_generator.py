@@ -612,10 +612,7 @@ class DatabaseGenerator:
         for obj in objects_to_add_to_session:
             db.session.add(obj)
 
-        db.session.commit()
-
         # LINK SETS WITH WORKOUTS
-
         workout1.sets.extend([set1, set2, set3, set4])
         workout2.sets.extend([set5, set6, set7, set8])
         workout3.sets.extend([set9, set10, set11, set12])
@@ -630,5 +627,11 @@ class DatabaseGenerator:
         workout21.sets.extend([set28])
         workout22.sets.extend([set29])
         workout23.sets.extend([set30])
+
+        # LINK WORKOUTS WITH SCHEDULES
+        schedule1.workouts.extend([workout1, workout2, workout3, workout4, workout5])
+        schedule1.workouts.extend([workout6, workout7, workout8, workout9, workout10])
+
+        schedule2.workouts.extend([workout21, workout22, workout23])
 
         db.session.commit()

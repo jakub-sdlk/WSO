@@ -599,3 +599,90 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertIsNone(calculator.sets_in_next_workout)
+
+    def test_best_workout_times_attribute(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                # For a new user, there should be no best workout times
+                calculator = Calculator()
+                self.assertIsNone(calculator.best_workout_times)
+
+                # After adding two workouts, they should be the best times achieved
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=30,
+                    seconds=20,
+                    season=1,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=102,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertIsNotNone(calculator.best_workout_times)
+                self.assertIsInstance(WorkoutSession, calculator.best_workout_times[0])
+                self.assertEqual(1, calculator.best_workout_times[0].id)
+                self.assertEqual(1, calculator.best_workout_times[0].hours)
+
+                self.assertEqual(2, calculator.best_workout_times[1].id)
+
+                # After adding same workouts in different season with worse time,
+                # The best times should stay the same
+
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=2,
+                    minutes=59,
+                    seconds=59,
+                    season=2,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=2,
+                    minutes=59,
+                    seconds=59,
+                    season=2,
+                    user_id=1,
+                    workout_id=1,
+                    position_id=102,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(1, calculator.best_workout_times[0].id)
+                self.assertEqual(1, calculator.best_workout_times[0].hours)
+
+                self.assertEqual(2, calculator.best_workout_times[1].id)
+
+
