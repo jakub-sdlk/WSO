@@ -24,7 +24,7 @@ class Calculator:
 
 
     def get_all_schedules(self):
-        return Schedule.query.all()
+        return current_user.registered_schedules
 
     def get_active_schedule_id(self):
         return int(session['active_schedule_id'])
