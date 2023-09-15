@@ -634,12 +634,4 @@ class DatabaseGenerator:
 
         schedule2.workouts.extend([workout21, workout22, workout23])
 
-        # LINK USERS WITH SCHEDULES
-        try:
-            all_users = User.query.all()
-            for user in all_users:
-                user.registered_schedules.extend([schedule1, schedule2])
-        except Exception as e:
-            print(e)
-
         db.session.commit()

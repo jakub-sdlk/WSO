@@ -5,6 +5,7 @@ from datetime import time
 from src.models import WorkoutSession, Schedule
 from src.stats.stats_calculator import Calculator
 from src.stats.database_generator import DatabaseGenerator
+from src.db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 
@@ -21,6 +22,14 @@ def overview():
     # create basic schedules in case the database was deleted in development process
     if not Schedule.query.all():
         DatabaseGenerator.create_automatic_testing_database()
+
+    # Register user to the schedule - For now All users should see all schedules,
+    # But later they should see only one and register more with special button
+
+    if not current_user.registered_schedules:
+        for schedule in Schedule.query.all():
+            current_user.registered_schedules.append(schedule)
+        db.session.commit()
 
     # create calculator
     calculator = Calculator()
