@@ -16,8 +16,7 @@ def overview():
     # save active_schedule_id to session variable
     session['active_schedule_id'] = request.args.get('schedule_selector')
 
-    if session['active_schedule_id'] is None:
-        session['active_schedule_id'] = 1
+
 
     # create basic schedules in case the database was deleted in development process
     if not Schedule.query.all():
@@ -25,13 +24,12 @@ def overview():
 
     # Register user to the schedule - For now All users should see all schedules,
     # But later they should see only one and register more with special button
-
     if not current_user.registered_schedules:
         for schedule in Schedule.query.all():
             current_user.registered_schedules.append(schedule)
         db.session.commit()
 
-    # create calculator
+       # create calculator
     calculator = Calculator()
 
     # check post requests

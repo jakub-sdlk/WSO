@@ -9,6 +9,7 @@ class Calculator:
         # When new_season_flag is True, calculator returns data for first workout of each schedule
         self.new_season_flag = new_season_flag
 
+        self.schedules_id_list = self.get_schedules_id_list()
         self.all_schedules = self.get_all_schedules()
         self.active_schedule_id = self.get_active_schedule_id()
         self.all_workouts_in_active_schedule = self.get_all_workouts_in_active_schedule()
@@ -22,12 +23,49 @@ class Calculator:
         self.best_workout_times = self.calculate_best_workout_times()
         self.next_workout_all_workout_sessions = self.get_next_workout_all_workout_sessions()
 
+    def get_schedules_id_list(self):
+        # Adds id of each schedule registered with the user to a list.
+        if Schedule.query.all():
+            schedules_id_list = []
+            for schedule in current_user.registered_schedules:
+                schedules_id_list.append(schedule.id)
+            schedules_id_list.sort()
+        else:
+            schedules_id_list = None
+
+        return schedules_id_list
 
     def get_all_schedules(self):
-        return current_user.registered_schedules
+        # Current_user.registered_schedules come in random order - we need to sort it first
+        if self.schedules_id_list:
+            ordered_list = []
+            for i in self.schedules_id_list:
+                ordered_list.append(
+                    Schedule.query.filter_by(
+                        id=i).first()
+                )
+        else:
+            ordered_list = None
+
+        return ordered_list
 
     def get_active_schedule_id(self):
-        return int(session['active_schedule_id'])
+        if session['active_schedule_id'] is None:
+            session['active_schedule_id'] = self.all_schedules[0].id
+
+        # We need to try if the query string contains integer and if the integer corresponds with an id of
+        # registered workout
+        try:
+            if int(session['active_schedule_id']) not in self.schedules_id_list:
+                session['active_schedule_id'] = self.schedules_id_list[0]
+        except ValueError:
+            # This block lets user write whatever into the query string.
+            # Without it, the app would crash in case that ?schedule_selector=meme
+            session['active_schedule_id'] = self.all_schedules[0].id
+        finally:
+            return int(session['active_schedule_id'])
+
+
 
     def get_all_workouts_in_active_schedule(self):
         active_schedule = Schedule.query.filter_by(
@@ -133,10 +171,3 @@ class Calculator:
             ).all()
         else:
             return None
-
-
-
-
-
-
-
