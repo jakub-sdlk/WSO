@@ -680,7 +680,7 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
                 self.assertIsNotNone(calculator.best_workout_times)
-                self.assertIsInstance(calculator.best_workout_times[0], WorkoutSession,)
+                self.assertIsInstance(calculator.best_workout_times[0], WorkoutSession)
                 self.assertEqual(2, len(calculator.best_workout_times))
 
                 self.assertEqual(2, calculator.best_workout_times[0].id)
@@ -693,7 +693,7 @@ class StatsTest(GeneralBaseTest):
                 # After adding same workouts in different season with worse time,
                 # The best times should stay the same
 
-                workout_session_1 = WorkoutSession(
+                workout_session_3 = WorkoutSession(
                     date="1991/07/24",
                     hours=2,
                     minutes=59,
@@ -705,7 +705,7 @@ class StatsTest(GeneralBaseTest):
                     schedule_id=1
                 )
 
-                workout_session_2 = WorkoutSession(
+                workout_session_4 = WorkoutSession(
                     date="1991/07/24",
                     hours=2,
                     minutes=59,
@@ -716,8 +716,8 @@ class StatsTest(GeneralBaseTest):
                     position_id=102,
                     schedule_id=1
                 )
-                workout_session_1.save_to_db()
-                workout_session_2.save_to_db()
+                workout_session_3.save_to_db()
+                workout_session_4.save_to_db()
 
                 calculator = Calculator()
                 self.assertEqual(2, len(calculator.best_workout_times))
@@ -725,3 +725,162 @@ class StatsTest(GeneralBaseTest):
                 self.assertEqual(2, calculator.best_workout_times[0].id)
                 self.assertEqual(1, calculator.best_workout_times[0].hours)
                 self.assertEqual(1, calculator.best_workout_times[1].id)
+
+    def test_next_workout_all_workout_sessions_attribute(self):
+        with self.app() as client:
+            with self.app_context():
+                client.post(
+                    "/auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234,
+                    })
+
+                # New user should not see the list - There are no sessions to show
+                calculator = Calculator()
+                self.assertIsNone(calculator.next_workout_all_workout_sessions)
+
+                # After adding workout sessions to positions 101 and 107, next workout should be Frontal Strength
+                # The correct data for the last session of Frontal Strength should be shown
+                workout_session_1 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=24,
+                    seconds=48,
+                    season=1,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=1,
+                    minutes=15,
+                    seconds=15,
+                    season=1,
+                    user_id=1,
+                    workout_id=7,
+                    position_id=107,
+                    schedule_id=1
+                )
+                workout_session_1.save_to_db()
+                workout_session_2.save_to_db()
+
+                calculator = Calculator()
+                self.assertIsNotNone(calculator.next_workout_all_workout_sessions)
+                self.assertIsInstance(calculator.next_workout_all_workout_sessions[0], WorkoutSession)
+                self.assertEqual(1, len(calculator.next_workout_all_workout_sessions))
+
+                self.assertEqual(1, calculator.next_workout_all_workout_sessions[0].id)
+                self.assertEqual(1, calculator.next_workout_all_workout_sessions[0].season)
+                self.assertEqual(1, calculator.next_workout_all_workout_sessions[0].hours)
+                self.assertEqual(24, calculator.next_workout_all_workout_sessions[0].minutes)
+                self.assertEqual(48, calculator.next_workout_all_workout_sessions[0].seconds)
+
+                # The progress should span different seasons - The oldest season is on top
+
+                workout_session_3 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=2,
+                    minutes=59,
+                    seconds=59,
+                    season=2,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=101,
+                    schedule_id=1
+                )
+
+                workout_session_4 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=2,
+                    minutes=22,
+                    seconds=44,
+                    season=2,
+                    user_id=1,
+                    workout_id=7,
+                    position_id=107,
+                    schedule_id=1
+                )
+                workout_session_3.save_to_db()
+                workout_session_4.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(2, len(calculator.next_workout_all_workout_sessions))
+
+                self.assertEqual(3, calculator.next_workout_all_workout_sessions[1].id)
+                self.assertEqual(2, calculator.next_workout_all_workout_sessions[1].season)
+                self.assertEqual(2, calculator.next_workout_all_workout_sessions[1].hours)
+                self.assertEqual(59, calculator.next_workout_all_workout_sessions[1].minutes)
+                self.assertEqual(59, calculator.next_workout_all_workout_sessions[1].seconds)
+
+                # Workouts of other users should not be seen
+
+                workout_session_5 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=0,
+                    minutes=32,
+                    seconds=32,
+                    season=1,
+                    user_id=2,
+                    workout_id=5,
+                    position_id=101,
+                    schedule_id=1
+                )
+                workout_session_6 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=2,
+                    minutes=22,
+                    seconds=44,
+                    season=2,
+                    user_id=1,
+                    workout_id=7,
+                    position_id=107,
+                    schedule_id=1
+                )
+
+                workout_session_5.save_to_db()
+                workout_session_6.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(2, len(calculator.next_workout_all_workout_sessions))
+
+                # Let's add one more workout session of Frontal Strength and skip to position 112, so that next
+                # Workout should be Frontal Strength again.
+                # We should see id of workout sessions in next_workout_all_workouts in following order:
+                # id 1, id 3, id 7 - Not id 5, that one belongs to different user
+
+                workout_session_7 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=11,
+                    minutes=11,
+                    seconds=11,
+                    season=2,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=108,
+                    schedule_id=1
+                )
+                workout_session_8 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=5,
+                    minutes=52,
+                    seconds=52,
+                    season=2,
+                    user_id=1,
+                    workout_id=2,
+                    position_id=112,
+                    schedule_id=1
+                )
+
+                workout_session_7.save_to_db()
+                workout_session_8.save_to_db()
+
+                calculator = Calculator()
+                self.assertEqual(3, len(calculator.next_workout_all_workout_sessions))
+                self.assertEqual(1, calculator.next_workout_all_workout_sessions[0].id)
+                self.assertEqual(3, calculator.next_workout_all_workout_sessions[1].id)
+                self.assertEqual(7, calculator.next_workout_all_workout_sessions[2].id)

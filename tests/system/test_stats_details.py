@@ -39,12 +39,19 @@ class StatsTest(GeneralBaseTest):
                 expected5 = b"""id="number-of-circles">5</span>"""
                 self.assertIn(expected5, response.data)
 
-                # Check that best workout times work - New user should not see the table
+                # Check that best workout times work - New user should see only the table name
                 expected6 = b"""Best workout times"""
-                self.assertNotIn(expected6, response.data)
+                self.assertIn(expected6, response.data)
 
                 expected7 = b"""id="best-workout-"""
                 self.assertNotIn(expected7, response.data)
+
+                # Check that next workout progress works. New user should see only the table name
+                expected8 = b"""Next workout progress"""
+                self.assertIn(expected8, response.data)
+
+                expected9 = b"""id="progress-session-id-"""
+                self.assertNotIn(expected9, response.data)
 
     def test_stats_details_are_correct_after_adding_workout_session(self):
         with self.app() as client:
@@ -85,6 +92,56 @@ class StatsTest(GeneralBaseTest):
                 expected4 = b"""id="best-time-of-Frontal Strength">\n              00:24:12"""
                 self.assertIn(expected4, response.data)
 
+                # Let's add one more workout session of Frontal Strength and skip to position 112, so that next
+                # Workout should be Frontal Strength again.
+
+                workout_session_2 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=11,
+                    minutes=11,
+                    seconds=11,
+                    season=2,
+                    user_id=1,
+                    workout_id=5,
+                    position_id=108,
+                    schedule_id=1
+                )
+                workout_session_3 = WorkoutSession(
+                    date="1991/07/24",
+                    hours=5,
+                    minutes=52,
+                    seconds=52,
+                    season=2,
+                    user_id=1,
+                    workout_id=2,
+                    position_id=112,
+                    schedule_id=1
+                )
+                workout_session_2.save_to_db()
+                workout_session_3.save_to_db()
+
+                response = client.get(
+                    "/stats/",
+                    follow_redirects=True
+                )
+
+                # Check that Next workout progress works - user now should see the progress of two previous
+                # Frontal Strength sessions
+
+                expected5 = b"""id="progress-session-id-1"""
+                self.assertIn(expected5, response.data)
+
+                expected6 = b"""id="progress-session-time-1">\n              00:24:12"""
+                self.assertIn(expected6, response.data)
+
+                expected7 = b"""id="progress-session-id-2"""
+                self.assertIn(expected7, response.data)
+
+                expected8 = b"""id="progress-session-time-2">\n              11:11:11"""
+                self.assertIn(expected8, response.data)
+
+
+
     def test_end_of_schedule_displays_stats_details_correctly(self):
         # Add workout sessions until you reach the end of season
         # Check everything looks good at that stage
@@ -122,9 +179,9 @@ class StatsTest(GeneralBaseTest):
                         "seconds": 7,
                         "season_setup": "0"
                     })
-                # Check that sets in next workout works - User should not see the table at the end of season
+                # Check that sets in next workout works - User should see only the table name at the end of the season
                 expected1 = b"""Sets in next workout"""
-                self.assertNotIn(expected1, response.data)
+                self.assertIn(expected1, response.data)
 
                 expected2 = b"""id="set"""
                 self.assertNotIn(expected2, response.data)
@@ -141,3 +198,13 @@ class StatsTest(GeneralBaseTest):
 
                 expected6 = b"""id="best-time-of-V-Taper">\n              01:30:20"""
                 self.assertIn(expected6, response.data)
+
+                # Check that next workout progress works. New user should see only the table name
+                expected7 = b"""Next workout progress"""
+                self.assertIn(expected7, response.data)
+
+                expected8 = b"""id="progress-session-id-"""
+                self.assertNotIn(expected8, response.data)
+
+
+

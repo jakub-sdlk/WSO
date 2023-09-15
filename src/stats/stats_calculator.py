@@ -20,6 +20,7 @@ class Calculator:
         self.current_workout_session_season = self.calculate_current_workout_session_season()
         self.sets_in_next_workout = self.get_sets_in_next_workout()
         self.best_workout_times = self.calculate_best_workout_times()
+        self.next_workout_all_workout_sessions = self.get_next_workout_all_workout_sessions()
 
 
     def get_all_schedules(self):
@@ -120,6 +121,19 @@ class Calculator:
             best_workout_sessions_list = None
 
         return best_workout_sessions_list
+
+    def get_next_workout_all_workout_sessions(self):
+        if self.all_workout_sessions and self.next_position:
+            return WorkoutSession.query.filter_by(
+                workout_id=self.next_position.workout_id,
+                user_id=current_user.id
+            ).order_by(
+                WorkoutSession.season,
+                WorkoutSession.position_id
+            ).all()
+        else:
+            return None
+
 
 
 
