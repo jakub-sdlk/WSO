@@ -9,5 +9,4 @@ Flask-WTF
 pyjwt
 flask-redmail
 flask-bootstrap
-pyjwt
-flask-redmail
+redmail

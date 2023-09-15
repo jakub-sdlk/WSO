@@ -1,7 +1,6 @@
 from flask_login import LoginManager
 from flask import Flask, redirect, url_for
 from os import path
-from flask_redmail import RedMail
 from redmail import gmail
 
 from src.auth.auth import auth
@@ -20,8 +19,6 @@ def create_database(app):
 
 
 # Change this on production
-gmail.username = MAIL_USERNAME
-gmail.password = MAIL_PASSWORD
 
 app = Flask(__name__)
 
@@ -31,10 +28,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TESTING'] = False
 
-app.config["EMAIL_HOST"] = gmail.host
-app.config["EMAIL_PORT"] = gmail.port
-
-email = RedMail(app)
+gmail.username = MAIL_USERNAME
+gmail.password = MAIL_PASSWORD
 
 db.init_app(app)
 
@@ -53,6 +48,19 @@ def load_user(id):
 
 @app.route("/")
 def index():
+    return redirect(url_for("auth.login"))
+
+
+@app.route("/send-email")
+def send_email():
+    gmail.send(
+        subject="Example email",
+        receivers=['jakub.sdlk@gmail.com'],
+        html="""
+            <h1>Hi,</h1>
+            <p>this is an email.</p>
+        """
+    )
     return redirect(url_for("auth.login"))
 
 
