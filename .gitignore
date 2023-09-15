@@ -41,4 +41,4 @@ venv.bak/
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
-
+/src/config.py

@@ -5,3 +5,9 @@ Pytest
 flask_sqlalchemy
 flask_login
 SQLAlchemy
+Flask-WTF
+pyjwt
+flask-redmail
+flask-bootstrap
+pyjwt
+flask-redmail

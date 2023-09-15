@@ -6,3 +6,4 @@ class AppTest(UnitBaseTest):
         self.assertFalse(app.config['DEBUG'])
         self.assertFalse(app.config['TESTING'])
         self.assertTrue(len(app.secret_key) > 10)
+

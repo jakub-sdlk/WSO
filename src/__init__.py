@@ -1,12 +1,15 @@
 from flask_login import LoginManager
 from flask import Flask, redirect, url_for
 from os import path
+from flask_redmail import RedMail
+from redmail import gmail
+
 from src.auth.auth import auth
 from src.stats.stats import stats
+from src.db import db, DB_NAME
+from src.config import SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD
 
 from src.models import User, WorkoutSession
-
-from src.db import db, DB_NAME
 
 
 def create_database(app):
@@ -16,18 +19,27 @@ def create_database(app):
             print("Created database")
 
 
+# Change this on production
+gmail.username = MAIL_USERNAME
+gmail.password = MAIL_PASSWORD
+
 app = Flask(__name__)
-app.secret_key = "WSO"
+
+app.secret_key = SECRET_KEY
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TESTING'] = False
 
+app.config["EMAIL_HOST"] = gmail.host
+app.config["EMAIL_PORT"] = gmail.port
+
+email = RedMail(app)
+
 db.init_app(app)
 
 app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(stats, url_prefix="/stats")
-
 
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
