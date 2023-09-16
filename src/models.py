@@ -26,6 +26,7 @@ class User(db.Model, UserMixin, GeneralModel):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+    is_verified = db.Column(db.Boolean, default=False, nullable=False)
 
     workout_sessions = db.relationship('WorkoutSession', backref='user', passive_deletes=True)
     registered_schedules = db.relationship('Schedule', secondary=user_schedule, backref='registered_users')

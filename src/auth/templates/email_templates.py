@@ -3,7 +3,7 @@ VERIFICATION_TEMPLATE = """
 <p>
     in order to use our services, please click the link below:
     <br>
-    <a href="{{ url_for('stats.overview', token=token, _external=True) }}">verify email</a>
+    <a href="{{ url_for('auth.verify_email', token=token, _external=True) }}">verify email</a>
 </p>
 <p>If you did not create an account, you may ignore this message.</p>
 """

@@ -30,14 +30,17 @@ def login():
 
         user = User.find_by_email(email)
         if user:
-            if check_password_hash(user.password, password):
-                flash("Logged in!", category='success')
-                login_user(user, remember=True)
-                if not 'active_schedule_id' in session:
-                    session['active_schedule_id'] = 1
-                return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
+            if user.is_verified:
+                if check_password_hash(user.password, password):
+                    flash("Logged in!", category='success')
+                    login_user(user, remember=True)
+                    if not 'active_schedule_id' in session:
+                        session['active_schedule_id'] = 1
+                    return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
+                else:
+                    flash("Incorrect password", category='error')
             else:
-                flash("Incorrect password", category='error')
+                flash("User is not verified", category='error')
         else:
             flash("Email does not exist", category='error')
 
@@ -68,7 +71,7 @@ def signup():
         elif len(password) < 4:
             flash("Invalid password.", category='error')
         else:
-            hashed_password = generate_password_hash(password, method='sha256')
+            hashed_password = generate_password_hash(password, method="scrypt")
             new_user = User(
                 email=email,
                 first_name=first_name,
@@ -103,6 +106,34 @@ def signup():
                                                        )
 
     return render_template_correct_status_code("signup.html")
+
+
+@auth.route("/verify-email/<token>")
+def verify_email(token):
+    try:
+        data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        email_address = data["email_address"]
+        password = data["password"]
+    except Exception:
+        return render_template_correct_status_code("signup.html")
+
+    user = User.find_by_email(email_address)
+    if user:
+        if user.password == password:
+            user.is_verified = True
+            user.save_to_db()
+            flash("Logged in!", category='success')
+            login_user(user, remember=True)
+            if not 'active_schedule_id' in session:
+                session['active_schedule_id'] = 1
+            return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
+        else:
+            flash(f"Invalid password", category='error')
+    else:
+        flash("Email does not exist", category='error')
+
+    return render_template_correct_status_code("login.html")
+
 
 
 @auth.route("/logout")
