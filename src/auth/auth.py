@@ -11,7 +11,7 @@ from src.auth.templates.email_templates import VERIFICATION_TEMPLATE
 auth = Blueprint("auth", __name__, static_folder="static", template_folder="templates")
 
 
-def show_correct_response_code(render_template_file):
+def render_template_correct_status_code(render_template_file, **kwargs):
     messages = get_flashed_messages(with_categories=True)
     error_during_login_flag = False
     for category, message in messages:
@@ -19,7 +19,7 @@ def show_correct_response_code(render_template_file):
             error_during_login_flag = True
     if error_during_login_flag:
         return render_template(render_template_file), 401
-    return render_template(render_template_file), 200
+    return render_template(render_template_file, **kwargs), 200
 
 
 @auth.route("/login", methods=["POST", "GET"])
@@ -41,7 +41,7 @@ def login():
         else:
             flash("Email does not exist", category='error')
 
-    return show_correct_response_code("login.html")
+    return render_template_correct_status_code("login.html")
 
 
 # noinspection PyArgumentList
@@ -68,38 +68,41 @@ def signup():
         elif len(password) < 4:
             flash("Invalid password.", category='error')
         else:
+            hashed_password = generate_password_hash(password, method='sha256')
             new_user = User(
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
-                password=generate_password_hash(password, method='sha256'))
+                password=hashed_password
+            )
 
             new_user.save_to_db()
 
             token = jwt.encode(
                 {
                     "email_address": email,
-                    "password": password,
+                    "password": hashed_password,
                 }, SECRET_KEY
             )
             # login_user(new_user, remember=True)
             flash('User created', category='success')
             # return redirect(url_for('stats.overview', schedule_selector=1))
             gmail.send(
-                subject="Example email",
+                subject="Workout stats new user verification",
                 receivers=['jakub.sdlk@gmail.com'],
                 html=VERIFICATION_TEMPLATE,
                 body_params={
                     "token": token,
-                    "url_for": url_for
+                    "url_for": url_for,
+                    "first_name": first_name
                 }
             )
-            return render_template("email_sent.html",
-                                   email=email,
-                                   first_name=first_name
-                                   )
+            return render_template_correct_status_code("email_sent.html",
+                                                       email=email,
+                                                       first_name=first_name
+                                                       )
 
-    return show_correct_response_code("signup.html")
+    return render_template_correct_status_code("signup.html")
 
 
 @auth.route("/logout")
@@ -107,5 +110,3 @@ def signup():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
-
-

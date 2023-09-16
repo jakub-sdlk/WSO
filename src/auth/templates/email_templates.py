@@ -1,5 +1,5 @@
 VERIFICATION_TEMPLATE = """
-<h1>Hi,</h1>
+<h1>Hi {{ first_name }},</h1>
 <p>
     in order to use our services, please click the link below:
     <br>
