@@ -51,19 +51,6 @@ def index():
     return redirect(url_for("auth.login"))
 
 
-@app.route("/send-email")
-def send_email():
-    gmail.send(
-        subject="Example email",
-        receivers=['jakub.sdlk@gmail.com'],
-        html="""
-            <h1>Hi,</h1>
-            <p>this is an email.</p>
-        """
-    )
-    return redirect(url_for("auth.login"))
-
-
 if __name__ == "__main__":
     create_database(app=app)
     app.run(debug=True)

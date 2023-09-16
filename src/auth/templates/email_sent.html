@@ -1,0 +1,23 @@
+{% extends "loginSignupBase.html" %}
+{% block title %} Signup {% endblock %}
+
+{% block img %}
+<img src="{{url_for('auth.static', filename='email-sentsm.jpg')}}" alt="email-sent" class="login-card-img">
+{% endblock %}
+
+{% block sentence1 %} Just one more step... {% endblock %}
+
+{% block forms %}
+<p>
+  Verification email was sent to {{ email }}. Follow the instructions, see you soon!
+</p>
+{% endblock %}
+
+{% block links %}
+<p class="login-card-footer-text">Already a member? <a href="{{url_for('auth.login')}}" id="link-to-login" class="text-reset">Log in here</a>
+</p>
+<nav class="login-card-footer-nav">
+    <a href="#!">Terms of use.</a>
+    <a href="#!">Privacy policy</a>
+</nav>
+{% endblock %}

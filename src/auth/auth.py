@@ -1,8 +1,12 @@
 from flask import Blueprint, redirect, url_for, render_template, request, session, flash, get_flashed_messages
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from redmail import gmail
+import jwt
 
 from src.models import User
+from src.config import SECRET_KEY
+from src.auth.templates.email_templates import VERIFICATION_TEMPLATE
 
 auth = Blueprint("auth", __name__, static_folder="static", template_folder="templates")
 
@@ -29,7 +33,7 @@ def login():
             if check_password_hash(user.password, password):
                 flash("Logged in!", category='success')
                 login_user(user, remember=True)
-                if not'active_schedule_id' in session:
+                if not 'active_schedule_id' in session:
                     session['active_schedule_id'] = 1
                 return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
             else:
@@ -71,9 +75,29 @@ def signup():
                 password=generate_password_hash(password, method='sha256'))
 
             new_user.save_to_db()
-            login_user(new_user, remember=True)
+
+            token = jwt.encode(
+                {
+                    "email_address": email,
+                    "password": password,
+                }, SECRET_KEY
+            )
+            # login_user(new_user, remember=True)
             flash('User created', category='success')
-            return redirect(url_for('stats.overview', schedule_selector=1))
+            # return redirect(url_for('stats.overview', schedule_selector=1))
+            gmail.send(
+                subject="Example email",
+                receivers=['jakub.sdlk@gmail.com'],
+                html=VERIFICATION_TEMPLATE,
+                body_params={
+                    "token": token,
+                    "url_for": url_for
+                }
+            )
+            return render_template("email_sent.html",
+                                   email=email,
+                                   first_name=first_name
+                                   )
 
     return show_correct_response_code("signup.html")
 
