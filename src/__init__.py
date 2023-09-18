@@ -3,12 +3,13 @@ from flask import Flask, redirect, url_for
 from os import path
 from redmail import gmail
 
-from src.auth.auth import auth
-from src.stats.stats import stats
-from src.db import db, DB_NAME
-from src.config import SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD
+from auth.auth import auth
+from stats.stats import stats
+from db import db, DB_NAME
+from config import SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD
+from socket import gethostname
 
-from src.models import User, WorkoutSession
+from models import User
 
 
 def create_database(app):
@@ -40,6 +41,8 @@ login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.init_app(app)
 
+create_database(app=app)
+
 
 @login_manager.user_loader
 def load_user(id):
@@ -50,7 +53,7 @@ def load_user(id):
 def index():
     return redirect(url_for("auth.login"))
 
-
-if __name__ == "__main__":
-    create_database(app=app)
-    app.run(debug=True)
+if __name__ == '__main__':
+    db.create_all()
+    if 'liveconsole' not in gethostname():
+        app.run()
