@@ -1,7 +1,8 @@
-from src.db import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-from src.general_model import GeneralModel
+
+from db import db
+from general_model import GeneralModel
 
 user_schedule = db.Table('user_schedule',
                          db.Column('user_id', db.Integer, db.ForeignKey('user.id')),

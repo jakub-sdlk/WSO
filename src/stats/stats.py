@@ -2,10 +2,10 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from flask_login import login_required, current_user
 from datetime import time
 
-from src.models import WorkoutSession, Schedule
-from src.stats.stats_calculator import Calculator
-from src.database_generator import DatabaseGenerator
-from src.db import db
+from models import WorkoutSession, Schedule
+from stats.stats_calculator import Calculator
+from database_generator import DatabaseGenerator
+from db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 

@@ -4,9 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from redmail import gmail
 import jwt
 
-from src.models import User
-from src.config import SECRET_KEY
-from src.auth.templates.email_templates import VERIFICATION_TEMPLATE
+from models import User
+from config import SECRET_KEY
+from auth.templates.email_templates import VERIFICATION_TEMPLATE
 
 auth = Blueprint("auth", __name__, static_folder="static", template_folder="templates")
 

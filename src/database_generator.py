@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash
 
-from src.models import User, Schedule, Workout, Position, Set, Exercise
-from src.db import db
+from models import User, Schedule, Workout, Position, Set, Exercise
+from db import db
 
 
 # noinspection PyArgumentList

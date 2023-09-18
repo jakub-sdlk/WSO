@@ -53,6 +53,7 @@ def load_user(id):
 def index():
     return redirect(url_for("auth.login"))
 
+
 if __name__ == '__main__':
     db.create_all()
     if 'liveconsole' not in gethostname():
