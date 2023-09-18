@@ -83,16 +83,16 @@ def signup():
 
             token = jwt.encode(
                 {
-                    "email_address": email,
-                    "password": hashed_password,
+                    "email_address": new_user.email,
+                    "password": new_user.password,
                 }, SECRET_KEY
             )
             # login_user(new_user, remember=True)
             flash('User created', category='success')
             # return redirect(url_for('stats.overview', schedule_selector=1))
             gmail.send(
-                subject="Workout stats new user verification",
-                receivers=['jakub.sdlk@gmail.com'],
+                subject="Workout stats - new user verification",
+                receivers=[new_user.email],
                 html=VERIFICATION_TEMPLATE,
                 body_params={
                     "token": token,
@@ -119,21 +119,23 @@ def verify_email(token):
 
     user = User.find_by_email(email_address)
     if user:
-        if user.password == password:
-            user.is_verified = True
-            user.save_to_db()
-            flash("Logged in!", category='success')
-            login_user(user, remember=True)
-            if not 'active_schedule_id' in session:
-                session['active_schedule_id'] = 1
-            return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
+        if not user.is_verified:
+            if user.password == password:
+                user.is_verified = True
+                user.save_to_db()
+                flash("Logged in!", category='success')
+                login_user(user, remember=True)
+                if not 'active_schedule_id' in session:
+                    session['active_schedule_id'] = 1
+                return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
+            else:
+                flash(f"Invalid verification token", category='error')
         else:
-            flash(f"Invalid password", category='error')
+            flash("User is already verified", category='error')
     else:
         flash("Email does not exist", category='error')
 
-    return render_template_correct_status_code("login.html")
-
+    return redirect(url_for("auth.login"))
 
 
 @auth.route("/logout")

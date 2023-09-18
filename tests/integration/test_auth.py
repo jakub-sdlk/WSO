@@ -1,8 +1,11 @@
-from tests.general_base_test import GeneralBaseTest
-from src.models import User
-from werkzeug.security import generate_password_hash
 from flask import get_flashed_messages
 from flask_login import current_user
+import jwt
+
+from tests.general_base_test import GeneralBaseTest
+from src.models import User
+from src.database_generator import DatabaseGenerator
+from src.config import SECRET_KEY
 
 
 class AuthTest(GeneralBaseTest):
@@ -17,17 +20,10 @@ class AuthTest(GeneralBaseTest):
                 self.assertIn(b"login_email", response.data)
                 self.assertIn(b"login_password", response.data)
 
-    def test_login_user(self):
+    def test_login_verified_user(self):
         with self.app() as client:
             with self.app_context():
-                user1 = User(
-                    first_name="John",
-                    last_name="Doe",
-                    email="John@Doe.com",
-                    password=generate_password_hash("1234", method='sha256')
-                )
-
-                user1.save_to_db()
+                DatabaseGenerator.create_verified_test_user()
 
                 response = client.post(
                     "auth/login",
@@ -50,17 +46,34 @@ class AuthTest(GeneralBaseTest):
                 self.assertEqual("John@Doe.com", current_user.email)
                 self.assertEqual(b'schedule_selector=1', response.request.query_string)
 
-    def test_login_user_incorrect_password(self):
+    def test_login_unverified_user(self):
         with self.app() as client:
             with self.app_context():
-                user1 = User(
-                    first_name="John",
-                    last_name="Doe",
-                    email="John@Doe.com",
-                    password=generate_password_hash("1234", method='sha256')
-                )
+                DatabaseGenerator.create_unverified_test_user()
 
-                user1.save_to_db()
+                response = client.post(
+                    "auth/login",
+                    follow_redirects=True,
+                    data={
+                        "login_email": "John@Doe.com",
+                        "login_password": 1234
+                    })
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("User is not verified", message)
+
+                self.assertEqual(0, len(response.history))
+                self.assertEqual("/auth/login", response.request.path)
+
+    def test_login_verified_user_incorrect_password(self):
+        with self.app() as client:
+            with self.app_context():
+                DatabaseGenerator.create_verified_test_user()
 
                 response = client.post(
                     "auth/login",
@@ -101,7 +114,7 @@ class AuthTest(GeneralBaseTest):
 
                 self.assertEqual("/auth/login", response.request.path)
 
-    def test_signup_page_get_method(self):
+    def test_signup_page_login_required(self):
         with self.app() as client:
             with self.app_context():
                 response = client.get("auth/signup")
@@ -135,21 +148,14 @@ class AuthTest(GeneralBaseTest):
 
                 self.assertEqual(1, User.find_by_email("John@Doe.com").id)
 
-                self.assertEqual(1, len(response.history))
-                self.assertEqual("/stats/", response.request.path)
-                self.assertEqual("John@Doe.com", current_user.email)
-                self.assertEqual(b'schedule_selector=1', response.request.query_string)
+                self.assertEqual(0, len(response.history))
+                self.assertEqual("/auth/signup", response.request.path)
+                self.assertIn(b"""Verification email was sent to John@Doe.com.""", response.data)
 
     def test_signup_existing_user(self):
         with self.app() as client:
             with self.app_context():
-                user1 = User(
-                    first_name="John",
-                    last_name="Doe",
-                    email="John@Doe.com",
-                    password=generate_password_hash("1234", method='sha256')
-                )
-                user1.save_to_db()
+                DatabaseGenerator.create_verified_test_user()
 
                 response = client.post(
                     "auth/signup",
@@ -194,7 +200,6 @@ class AuthTest(GeneralBaseTest):
                     self.assertEqual("First name is required.", message)
 
                 self.assertEqual(0, len(response.history))
-
 
     def test_signup_empty_last_name(self):
         with self.app() as client:
@@ -311,3 +316,81 @@ class AuthTest(GeneralBaseTest):
 
                 self.assertEqual(0, len(response.history))
 
+    def test_verify_email_valid_key(self):
+        with self.app() as client:
+            with self.app_context():
+                user1 = DatabaseGenerator.create_unverified_test_user()
+
+                token = jwt.encode(
+                    {
+                        "email_address": user1.email ,
+                        "password": user1.password,
+                    }, SECRET_KEY
+                )
+
+                response = client.get(f"auth/verify-email/{token}",
+                                      follow_redirects=True)
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(200, response.status_code)
+                self.assertEqual(1, len(response.history))
+
+                for category, message in messages:
+                    self.assertEqual('success', category),
+                    self.assertEqual("Logged in!", message)
+
+                self.assertEqual("/stats/", response.request.path)
+                self.assertIn(b"Overview", response.data)
+
+    def test_verify_email_invalid_key(self):
+        with self.app() as client:
+            with self.app_context():
+                user1 = DatabaseGenerator.create_unverified_test_user()
+
+                token = jwt.encode(
+                    {
+                        "email_address": user1.email,
+                        "password": 1234,
+                    }, SECRET_KEY
+                )
+
+                response = client.get(f"auth/verify-email/{token}",
+                                      follow_redirects=True)
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+                self.assertEqual(1, len(response.history))
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("Invalid verification token", message)
+
+                self.assertEqual("/auth/login", response.request.path)
+
+    def test_verify_email_already_verified_user(self):
+        with self.app() as client:
+            with self.app_context():
+                user1 = DatabaseGenerator.create_verified_test_user()
+
+                token = jwt.encode(
+                    {
+                        "email_address": user1.email,
+                        "password": user1.password,
+                    }, SECRET_KEY
+                )
+
+                response = client.get(f"auth/verify-email/{token}",
+                                      follow_redirects=True)
+
+                messages = get_flashed_messages(with_categories=True)
+
+                self.assertEqual(401, response.status_code)
+                self.assertEqual(1, len(response.history))
+
+                for category, message in messages:
+                    self.assertEqual('error', category),
+                    self.assertEqual("User is already verified", message)
+
+                self.assertEqual("/auth/login", response.request.path)

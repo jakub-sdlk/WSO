@@ -6,7 +6,7 @@ from tests.general_base_test import GeneralBaseTest
 
 from src.models import User, WorkoutSession
 from src.stats.stats_calculator import Calculator
-from src.stats.database_generator import DatabaseGenerator
+from src.database_generator import DatabaseGenerator
 
 
 # noinspection PyArgumentList
@@ -17,7 +17,8 @@ class StatsTest(GeneralBaseTest):
         with self.app() as client:
             with self.app_context():
                 #  Create test user that will be logged in
-                DatabaseGenerator.create_test_user()
+                DatabaseGenerator.create_verified_test_user()
+
                 DatabaseGenerator.create_automatic_testing_database()
 
     def test_logged_user_can_refresh_page(self):
@@ -104,13 +105,7 @@ class StatsTest(GeneralBaseTest):
                 except AttributeError as e:
                     self.assertIsNotNone(e)
                 finally:
-                    test2 = User(
-                        first_name="Test",
-                        last_name="Osteron",
-                        email="test@test.com",
-                        password=generate_password_hash("1234", method='sha256')
-                    )
-                    test2.save_to_db()
+                    DatabaseGenerator.create_second_verified_test_user()
 
                     client.post(
                         "/auth/login",

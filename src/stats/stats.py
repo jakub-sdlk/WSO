@@ -4,7 +4,7 @@ from datetime import time
 
 from src.models import WorkoutSession, Schedule
 from src.stats.stats_calculator import Calculator
-from src.stats.database_generator import DatabaseGenerator
+from src.database_generator import DatabaseGenerator
 from src.db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")

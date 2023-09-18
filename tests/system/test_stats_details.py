@@ -1,5 +1,5 @@
 from tests.general_base_test import GeneralBaseTest
-from src.stats.database_generator import DatabaseGenerator
+from src.database_generator import DatabaseGenerator
 from src.models import WorkoutSession
 
 
@@ -11,7 +11,8 @@ class StatsTest(GeneralBaseTest):
         with self.app() as client:
             with self.app_context():
                 #  Create test user that will be logged in
-                DatabaseGenerator.create_test_user()
+                DatabaseGenerator.create_verified_test_user()
+
                 DatabaseGenerator.create_automatic_testing_database()
 
     def test_new_user_stats_details_are_correct(self):

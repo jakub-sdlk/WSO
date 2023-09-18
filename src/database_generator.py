@@ -11,15 +11,41 @@ class DatabaseGenerator:
         pass
 
     @staticmethod
-    def create_test_user():
+    def create_unverified_test_user():
         #  Create test user that will be logged in
-        user1 = User(
+        user = User(
             first_name="John",
             last_name="Doe",
             email="John@Doe.com",
-            password=generate_password_hash("1234", method='sha256')
+            password=generate_password_hash("1234", method='scrypt')
         )
-        user1.save_to_db()
+
+        user.save_to_db()
+
+        return user
+
+    @staticmethod
+    def create_verified_test_user():
+        user = DatabaseGenerator.create_unverified_test_user()
+
+        user.is_verified = True
+        user.save_to_db()
+
+        return user
+
+    @staticmethod
+    def create_second_verified_test_user():
+        #  Create test user that will be logged in
+        user = User(
+            first_name="Test",
+            last_name="Osteron",
+            email="test@test.com",
+            password=generate_password_hash("1234", method='scrypt')
+        )
+        user.is_verified = True
+        user.save_to_db()
+
+        return user
 
     @staticmethod
     def create_automatic_testing_database():
