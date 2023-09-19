@@ -8,15 +8,15 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
   <meta name="author" content="">
-  
+
   <title>{% block title %}{% endblock %}</title>
-  
+
   <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
-  
+
   <link href="{{url_for('stats.static', filename='toolkit-light.css')}}" rel="stylesheet">
-  
+
   <link href="{{url_for('stats.static', filename='application.css')}}" rel="stylesheet">
-  
+
   <style>
     /* note: this is a hack for ios iframe for bootstrap themes shopify page */
     /* this chunk of css is not part of the toolkit :) */
@@ -25,9 +25,6 @@
       min-width: 100%;
       *width: 100%;
     }
-  
-  
-  
   </style>
 </head>
 
@@ -40,23 +37,17 @@
           aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  
+
   <a class="navbar-brand" href="{{url_for('stats.overview')}}">
     <span class="icon icon-network navbar-brand-icon"></span>
     WSO
   </a>
-  
+
   <div class="collapse navbar-collapse mr-auto" id="navbarResponsive">
     <ul class="nav navbar-nav">
       <li class="{% block nav_overview %}{% endblock %}>">
         <!-- nav-item active -->
         <a class="nav-link" href="{{url_for('stats.overview')}}">Overview</a>
-      </li>
-      <li class="{% block nav_manage %}{% endblock %}>">
-        <a class="nav-link" href="../fluid/index.html">Manage workouts</a>
-      </li>
-      <li class="{% block nav_profile %}{% endblock %}>">
-        <a class="nav-link" href="../icon-nav/index.html">Profile</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{url_for('auth.logout')}}">Log out</a>
@@ -86,7 +77,7 @@
       <h2 class="dashhead-title">{% block h2_title %}{% endblock %}</h2>
     </div>
   </div>
-  
+
   {% block content %}{% endblock %}
 
 </div>
@@ -100,57 +91,30 @@
 <script>
     // execute/clear BS loaders for docs
     $(function () { while (window.BS && window.BS.loader && window.BS.loader.length) { (window.BS.loader.pop())() } })
-  
 
-
-  
 </script>
 <script type="text/javascript">
       $('#calendar').datepicker({
         autoclose: 'true',
         todayHighlight: 'true',
-        disableTouchKeyboard: 'true',
+        disableTouchKeyboard: 'false',
         endDate: '0d',
         startDate: '-90d',
         todayBtn: 'linked'
 
       });
-    
 
-  
 </script>
-<!-- Script bellow deals with confirm form resubmission bug -->
 
+<!-- Script bellow deals with confirm form resubmission bug --
 <script>
       if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
       }
 
-  
+
 </script>
 
-<!-- Script bellow refreshes the page only once after it is loaded -
-Without it the user must refresh the page manually to update data after adning new session record
--->
-<!--<script type='text/javascript'>-->
-
-<!--(function()-->
-<!--{-->
-<!--  if( window.localStorage )-->
-<!--  {-->
-<!--    if( !localStorage.getItem('firstLoad') )-->
-<!--    {-->
-<!--      localStorage['firstLoad'] = true;-->
-<!--      window.location.reload();-->
-<!--    }-->
-<!--    else-->
-<!--      localStorage.removeItem('firstLoad');-->
-<!--  }-->
-<!--})();-->
-
-
-
-<!--</script>-->
 </body>
 
 </html>

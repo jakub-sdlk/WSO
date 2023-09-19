@@ -129,7 +129,7 @@ def verify_email(token):
                     session['active_schedule_id'] = 1
                 return redirect(url_for('stats.overview', schedule_selector=session['active_schedule_id']))
             else:
-                flash(f"Invalid verification token", category='error')
+                flash("Invalid verification token", category='error')
         else:
             flash("User is already verified", category='error')
     else:

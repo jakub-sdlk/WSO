@@ -47,7 +47,7 @@ def overview():
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')
         elif not calculator.next_position:
             flash(
-                f'No more workouts in current schedule. Start a new season or choose another schedule',
+                'No more workouts in current schedule. Start a new season or choose another schedule',
                 category='error'
             )
         else:
