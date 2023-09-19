@@ -6,7 +6,7 @@ from redmail import gmail
 from auth.auth import auth
 from stats.stats import stats
 from db import db, DB_NAME
-from config import SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD
+from config import SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD, SQLALCHEMY_DATABASE_URI
 from socket import gethostname
 
 from models import User
@@ -25,9 +25,11 @@ app = Flask(__name__)
 
 app.secret_key = SECRET_KEY
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TESTING'] = False
+
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 gmail.username = MAIL_USERNAME
 gmail.password = MAIL_PASSWORD

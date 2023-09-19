@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
 from flask_login import login_required, current_user
-from datetime import time
+from datetime import time, date as date_obj
 
 from models import WorkoutSession, Schedule
 from stats.stats_calculator import Calculator
@@ -74,6 +74,7 @@ def overview():
                            all_workout_sessions=calculator.all_workout_sessions,
                            user_workout_sessions_count=calculator.user_workout_sessions_count,
                            time=time,
+                           date_obj=date_obj,
                            next_position=calculator.next_position,
                            next_workout_best_time_session=calculator.next_workout_best_time_session,
                            current_workout_session_season=calculator.current_workout_session_season,

@@ -43,7 +43,7 @@
             <h2 class="statcard-number" id="user_workout_sessions_count">
               {{ user_workout_sessions_count }}
             </h2>
-            
+
           </div>
         </div>
       </div>
@@ -137,56 +137,56 @@
 <div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      
+
       <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">Add Workout Record</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
       </div>
-      
+
       <div class="modal-body">
         <form method="POST">
-          <div class="form-group row mt-2">
+          <div class="form-group row mt-3">
             <label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
-            <div class="col-sm">
+            <div class="col-sm text-left">
               <div class="btn-toolbar-item input-with-icon">
                 <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control"
-                       value="1991/07/24" data-provide="datepicker">
+                       value="{{ date_obj.today().strftime('%Y/%m/%d') }}" data-provide="datepicker">
                 <span class="icon icon-calendar"></span>
               </div>
             </div>
           </div>
-          
-          <div class="form-group row mt-2">
+
+          <div class="form-group row mt-3">
             <label for="hours" class="col-sm col-form-label">Hours/Minutes/Seconds:</label>
-            <div class="col-2">
+            <div class="col">
               <div class="btn-toolbar-item">
-                <input type="number" class="form-control" id="hours" min="0" max="24" step="1" name="hours"
+                <input type="number" class="form-control" id="hours" min="0" max="23" step="1" name="hours"
                        placeholder="Hours" value=0>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes"
                        placeholder="Minutes">
               </div>
             </div>
-            <div class="col-2">
+            <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds"
                        placeholder="Seconds">
               </div>
             </div>
           </div>
-          
+
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="standard">
             </div>
-            
+
             <div role="tabpanel" class="tab-pane" id="advanced">
-              <div class="form-group row mt-2">
+              <div class="form-group row mt-3">
                 <label for="season_setup" class="col-sm col-form-label"> Season setup: </label>
-                  <div class="col-sm">
+                  <div class="col-sm text-left">
                     <div class="btn-toolbar-item">
                     <select class="form-control" id="season_setup" name="season_setup">
                       <option selected value="0"> Continue current season </option>
@@ -197,16 +197,16 @@
               </div>
             </div>
           </div>
-          
-          
-          <div class="form-group row mt-2">
+
+
+          <div class="form-group row mt-3">
             <div class="col-sm text-right">
               <button type="submit" class="btn btn-primary">
                 Save & Quit
               </button>
             </div>
           </div>
-          
+
           <div class="container">
             <div class="hr-divider my-4">
               <ul class="nav nav-pills hr-divider-content hr-divider-nav" role="tablist">
@@ -250,10 +250,10 @@
         <span class="font-weight-normal" id="number-of-circles">{{ next_position.workout.number_of_circles }}</span>
       </a>
       {% endif %}
-    
+
     </div>
   </div>
-  
+
   <div class="col-lg-4 mb-5">
     <div class="list-group mb-3">
       <h6 class="list-group-header">
@@ -275,7 +275,7 @@
       {% endif %}
     </div>
   </div>
-  
+
   <div class="col-lg-4 mb-5">
     <div class="list-group mb-3">
       <h6 class="list-group-header">
