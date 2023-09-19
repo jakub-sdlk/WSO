@@ -30,6 +30,8 @@ app.config['TESTING'] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle' : 280}
+
 
 gmail.username = MAIL_USERNAME
 gmail.password = MAIL_PASSWORD
