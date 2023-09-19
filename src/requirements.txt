@@ -10,3 +10,4 @@ pyjwt
 flask-redmail
 flask-bootstrap
 redmail
+mysqlclient
