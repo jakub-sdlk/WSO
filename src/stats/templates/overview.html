@@ -151,7 +151,7 @@
             <div class="col-sm text-left">
               <div class="btn-toolbar-item input-with-icon">
                 <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control"
-                       value="{{ date_obj.today().strftime('%Y/%m/%d') }}" data-provide="datepicker">
+                       value="{{ date_obj.today().strftime('%Y/%m/%d') }}" data-provide="datepicker" required>
                 <span class="icon icon-calendar"></span>
               </div>
             </div>
@@ -162,19 +162,19 @@
             <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="hours" min="0" max="23" step="1" name="hours"
-                       placeholder="Hours" value=0>
+                       placeholder="Hours" value=0 required>
               </div>
             </div>
             <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes"
-                       placeholder="Minutes">
+                       placeholder="Minutes" required>
               </div>
             </div>
             <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds"
-                       placeholder="Seconds">
+                       placeholder="Seconds" required>
               </div>
             </div>
           </div>
