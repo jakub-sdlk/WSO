@@ -148,10 +148,10 @@
         <form method="POST">
           <div class="form-group row">
             <label for="calendar" class="col-sm col-form-label">Scheduled workout date:</label>
-            <div class="col">
+            <div class="col-sm">
               <div class="btn-toolbar-item input-with-icon">
                 <input type="text" id="calendar" name="calendar" data-date-format="yyyy/mm/dd" class="form-control"
-                       value="{{ date_obj.today().strftime('%Y/%m/%d') }}" data-provide="datepicker">
+                       value="{{ date_obj.today().strftime('%Y/%m/%d') }}" data-provide="datepicker" required>
                 <span class="icon icon-calendar"></span>
               </div>
             </div>
@@ -161,20 +161,20 @@
             <label for="hours" class="col-sm col-form-label">Hours/Minutes/Seconds:</label>
             <div class="col">
               <div class="btn-toolbar-item">
-                <input type="number" class="form-control" id="hours" min="0" max="24" step="1" name="hours"
-                       placeholder="Hours" value=0>
+                <input type="number" class="form-control" id="hours" min="0" max="23" step="1" name="hours"
+                       placeholder="Hours" value=0 required>
               </div>
             </div>
             <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="minutes" min="0" max="59" step="1" name="minutes"
-                       placeholder="Minutes">
+                       placeholder="Minutes" required>
               </div>
             </div>
             <div class="col">
               <div class="btn-toolbar-item">
                 <input type="number" class="form-control" id="seconds" min="0" max="59" step="1" name="seconds"
-                       placeholder="Seconds">
+                       placeholder="Seconds" required>
               </div>
             </div>
           </div>

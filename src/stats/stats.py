@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
 from flask_login import login_required, current_user
 from datetime import time, date as date_obj
+import re
 
 from src.models import WorkoutSession, Schedule
 from src.stats.stats_calculator import Calculator
@@ -16,8 +17,6 @@ def overview():
     # save active_schedule_id to session variable
     session['active_schedule_id'] = request.args.get('schedule_selector')
 
-
-
     # create basic schedules in case the database was deleted in development process
     if not Schedule.query.all():
         DatabaseGenerator.create_automatic_testing_database()
@@ -29,7 +28,7 @@ def overview():
             current_user.registered_schedules.append(schedule)
         db.session.commit()
 
-       # create calculator
+    # create calculator
     calculator = Calculator()
 
     # check post requests
@@ -43,8 +42,16 @@ def overview():
         if int(new_season):  # new_season returns 0 | 1 as a string
             calculator = Calculator(new_season_flag=True)
 
+        # Make sure all inputs are filled in
         if not date or not hours or not minutes or not seconds:
             flash(f'Please fill in all inputs{date, hours, minutes, seconds}', category='error')
+        # Make sure hours, minutes and seconds consists of digits only
+        elif not re.search("\d+", hours) or not re.search("\d+", seconds) or not re.search("\d+", minutes):
+            flash('Incorrect datatype of hours or minutes or seconds ', category='error')
+        # Make sure hours, minutes and seconds consists do not exceed limit values
+        elif int(hours) < 0 or int(hours) > 23 or int(minutes) < 0 or int(minutes) > 59 or int(seconds) < 0 or int(
+                seconds) > 59:
+            flash('Incorrect number of hours or minutes or seconds ', category='error')
         elif not calculator.next_position:
             flash(
                 f'No more workouts in current schedule. Start a new season or choose another schedule',
