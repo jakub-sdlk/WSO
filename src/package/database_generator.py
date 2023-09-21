@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash
 
-from models import User, Schedule, Workout, Position, Set, Exercise
-from db import db
+from package.models import User, Schedule, Workout, Position, Set, Exercise
+from package.db import db
 
 
 # noinspection PyArgumentList
@@ -51,13 +51,13 @@ class DatabaseGenerator:
     def create_automatic_testing_database():
         # Create 2 test schedules
         schedule1 = Schedule(
-            name="Lane Goodwin Full"
+            name="LG workout"
         )
         schedule2 = Schedule(
             name="Triatlon"
         )
 
-        #  Create test workouts for Lane Goodwin full and Triatlon schedules
+        #  Create test workouts for LG workout and Triatlon schedules
         workout1 = Workout(
             name="Core Strength", number_of_circles=5
         )
@@ -614,7 +614,7 @@ class DatabaseGenerator:
             set11, set12, set13, set14, set15, set16, set17, set18, set19, set20,
             set21, set22, set23, set24, set25, set26, set27, set28, set29, set30
         ]
-        # Lane Goodwin Full Workout positions
+        # LG workout Workout positions
         objects_to_add_to_session.extend([
             position101, position102, position103, position104,
             position105, position106, position107, position108,

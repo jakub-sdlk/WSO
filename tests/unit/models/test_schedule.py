@@ -17,5 +17,3 @@ class ScheduleTest(UnitBaseTest):
         )
         expected = "<Class: Schedule; Id: 10; Name: Sample Schedule>"
         self.assertEqual(expected, repr(test))
-
-        "[<Class: Schedule; Id: 1; Name: Lane Goodwin Full>, <Class: Schedule; Id: 2; Name: Triatlon>]"

@@ -7,8 +7,8 @@ and makes sure that it is a new, blank database each time.
 """
 
 from unittest import TestCase
-from src import app
-from src.db import db
+from package import app
+from package.db import db
 
 
 

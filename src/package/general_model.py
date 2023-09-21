@@ -1,4 +1,4 @@
-from db import db
+from package.db import db
 
 
 class GeneralModel:

@@ -1,4 +1,5 @@
-from src import app
+import nose
+from package import app
 from unittest import TestCase
 
 

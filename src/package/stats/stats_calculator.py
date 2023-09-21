@@ -1,7 +1,7 @@
 from flask import session
 from flask_login import current_user
 
-from models import WorkoutSession, Schedule, Workout, Position
+from package.models import WorkoutSession, Schedule, Workout, Position
 
 
 class Calculator:

@@ -1,4 +1,5 @@
-from tests.unit.unit_base_test import UnitBaseTest, app
+import nose
+from unit_base_test import UnitBaseTest, app
 
 
 class AppTest(UnitBaseTest):

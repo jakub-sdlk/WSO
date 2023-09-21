@@ -3,10 +3,10 @@ from flask_login import login_required, current_user
 from datetime import time, date as date_obj
 import re
 
-from models import WorkoutSession, Schedule
-from stats.stats_calculator import Calculator
-from database_generator import DatabaseGenerator
-from db import db
+from package.models import WorkoutSession, Schedule
+from package.stats.stats_calculator import Calculator
+from package.database_generator import DatabaseGenerator
+from package.db import db
 
 stats = Blueprint("stats", __name__, static_folder="static", template_folder="templates")
 

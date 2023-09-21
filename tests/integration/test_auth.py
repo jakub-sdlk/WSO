@@ -3,9 +3,9 @@ from flask_login import current_user
 import jwt
 
 from tests.general_base_test import GeneralBaseTest
-from src.models import User
-from src.database_generator import DatabaseGenerator
-from src.config import SECRET_KEY
+from package.models import User
+from package.database_generator import DatabaseGenerator
+from package.config import SECRET_KEY
 
 
 class AuthTest(GeneralBaseTest):
