@@ -7,7 +7,7 @@ class ScheduleTest(GeneralBaseTest):
     def test_create_schedule(self):
         with self.app_context():
             schedule1 = Schedule(
-                name="Lane Goodwin Full"
+                name="LG Workout"
             )
 
             self.assertIsNone(Schedule.find_by_id(1))
@@ -19,12 +19,12 @@ class ScheduleTest(GeneralBaseTest):
             finally:
                 self.assertIsNotNone(Schedule.find_by_id(1))
                 self.assertEqual(1, Schedule.find_by_id(1).id)
-                self.assertEqual("Lane Goodwin Full", Schedule.find_by_id(1).name)
+                self.assertEqual("LG Workout", Schedule.find_by_id(1).name)
 
     def test_workout_session_relationship(self):
         with self.app_context():
             schedule1 = Schedule(
-                name="Lane Goodwin Full"
+                name="LG Workout"
             )
 
             schedule2 = Schedule(

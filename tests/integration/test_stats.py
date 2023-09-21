@@ -159,12 +159,12 @@ class StatsTest(GeneralBaseTest):
 
                 calculator = Calculator()
 
-                expected1 = "[<Class: Schedule; Id: 1; Name: Lane Goodwin Full>, <Class: Schedule; Id: 2; Name: " \
+                expected1 = "[<Class: Schedule; Id: 1; Name: LG Workout>, <Class: Schedule; Id: 2; Name: " \
                             "Triatlon>]"
                 self.assertEqual(expected1, repr(calculator.all_schedules))
 
                 #  Make sure you can loop through the all_schedules and get correct results
-                expected2 = ("Lane Goodwin Full", "Triatlon")
+                expected2 = ("LG Workout", "Triatlon")
                 for count, schedule in enumerate(calculator.all_schedules):
                     self.assertEqual(count + 1, schedule.id)
                     self.assertEqual(expected2[count], schedule.name)

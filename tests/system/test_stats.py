@@ -26,7 +26,7 @@ class StatsTest(GeneralBaseTest):
                         "login_password": 1234
                     })
                 #  Check that schedule 1 is selected
-                expected1 = b"""<option selected value="1" >Lane Goodwin Full </option>"""
+                expected1 = b"""<option selected value="1" >LG Workout </option>"""
                 self.assertIn(expected1, response.data)
 
                 expected2 = b"""id="user_workout_sessions_count">\n              0"""

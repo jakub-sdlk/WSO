@@ -51,7 +51,7 @@ class DatabaseGenerator:
     def create_automatic_testing_database():
         # Create 2 test schedules
         schedule1 = Schedule(
-            name="Lane Goodwin Full"
+            name="LG Workout"
         )
         schedule2 = Schedule(
             name="Triatlon"
@@ -293,7 +293,7 @@ class DatabaseGenerator:
             number_of_reps=2
         )
 
-        # Create first 4 days of Lane Goodwin Full Schedule and 2 weeks of Triatlon schedule
+        # Create first 4 days of LG Workout Schedule and 2 weeks of Triatlon schedule
         position101 = Position(
             id=101,
             workout_id=5,
@@ -614,7 +614,7 @@ class DatabaseGenerator:
             set11, set12, set13, set14, set15, set16, set17, set18, set19, set20,
             set21, set22, set23, set24, set25, set26, set27, set28, set29, set30
         ]
-        # Lane Goodwin Full Workout positions
+        # LG Workout Workout positions
         objects_to_add_to_session.extend([
             position101, position102, position103, position104,
             position105, position106, position107, position108,
