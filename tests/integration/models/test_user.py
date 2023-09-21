@@ -175,10 +175,10 @@ class UserTest(GeneralBaseTest):
             )
 
             schedule1 = Schedule(
-                name="Lane Goodwin Full"
+                name="L"
             )
             schedule2 = Schedule(
-                name="Lane Goodwin Best Of"
+                name="LG Workout Best Of"
             )
             schedule3 = Schedule(
                 name="Triatlon"
