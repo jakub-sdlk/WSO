@@ -1,6 +1,6 @@
 # WSO
 Workout Stats Online
-Record your achievments with Workout Stats Online
+Record your achievments with Workout Stats Online. <br>
 Workouts, Sets, Exercises, Personal Records - all together in one app.
 
 See the ap in action at: https://jakubsdlk.pythonanywhere.com/
