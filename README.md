@@ -1,9 +1,20 @@
-# WSO
-Workout Stats Online
-Record your achievments with Workout Stats Online. <br>
-Workouts, Sets, Exercises, Personal Records - all together in one app.
+# WSO - Workout Stats Online
 
-See the ap in action at: https://jakubsdlk.pythonanywhere.com/
-Use test acount email test@test.test and password 1234 to peek inside or signup and verify your email to create your own account
+Track and record your workout achievements with **Workout Stats Online (WSO)**. 
 
-Master branch is set up to run on pythonanywhere WSGI server, whereas localhost branch is tested on Windows 10 maschine local server
+Workouts, sets, exercises, personal records - all conveniently organized in one app.
+
+See WSO in action at: [Live Demo](https://jakubsdlk.pythonanywhere.com/)
+
+### Demo Account
+You can explore WSO without signing up using the following demo account:
+
+- **Email**: test@test.test
+- **Password**: 1234
+
+If you like what you see, feel free to sign up and verify your email to create your own account.
+
+### Project Branches
+
+- The `master` branch is configured to run on the PythonAnywhere WSGI server.
+- The `localhost` branch has been tested on a Windows 10 machine using a local server.
